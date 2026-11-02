@@ -55,7 +55,7 @@ export default function Header({ settings = {}, categories = [] }) {
         }`}
       >
         {settings.announcement && (
-          <div className="bg-gold-400 text-brand-950">
+          <div className="bg-brand-100 text-brand-800">
             <div className="container-page flex h-8 items-center justify-center gap-2 text-[10.5px] font-bold sm:text-[11px]">
               <Sparkles className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">{settings.announcement}</span>

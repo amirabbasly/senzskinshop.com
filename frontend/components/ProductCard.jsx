@@ -36,7 +36,7 @@ export default function ProductCard({ product }) {
 
         <div className="absolute right-3 top-3 flex flex-col gap-1.5">
           {off > 0 && (
-            <span className="rounded-full bg-rose-500 px-2.5 py-1 text-[10px] font-black text-white shadow">
+            <span className="rounded-full bg-brand-700 px-2.5 py-1 text-[10px] font-black text-white shadow">
               {toFa(off)}٪ تخفیف
             </span>
           )}

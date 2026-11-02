@@ -60,7 +60,7 @@ export default function HighlightSplit({ settings = {} }) {
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href="/products?on_sale=1"
-              className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-black text-brand-950 transition hover:bg-gold-300"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-6 py-3 text-sm font-black text-brand-800 transition hover:bg-white"
             >
               خرید با تخفیف
               <ArrowLeft className="h-4 w-4" />
