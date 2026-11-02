@@ -3,13 +3,13 @@ import HeroSlider from '@/components/HeroSlider';
 import ServiceStrip from '@/components/ServiceStrip';
 import CategoryCircles from '@/components/CategoryCircles';
 import FeaturedTabs from '@/components/FeaturedTabs';
-import PromoPanel from '@/components/PromoPanel';
+import HighlightSplit from '@/components/HighlightSplit';
 import SectionHeading from '@/components/SectionHeading';
 import ProductCard from '@/components/ProductCard';
 import { getHome } from '@/lib/api';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
-import { formatDate, toFa } from '@/lib/format';
-import { ArrowLeft, Leaf, Sparkles, Star } from '@/components/Icons';
+import { formatDate } from '@/lib/format';
+import { ArrowLeft } from '@/components/Icons';
 
 export default async function HomePage() {
   const data = await getHome();
@@ -29,7 +29,7 @@ export default async function HomePage() {
 
   return (
     <div className="pb-4">
-      <div className="container-page pt-5">
+      <div className="pt-3 sm:pt-4 lg:pt-0">
         <HeroSlider banners={banners} />
       </div>
 
@@ -50,15 +50,7 @@ export default async function HomePage() {
         <FeaturedTabs tabs={tabs} />
       </section>
 
-      <section className="container-page mt-16">
-        <PromoPanel
-          badge="پیشنهاد ویژه ماه"
-          title="۱۵٪ تخفیف روی اولین سفارش شما"
-          text="با کد تخفیف SENZ15 اولین خریدت را با تخفیف انجام بده. تمام محصولات با ضمانت اصالت و امکان بازگشت ۷ روزه ارسال می‌شوند."
-          image="/images/banners/hero-2.jpg"
-          href="/products"
-        />
-      </section>
+      <HighlightSplit settings={settings} />
 
       <section className="container-page mt-16">
         <SectionHeading
@@ -70,48 +62,6 @@ export default async function HomePage() {
           {newest.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </div>
-      </section>
-
-      <section className="container-page mt-16">
-        <div className="grid gap-6 rounded-[2rem] border border-cream-300/80 bg-white p-6 shadow-soft md:grid-cols-3 md:p-9">
-          <div className="md:border-l md:border-cream-200 md:pl-6">
-            <span className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-[11px] font-bold text-brand-700">
-              <Leaf className="h-3.5 w-3.5" />
-              چرا سنز اسکین؟
-            </span>
-            <h2 className="mt-4 text-xl font-black leading-8 text-brand-950">
-              انتخاب علمی، نه تبلیغاتی
-            </h2>
-            <p className="mt-3 text-xs leading-6 text-ink/60">
-              {settings.about_short || 'همه محصولات سنز اسکین بر اساس ترکیبات مؤثره و تست حساسیت انتخاب می‌شوند.'}
-            </p>
-            <Link href="/about" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-brand-700">
-              بیشتر بدانید
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-3 md:col-span-2 md:grid-cols-3">
-            {[
-              { value: toFa('+۱۲٬۰۰۰'), label: 'مشتری راضی', icon: Star },
-              { value: toFa('+۱۵۰'), label: 'محصول تخصصی', icon: Sparkles },
-              { value: toFa('۷ روز'), label: 'ضمانت بازگشت', icon: Leaf },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl bg-cream-100/70 p-4 text-center">
-                <stat.icon className="mx-auto mb-2 h-5 w-5 text-gold-500" />
-                <p className="text-base font-black text-brand-900">{stat.value}</p>
-                <p className="mt-1 text-[10px] text-ink/50">{stat.label}</p>
-              </div>
-            ))}
-            <div className="col-span-2 rounded-2xl bg-brand-900 p-4 text-cream-50 md:col-span-3">
-              <p className="text-xs leading-6 text-cream-100/80">
-                کارشناسان پوست ما آماده راهنمایی رایگان هستند — از انتخاب روتین تا ترکیب محصولات.
-              </p>
-              <a href={`tel:${settings.phone}`} className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-gold-300">
-                تماس با مشاور: <span dir="ltr">{toFa(settings.phone || '')}</span>
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 

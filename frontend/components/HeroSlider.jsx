@@ -30,19 +30,31 @@ export default function HeroSlider({ banners = [] }) {
   const slide = slides[index];
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-brand-950">
-      <div className="relative grid min-h-[420px] items-center md:min-h-[480px] md:grid-cols-2">
-        <div className="relative z-10 p-7 sm:p-10 lg:p-14">
+    <section className="relative mx-3 overflow-hidden rounded-[1.7rem] bg-brand-950 sm:mx-5 sm:rounded-[2rem] lg:mx-0 lg:rounded-none">
+      {/* دسکتاپ: تصویر تمام‌صفحه پشت کل اسلایدر */}
+      <img
+        key={`bg-${slide.id || index}`}
+        src={slide.image || '/images/banners/hero-1.jpg'}
+        alt={slide.title || 'سنز اسکین شاپ'}
+        className="absolute inset-0 hidden h-full w-full object-cover object-center lg:block"
+      />
+      <div className="absolute inset-0 hidden bg-gradient-to-l from-brand-950/95 via-brand-950/70 to-brand-950/10 lg:block" />
+      <div className="absolute inset-0 hidden bg-gradient-to-t from-brand-950/80 via-transparent to-transparent lg:block" />
+
+      <div className="relative z-10 grid items-center md:grid-cols-2 lg:min-h-[calc(100vh-9.5rem)] lg:grid-cols-2">
+        <div className="p-6 sm:p-10 lg:max-w-2xl lg:py-20 lg:pr-14 lg:pl-8 xl:pr-20">
           {slide.badge && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-gold-400/10 px-3 py-1 text-[11px] font-bold text-gold-300">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-gold-400/10 px-3 py-1 text-[11px] font-bold text-gold-300 backdrop-blur">
               <Sparkles className="h-3.5 w-3.5" />
               {slide.badge}
             </span>
           )}
-          <h1 className="mt-4 text-balance text-2xl font-black leading-[1.5] text-cream-50 sm:text-3xl lg:text-[2.6rem] lg:leading-[1.45]">
+          <h1 className="mt-4 text-balance text-[1.6rem] font-black leading-[1.5] text-cream-50 sm:text-3xl lg:text-[3.15rem] lg:leading-[1.4]">
             {slide.title}
           </h1>
-          <p className="mt-4 max-w-md text-xs leading-7 text-cream-100/70 sm:text-sm">{slide.subtitle}</p>
+          <p className="mt-4 max-w-md text-xs leading-7 text-cream-100/75 sm:text-sm lg:max-w-lg lg:text-base lg:leading-8">
+            {slide.subtitle}
+          </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href={slide.link || '/products'}
@@ -59,7 +71,7 @@ export default function HeroSlider({ banners = [] }) {
             </Link>
           </div>
 
-          <div className="mt-8 flex items-center gap-5 text-[11px] text-cream-100/60">
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-cream-100/65">
             <span className="flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
               ارسال رایگان بالای ۱٫۵ میلیون
@@ -71,14 +83,15 @@ export default function HeroSlider({ banners = [] }) {
           </div>
         </div>
 
-        <div className="relative h-64 w-full md:h-full">
+        {/* موبایل و تبلت: تصویر زیر متن */}
+        <div className="relative h-60 w-full sm:h-72 md:h-80 lg:hidden">
           <img
             key={slide.id}
             src={slide.image || '/images/banners/hero-1.jpg'}
             alt={slide.title || 'سنز اسکین شاپ'}
-            className="absolute inset-0 h-full w-full object-cover opacity-90 animate-floatUp"
+            className="absolute inset-0 h-full w-full object-cover opacity-95 animate-floatUp"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brand-950/20 to-brand-950 md:bg-gradient-to-l md:from-transparent md:via-brand-950/10 md:to-brand-950" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/25 to-transparent" />
         </div>
       </div>
 
@@ -88,7 +101,7 @@ export default function HeroSlider({ banners = [] }) {
             type="button"
             onClick={() => go(1)}
             aria-label="اسلاید بعدی"
-            className="absolute right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex"
+            className="absolute right-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex lg:right-6"
           >
             <ChevronRight />
           </button>
@@ -96,7 +109,7 @@ export default function HeroSlider({ banners = [] }) {
             type="button"
             onClick={() => go(-1)}
             aria-label="اسلاید قبلی"
-            className="absolute left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex"
+            className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex lg:left-6"
           >
             <ChevronLeft />
           </button>

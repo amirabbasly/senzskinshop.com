@@ -6,24 +6,27 @@ export default function ServiceStrip({ services = [] }) {
   const list = services.length
     ? services.slice(0, 4)
     : [
-        { title: 'ارسال سریع', desc: 'ارسال به سراسر ایران' },
-        { title: 'ضمانت اصالت', desc: 'تضمین اورجینال بودن محصولات' },
-        { title: 'مشاوره تخصصی', desc: 'راهنمای انتخاب محصول' },
-        { title: '۷ روز بازگشت', desc: 'بازگشت کالا تا ۷ روز' },
+        { title: 'ارسال سریع', desc: 'ارسال به سراسر ایران با پست پیشتاز و تیپاکس' },
+        { title: 'ضمانت اصالت', desc: 'تضمین اورجینال بودن تمام محصولات' },
+        { title: 'مشاوره تخصصی', desc: 'راهنمای انتخاب محصول توسط کارشناس پوست' },
+        { title: '۷ روز بازگشت', desc: 'امکان بازگشت کالا تا ۷ روز بدون دلیل' },
       ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-3xl border border-cream-300/80 bg-white p-4 shadow-soft sm:p-5 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2.5 rounded-2xl border border-cream-300/80 bg-white p-3 shadow-soft sm:gap-3 sm:p-4 lg:grid-cols-4 lg:rounded-3xl lg:p-5">
       {list.map((service, index) => {
         const Icon = ICONS[index % ICONS.length];
         return (
-          <div key={service.title} className="flex items-center gap-3 rounded-2xl px-1 py-2">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
-              <Icon />
+          <div
+            key={`${service.title}-${index}`}
+            className="flex min-w-0 flex-col items-center gap-2 rounded-xl px-1.5 py-3 text-center transition sm:flex-row sm:items-center sm:gap-3 sm:rounded-2xl sm:py-2 sm:text-right lg:px-1"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 sm:h-11 sm:w-11 sm:rounded-2xl">
+              <Icon className="h-5 w-5" />
             </span>
-            <div>
-              <p className="text-[13px] font-bold text-brand-950">{service.title}</p>
-              <p className="mt-0.5 text-[10.5px] leading-5 text-ink/50">{service.desc}</p>
+            <div className="min-w-0">
+              <p className="text-[12px] font-bold leading-5 text-brand-950 sm:text-[13px]">{service.title}</p>
+              <p className="mt-0.5 text-[10px] leading-[1.7] text-ink/50 sm:text-[10.5px]">{service.desc}</p>
             </div>
           </div>
         );
