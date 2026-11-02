@@ -1,18 +1,19 @@
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
 import ServiceStrip from '@/components/ServiceStrip';
+import BrandsStrip from '@/components/BrandsStrip';
 import CategoryCircles from '@/components/CategoryCircles';
-import FeaturedTabs from '@/components/FeaturedTabs';
+import ProductShowcase from '@/components/ProductShowcase';
 import HighlightSplit from '@/components/HighlightSplit';
 import SectionHeading from '@/components/SectionHeading';
 import ProductCard from '@/components/ProductCard';
-import { getHome } from '@/lib/api';
+import { getBrands, getHome } from '@/lib/api';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
 import { formatDate } from '@/lib/format';
 import { ArrowLeft } from '@/components/Icons';
 
 export default async function HomePage() {
-  const data = await getHome();
+  const [data, brandsData] = await Promise.all([getHome(), getBrands()]);
   const settings = { ...DEFAULT_SETTINGS, ...(data?.settings || {}) };
   const categories = data?.categories || [];
   const featured = data?.featured || [];
@@ -20,12 +21,13 @@ export default async function HomePage() {
   const newest = data?.newest || [];
   const posts = data?.posts || [];
   const banners = data?.banners || [];
+  const brands = brandsData?.brands || [];
 
-  const tabs = [
-    { key: 'bestsellers', label: 'پرفروش‌ترین‌ها', items: bestsellers, href: '/products?sort=popular' },
-    { key: 'featured', label: 'پیشنهاد سنز', items: featured, href: '/products?featured=1' },
-    { key: 'newest', label: 'جدیدترین‌ها', items: newest, href: '/products?sort=newest' },
-  ];
+  const showcase = [];
+  [...featured, ...bestsellers, ...newest].forEach((product) => {
+    if (product && !showcase.some((item) => item.id === product.id)) showcase.push(product);
+  });
+  showcase.sort((a, b) => (b.compare_price > b.price ? 1 : 0) - (a.compare_price > a.price ? 1 : 0));
 
   return (
     <div className="pb-4">
@@ -33,9 +35,11 @@ export default async function HomePage() {
         <HeroSlider banners={banners} />
       </div>
 
-      <div className="container-page mt-5">
+      <div className="container-page mt-4 sm:mt-5">
         <ServiceStrip services={settings.services || []} />
       </div>
+
+      <BrandsStrip brands={brands} />
 
       <section className="container-page mt-14">
         <SectionHeading
@@ -46,9 +50,12 @@ export default async function HomePage() {
         <CategoryCircles categories={categories} />
       </section>
 
-      <section className="container-page mt-16">
-        <FeaturedTabs tabs={tabs} />
-      </section>
+      <ProductShowcase
+        products={showcase.slice(0, 10)}
+        title="پیشنهاد روزانه"
+        subtitle="منتخب کارشناسان سنز با بهترین قیمت"
+        href="/products?on_sale=1"
+      />
 
       <HighlightSplit settings={settings} />
 

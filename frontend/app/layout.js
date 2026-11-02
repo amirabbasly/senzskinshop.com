@@ -25,8 +25,11 @@ export const metadata = {
     'senz skin shop',
   ],
   icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-    apple: '/images/logo-mark.svg',
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/images/logo-senz.png', type: 'image/png' },
+    ],
+    apple: '/images/logo-senz.png',
   },
   openGraph: {
     type: 'website',
@@ -39,7 +42,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#173730',
+  themeColor: '#fff1f5',
   width: 'device-width',
   initialScale: 1,
 };

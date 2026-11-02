@@ -39,7 +39,7 @@ export default function HighlightSplit({ settings = {} }) {
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-brand-950/95 via-brand-950/80 to-brand-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-l from-brand-950/92 via-brand-950/72 to-brand-950/28" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950/85 via-transparent to-brand-950/20" />
 
         <div className="relative z-10 flex h-full flex-col justify-center px-5 py-14 sm:px-9 lg:min-h-[38rem] lg:px-12 lg:py-16 xl:px-16">
@@ -95,7 +95,7 @@ export default function HighlightSplit({ settings = {} }) {
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-brand-950/92 via-brand-950/85 to-brand-950/60" />
+        <div className="absolute inset-0 bg-gradient-to-l from-brand-950/90 via-brand-950/78 to-brand-950/45" />
 
         <div className="relative z-10 flex h-full flex-col justify-center px-5 py-14 sm:px-9 lg:min-h-[38rem] lg:px-12 lg:py-16 xl:px-16">
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-cream-50/20 bg-cream-50/10 px-3 py-1 text-[11px] font-bold text-cream-100 backdrop-blur">

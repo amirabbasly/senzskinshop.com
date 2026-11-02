@@ -63,6 +63,17 @@ router.get('/categories', wrap(async (req, res) => {
   res.json(await getCategoryTree());
 }));
 
+router.get('/brands', wrap(async (req, res) => {
+  const { rows } = await query(
+    `SELECT TRIM(brand) AS name, COUNT(*)::int AS count
+       FROM products
+      WHERE is_active = true AND COALESCE(TRIM(brand), '') <> ''
+      GROUP BY TRIM(brand)
+      ORDER BY count DESC, name ASC`
+  );
+  res.json({ brands: rows });
+}));
+
 router.get('/products', wrap(async (req, res) => {
   const {
     category,

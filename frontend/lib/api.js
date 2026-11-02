@@ -22,6 +22,7 @@ export const apiGet = request;
 
 export const getSettings = () => request('/settings');
 export const getCategories = () => request('/categories');
+export const getBrands = () => request('/brands');
 export const getHome = () => request('/home');
 export const getProducts = (query = '') => request(`/products${query}`);
 export const getProduct = (slug) => request(`/products/${encodeURIComponent(slug)}`);
