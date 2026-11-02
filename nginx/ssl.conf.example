@@ -1,0 +1,15 @@
+# ============================================================
+#  SSL setup (Let's Encrypt)
+#  1) point senzskinshop.com A-record to your server IP
+#  2) on the server run:
+#       sudo apt install certbot
+#       sudo certbot certonly --webroot -w /var/www/senzskinshop/nginx/acme \
+#            -d senzskinshop.com -d www.senzskinshop.com \
+#            --email info@senzskinshop.com --agree-tos --no-eff-email
+#  3) copy the files into ./nginx/certs:
+#       sudo cp /etc/letsencrypt/live/senzskinshop.com/fullchain.pem nginx/certs/
+#       sudo cp /etc/letsencrypt/live/senzskinshop.com/privkey.pem  nginx/certs/
+#  4) uncomment the HTTPS server block in nginx/default.conf and the
+#     http→https redirect, then:  docker compose exec nginx nginx -s reload
+#  5) auto-renew:  sudo certbot renew --deploy-hook "cd /var/www/senzskinshop && docker compose exec nginx nginx -s reload"
+# ============================================================
