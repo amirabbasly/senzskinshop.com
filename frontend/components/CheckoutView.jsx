@@ -6,10 +6,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCart } from './CartProvider';
 import { useCustomer } from './CustomerProvider';
 import { CLIENT_API } from '@/lib/api';
-import { getCustomerToken } from '@/lib/customerApi';
+import { customerApi, getCustomerToken } from '@/lib/customerApi';
 import { DEFAULT_SETTINGS, PAYMENT_LABELS, PLACEHOLDER_IMAGE, PROVINCES } from '@/lib/constants';
 import { formatPrice, toFa } from '@/lib/format';
-import { Check, CreditCard, ShoppingBag, Ticket, Truck } from './Icons';
+import { Check, CreditCard, MapPin, ShoppingBag, Ticket, Truck } from './Icons';
 
 const EMPTY_FORM = {
   customer_name: '',
@@ -35,6 +35,9 @@ export default function CheckoutView() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { customer, ready: customerReady } = useCustomer();
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [saveAddress, setSaveAddress] = useState(false);
 
   useEffect(() => {
     fetch(`${CLIENT_API}/settings`)
@@ -52,6 +55,40 @@ export default function CheckoutView() {
       email: prev.email || customer.email || '',
     }));
   }, [customer]);
+
+  useEffect(() => {
+    if (!customer) {
+      setAddresses([]);
+      return;
+    }
+    let active = true;
+    customerApi('/customer/addresses')
+      .then((data) => {
+        if (!active) return;
+        const list = data.addresses || [];
+        setAddresses(list);
+        const preferred = list.find((a) => a.is_default) || list[0];
+        if (preferred) applyAddress(preferred);
+        else setSaveAddress(true);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [customer]);
+
+  function applyAddress(address) {
+    setSelectedAddressId(address.id);
+    setForm((prev) => ({
+      ...prev,
+      customer_name: address.recipient || prev.customer_name,
+      phone: address.phone || prev.phone,
+      province: address.province || prev.province,
+      city: address.city || prev.city,
+      address: address.address || prev.address,
+      postal_code: address.postal_code || prev.postal_code,
+    }));
+  }
 
   const shipping = useMemo(() => {
     const freeOver = Number(settings.free_shipping_min || 0);
@@ -108,6 +145,21 @@ export default function CheckoutView() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'ثبت سفارش انجام نشد.');
+      if (token && saveAddress && !selectedAddressId) {
+        customerApi('/customer/addresses', {
+          method: 'POST',
+          body: {
+            title: 'آدرس اصلی',
+            recipient: form.customer_name,
+            phone: form.phone,
+            province: form.province,
+            city: form.city,
+            address: form.address,
+            postal_code: form.postal_code,
+            is_default: true,
+          },
+        }).catch(() => {});
+      }
       clear();
       if (data.payment?.payment_url) {
         router.push(data.payment.payment_url);
@@ -167,6 +219,38 @@ export default function CheckoutView() {
                     </Link>
                   </>
                 )}
+              </div>
+            )}
+
+            {customer && addresses.length > 0 && (
+              <div className="mb-4">
+                <p className="mb-2 flex items-center gap-1.5 text-[10.5px] font-bold text-ink/50">
+                  <MapPin className="h-3.5 w-3.5" />
+                  آدرس‌های ذخیره‌شده
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {addresses.map((address) => (
+                    <button
+                      key={address.id}
+                      type="button"
+                      onClick={() => applyAddress(address)}
+                      className={`rounded-2xl border px-3 py-2 text-right text-[10.5px] transition ${
+                        selectedAddressId === address.id
+                          ? 'border-brand-500 bg-brand-50/70 text-brand-900'
+                          : 'border-cream-300 text-ink/60 hover:border-brand-200'
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5 font-bold">
+                        {selectedAddressId === address.id && <Check className="h-3 w-3 text-brand-700" />}
+                        {address.title}
+                      </span>
+                      <span className="mt-0.5 block text-[9.5px] text-ink/45">
+                        {address.city} — {address.address.slice(0, 34)}
+                        {address.address.length > 34 ? '…' : ''}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -249,6 +333,18 @@ export default function CheckoutView() {
                   placeholder="you@example.com"
                 />
               </div>
+              {customer && addresses.length === 0 && (
+                <label className="flex items-center gap-2 rounded-xl bg-cream-50 px-3 py-2 text-[10.5px] text-ink/60 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-brand-700"
+                    checked={saveAddress}
+                    onChange={(e) => setSaveAddress(e.target.checked)}
+                  />
+                  این آدرس را در حساب کاربری من ذخیره کن (برای خریدهای بعدی)
+                </label>
+              )}
+
               <div className="sm:col-span-2">
                 <label className="label">توضیحات سفارش (اختیاری)</label>
                 <textarea

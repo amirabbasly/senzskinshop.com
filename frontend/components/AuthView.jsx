@@ -160,6 +160,15 @@ export default function AuthView() {
               </div>
             )}
 
+            {tab === 'login' && (
+              <p className="text-left text-[10px] text-ink/40">
+                رمز عبور را فراموش کرده‌اید؟{' '}
+                <Link href="/contact" className="font-bold text-brand-700 hover:text-brand-900">
+                  با پشتیبانی تماس بگیرید
+                </Link>
+              </p>
+            )}
+
             {error && <p className="rounded-xl bg-rose-50 px-3 py-2 text-[11px] text-rose-700">{error}</p>}
 
             <button type="submit" disabled={loading} className="btn-primary w-full">

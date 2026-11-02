@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useCustomer } from './CustomerProvider';
+import { useCart } from './CartProvider';
 import { customerApi } from '@/lib/customerApi';
-import { ORDER_STATUS, PAYMENT_LABELS, PAYMENT_STATUS } from '@/lib/constants';
+import { ORDER_STATUS, PAYMENT_LABELS, PAYMENT_STATUS, PROVINCES } from '@/lib/constants';
 import { formatDate, formatPrice, toFa } from '@/lib/format';
 import {
   Check,
@@ -13,13 +14,18 @@ import {
   Clock,
   CreditCard,
   LogOut,
+  MapPin,
   Package,
+  Plus,
+  RefreshCw,
   ShieldCheck,
+  Trash,
   User,
 } from './Icons';
 
 const TABS = [
   { key: 'orders', label: 'سفارش‌های من', icon: Package },
+  { key: 'addresses', label: 'آدرس‌های من', icon: MapPin },
   { key: 'profile', label: 'اطلاعات حساب', icon: User },
   { key: 'security', label: 'رمز عبور و امنیت', icon: ShieldCheck },
 ];
@@ -99,6 +105,7 @@ export default function AccountView() {
 
         <section className="min-w-0">
           {tab === 'orders' && <OrdersPanel />}
+          {tab === 'addresses' && <AddressesPanel customer={customer} />}
           {tab === 'profile' && <ProfilePanel customer={customer} refresh={refresh} />}
           {tab === 'security' && <SecurityPanel phone={customer?.phone} />}
         </section>
@@ -108,8 +115,46 @@ export default function AccountView() {
 }
 
 function OrdersPanel() {
+  const router = useRouter();
+  const { add } = useCart();
   const [orders, setOrders] = useState(null);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [busyCode, setBusyCode] = useState('');
+
+  async function reorder(code) {
+    setBusyCode(code);
+    setNotice('');
+    try {
+      const data = await customerApi(`/customer/orders/${code}`);
+      const available = (data.items || []).filter((item) => item.product_id && item.is_active !== false && Number(item.stock) > 0);
+      if (!available.length) {
+        setNotice('محصولات این سفارش در حال حاضر موجود نیستند.');
+        return;
+      }
+      available.forEach((item) => {
+        add(
+          {
+            id: item.product_id,
+            slug: item.slug,
+            name: item.name,
+            price: item.current_price || item.price,
+            image: item.image,
+            stock: item.stock,
+          },
+          item.qty
+        );
+      });
+
+      const skipped = (data.items || []).length - available.length;
+      if (skipped > 0) setNotice('برخی اقلام این سفارش موجود نبودند و به سبد اضافه نشدند.');
+      router.push('/cart');
+    } catch (err) {
+      setNotice(err.message);
+    } finally {
+      setBusyCode('');
+    }
+  }
 
   const load = useCallback(() => {
     customerApi('/customer/orders')
@@ -156,6 +201,10 @@ function OrdersPanel() {
         </Link>
       </div>
 
+      {notice && (
+        <p className="rounded-xl bg-amber-50 px-3 py-2 text-[10.5px] text-amber-800">{notice}</p>
+      )}
+
       {orders.map((order) => {
         const status = ORDER_STATUS[order.status] || ORDER_STATUS.pending;
         const pay = PAYMENT_STATUS[order.payment_status] || PAYMENT_STATUS.unpaid;
@@ -194,6 +243,15 @@ function OrdersPanel() {
                     پرداخت
                   </Link>
                 )}
+                <button
+                  type="button"
+                  onClick={() => reorder(order.code)}
+                  disabled={busyCode === order.code}
+                  className="flex items-center gap-1 rounded-full border border-cream-300 px-3 py-1.5 text-[10.5px] font-bold text-brand-800 transition hover:bg-cream-50 disabled:opacity-50"
+                >
+                  <RefreshCw className="h-3 w-3" />
+                  {busyCode === order.code ? 'در حال افزودن…' : 'خرید مجدد'}
+                </button>
                 <Link
                   href={`/order/${order.code}`}
                   className="rounded-full border border-cream-300 px-3 py-1.5 text-[10.5px] font-bold text-brand-800 hover:bg-cream-50"
@@ -336,5 +394,241 @@ function SecurityPanel({ phone }) {
         {state.loading ? 'در حال ذخیره…' : 'تغییر رمز عبور'}
       </button>
     </form>
+  );
+}
+
+
+function AddressesPanel({ customer }) {
+  const [addresses, setAddresses] = useState(null);
+  const [editing, setEditing] = useState(null);
+  const [state, setState] = useState({ loading: false, message: '', error: '' });
+
+  const load = useCallback(() => {
+    customerApi('/customer/addresses')
+      .then((data) => setAddresses(data.addresses || []))
+      .catch((err) => {
+        setAddresses([]);
+        setState({ loading: false, message: '', error: err.message });
+      });
+  }, []);
+
+  useEffect(load, [load]);
+
+  function startNew() {
+    setEditing({
+      id: null,
+      title: '',
+      recipient: customer?.name || '',
+      phone: customer?.phone || '',
+      province: 'تهران',
+      city: '',
+      address: '',
+      postal_code: '',
+      is_default: !addresses || addresses.length === 0,
+    });
+    setState({ loading: false, message: '', error: '' });
+  }
+
+  function startEdit(address) {
+    setEditing({ ...address });
+    setState({ loading: false, message: '', error: '' });
+  }
+
+  async function save(e) {
+    e.preventDefault();
+    setState({ loading: true, message: '', error: '' });
+    const { id } = editing;
+    const payload = { ...editing };
+    delete payload.id;
+    delete payload.created_at;
+    delete payload.customer_id;
+    try {
+      if (id) await customerApi(`/customer/addresses/${id}`, { method: 'PUT', body: payload });
+      else await customerApi('/customer/addresses', { method: 'POST', body: payload });
+      setEditing(null);
+      setState({ loading: false, message: 'آدرس ذخیره شد.', error: '' });
+      load();
+    } catch (err) {
+      setState({ loading: false, message: '', error: err.message });
+    }
+  }
+
+  async function remove(id) {
+    if (!window.confirm('این آدرس حذف شود؟')) return;
+    try {
+      await customerApi(`/customer/addresses/${id}`, { method: 'DELETE' });
+      setState({ loading: false, message: 'آدرس حذف شد.', error: '' });
+      load();
+    } catch (err) {
+      setState({ loading: false, message: '', error: err.message });
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-[1.7rem] border border-cream-300/80 bg-white p-5 shadow-soft">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="text-sm font-black text-brand-950">آدرس‌های من</h2>
+            <p className="mt-1 text-[10.5px] text-ink/45">
+              آدرس‌های ذخیره‌شده در صفحه پرداخت به‌صورت یک‌کلیکی پر می‌شوند.
+            </p>
+          </div>
+          {!editing && (
+            <button type="button" onClick={startNew} className="btn-primary btn-sm gap-1.5">
+              <Plus className="h-3.5 w-3.5" />
+              افزودن آدرس جدید
+            </button>
+          )}
+        </div>
+
+        {state.error && <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-[11px] text-rose-700">{state.error}</p>}
+        {state.message && (
+          <p className="mt-3 flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
+            <Check className="h-3.5 w-3.5" />
+            {state.message}
+          </p>
+        )}
+
+        {editing ? (
+          <form onSubmit={save} className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div>
+              <label className="label">عنوان آدرس</label>
+              <input
+                className="input"
+                placeholder="خانه، محل کار…"
+                value={editing.title}
+                onChange={(e) => setEditing({ ...editing, title: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="label">نام گیرنده</label>
+              <input
+                className="input"
+                required
+                value={editing.recipient}
+                onChange={(e) => setEditing({ ...editing, recipient: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="label">شماره تماس</label>
+              <input
+                className="input"
+                dir="ltr"
+                inputMode="tel"
+                value={editing.phone}
+                onChange={(e) => setEditing({ ...editing, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="label">استان</label>
+              <select
+                className="input"
+                value={editing.province}
+                onChange={(e) => setEditing({ ...editing, province: e.target.value })}
+              >
+                {PROVINCES.map((province) => (
+                  <option key={province}>{province}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="label">شهر</label>
+              <input
+                className="input"
+                required
+                value={editing.city}
+                onChange={(e) => setEditing({ ...editing, city: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="label">کد پستی</label>
+              <input
+                className="input"
+                dir="ltr"
+                inputMode="numeric"
+                value={editing.postal_code || ''}
+                onChange={(e) => setEditing({ ...editing, postal_code: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="label">آدرس کامل</label>
+              <textarea
+                className="input min-h-20"
+                required
+                value={editing.address}
+                onChange={(e) => setEditing({ ...editing, address: e.target.value })}
+              />
+            </div>
+            <label className="flex items-center gap-2 text-[11px] text-ink/60 sm:col-span-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-brand-700"
+                checked={Boolean(editing.is_default)}
+                onChange={(e) => setEditing({ ...editing, is_default: e.target.checked })}
+              />
+              این آدرس پیش‌فرض باشد
+            </label>
+
+            <div className="flex gap-2 sm:col-span-2">
+              <button type="submit" disabled={state.loading} className="btn-primary btn-sm">
+                {state.loading ? 'در حال ذخیره…' : 'ذخیره آدرس'}
+              </button>
+              <button type="button" onClick={() => setEditing(null)} className="btn-outline btn-sm">
+                انصراف
+              </button>
+            </div>
+          </form>
+        ) : addresses === null ? (
+          <p className="mt-4 text-[11px] text-ink/40">در حال دریافت آدرس‌ها…</p>
+        ) : addresses.length === 0 ? (
+          <div className="mt-4 rounded-2xl border border-dashed border-cream-400 p-6 text-center">
+            <MapPin className="mx-auto h-7 w-7 text-brand-600" />
+            <p className="mt-2 text-[11px] text-ink/50">هنوز آدرسی ذخیره نکرده‌اید.</p>
+          </div>
+        ) : (
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {addresses.map((address) => (
+              <div key={address.id} className="rounded-2xl border border-cream-200 p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="flex items-center gap-1.5 text-[11.5px] font-bold text-brand-950">
+                    <MapPin className="h-3.5 w-3.5 text-brand-600" />
+                    {address.title}
+                    {address.is_default && (
+                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700">
+                        پیش‌فرض
+                      </span>
+                    )}
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => startEdit(address)}
+                      className="rounded-lg px-2 py-1 text-[10px] font-bold text-brand-700 hover:bg-cream-100"
+                    >
+                      ویرایش
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => remove(address.id)}
+                      className="rounded-lg p-1.5 text-rose-500 hover:bg-rose-50"
+                      aria-label="حذف آدرس"
+                    >
+                      <Trash className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-2 text-[10.5px] leading-6 text-ink/55">
+                  {address.recipient} — <span dir="ltr">{toFa(address.phone)}</span>
+                  <br />
+                  {address.province}، {address.city}، {address.address}
+                  {address.postal_code ? ` — کد پستی: ${toFa(address.postal_code)}` : ''}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

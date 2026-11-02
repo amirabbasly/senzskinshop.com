@@ -182,3 +182,21 @@ CREATE TABLE IF NOT EXISTS payments (
 );
 CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id);
 CREATE INDEX IF NOT EXISTS idx_payments_authority ON payments(authority);
+
+-- ------------------------------------------------------------
+--  customer address book (added in v1.2)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS customer_addresses (
+  id          SERIAL PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+  title       TEXT NOT NULL DEFAULT 'آدرس من',
+  recipient   TEXT NOT NULL DEFAULT '',
+  phone       TEXT NOT NULL DEFAULT '',
+  province    TEXT NOT NULL DEFAULT '',
+  city        TEXT NOT NULL DEFAULT '',
+  address     TEXT NOT NULL,
+  postal_code TEXT DEFAULT '',
+  is_default  BOOLEAN NOT NULL DEFAULT false,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_addresses_customer ON customer_addresses(customer_id);

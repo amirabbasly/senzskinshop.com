@@ -21,7 +21,8 @@
 - جست‌وجوی فارسی در نام، توضیح، برند و ترکیبات
 - سبد خرید (ذخیره در مرورگر)، کد تخفیف، محاسبه هزینه ارسال و ارسال رایگان
 - تسویه حساب با انتخاب استان/شهر، روش پرداخت (پرداخت در محل، کارت به کارت، پرداخت آنلاین)
-- **حساب کاربری مشتری**: ثبت‌نام/ورود با شماره موبایل، پنل `/account` با سفارش‌ها، ویرایش پروفایل و تغییر رمز
+- **حساب کاربری مشتری**: ثبت‌نام/ورود با شماره موبایل، پنل `/account` با سفارش‌ها، **دفترچه آدرس** (افزودن/ویرایش/حذف/پیش‌فرض)، ویرایش پروفایل و تغییر رمز
+- **خرید مجدد** هر سفارش با یک کلیک (اقلام موجود دوباره به سبد اضافه می‌شوند)
 - **پرداخت آنلاین** با صفحه درگاه `/payment/[code]` (درگاه نمونه/آزمایشی که با یک متغیر محیطی به درگاه واقعی وصل می‌شود)
 - ثبت سفارش با کد پیگیری `SENZ-XXXXXXX`، صفحه وضعیت سفارش با تایم‌لاین، وضعیت پرداخت و فرم پیگیری
 - مجله پوست (لیست + صفحه مقاله)، درباره ما، تماس با ما، سوالات متداول، خبرنامه
@@ -224,7 +225,7 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 | GET | `/banners?placement=hero` | بنرها |
 | GET | `/posts` , `/posts/:slug` | مجله |
 | POST | `/coupons/validate` | اعتبارسنجی کد تخفیف |
-| POST | `/orders` | ثبت سفارش |
+| POST | `/orders` | ثبت سفارش (مهمان یا با توکن مشتری؛ در حالت آنلاین `payment.payment_url` برمی‌گردد) |
 | GET | `/orders/track/:code` | پیگیری سفارش |
 | POST | `/newsletter` | عضویت خبرنامه |
 
@@ -244,7 +245,11 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 | PUT | `/customer/profile` | ویرایش نام/ایمیل |
 | POST | `/customer/password` | تغییر رمز `{current_password, new_password}` |
 | GET | `/customer/orders` | سفارش‌های همین مشتری (به‌همراه وضعیت پرداخت) |
-| GET | `/customer/orders/:code` | جزئیات یک سفارش |
+| GET | `/customer/orders/:code` | جزئیات یک سفارش (به‌همراه `product_id`/`slug`/`stock` برای خرید مجدد) |
+| GET | `/customer/addresses` | دفترچه آدرس مشتری |
+| POST | `/customer/addresses` | افزودن آدرس `{title, recipient, phone, province, city, address, postal_code, is_default}` |
+| PUT | `/customer/addresses/:id` | ویرایش آدرس |
+| DELETE | `/customer/addresses/:id` | حذف آدرس |
 
 توکن مشتری با هدر `Authorization: Bearer <token>` فرستاده می‌شود و از توکن مدیر جدا است.
 

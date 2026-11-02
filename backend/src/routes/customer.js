@@ -122,12 +122,143 @@ router.get('/orders/:code', requireCustomer, wrap(async (req, res) => {
   if (order.customer_id !== req.customer.sub && order.phone !== req.customer.phone)
     return res.status(403).json({ error: 'دسترسی به این سفارش مجاز نیست.' });
 
-  const items = await query('SELECT name, image, price, qty FROM order_items WHERE order_id = $1', [order.id]);
+  const items = await query(
+    `SELECT i.product_id, i.name, i.image, i.price, i.qty,
+            p.slug, p.stock, p.is_active, p.price AS current_price
+       FROM order_items i
+       LEFT JOIN products p ON p.id = i.product_id
+      WHERE i.order_id = $1`,
+    [order.id]
+  );
   const payments = await query(
     'SELECT gateway, amount, status, ref_id, paid_at FROM payments WHERE order_id = $1 ORDER BY id DESC',
     [order.id]
   );
   res.json({ ...order, items: items.rows, payments: payments.rows });
+}));
+
+// ---------------- address book ----------------
+
+function cleanAddress(body = {}) {
+  return {
+    title: String(body.title || 'آدرس من').trim().slice(0, 60) || 'آدرس من',
+    recipient: String(body.recipient || '').trim().slice(0, 120),
+    phone: normalizePhone(body.phone || ''),
+    province: String(body.province || '').trim().slice(0, 60),
+    city: String(body.city || '').trim().slice(0, 60),
+    address: String(body.address || '').trim().slice(0, 500),
+    postal_code: normalizePhone(body.postal_code || '').slice(0, 10),
+    is_default: Boolean(body.is_default),
+  };
+}
+
+function validateAddress(a) {
+  if (!a.province) return 'استان را انتخاب کنید.';
+  if (!a.city) return 'شهر را وارد کنید.';
+  if (a.address.length < 10) return 'آدرس کامل پستی را وارد کنید.';
+  return '';
+}
+
+router.get('/addresses', requireCustomer, wrap(async (req, res) => {
+  const { rows } = await query(
+    'SELECT * FROM customer_addresses WHERE customer_id = $1 ORDER BY is_default DESC, id DESC',
+    [req.customer.sub]
+  );
+  res.json({ addresses: rows });
+}));
+
+router.post('/addresses', requireCustomer, wrap(async (req, res) => {
+  const data = cleanAddress(req.body);
+  const invalid = validateAddress(data);
+  if (invalid) return res.status(400).json({ error: invalid });
+
+  const { rows: existing } = await query(
+    'SELECT COUNT(*)::int AS c FROM customer_addresses WHERE customer_id = $1',
+    [req.customer.sub]
+  );
+  const isDefault = data.is_default || existing[0].c === 0;
+
+  if (isDefault) {
+    await query('UPDATE customer_addresses SET is_default = false WHERE customer_id = $1', [
+      req.customer.sub,
+    ]);
+  }
+
+  const { rows } = await query(
+    `INSERT INTO customer_addresses
+       (customer_id, title, recipient, phone, province, city, address, postal_code, is_default)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+    [
+      req.customer.sub,
+      data.title,
+      data.recipient,
+      data.phone,
+      data.province,
+      data.city,
+      data.address,
+      data.postal_code,
+      isDefault,
+    ]
+  );
+  res.status(201).json({ address: rows[0], message: 'آدرس ذخیره شد.' });
+}));
+
+router.put('/addresses/:id', requireCustomer, wrap(async (req, res) => {
+  const id = toInt(req.params.id);
+  const data = cleanAddress(req.body);
+  const invalid = validateAddress(data);
+  if (invalid) return res.status(400).json({ error: invalid });
+
+  const { rows: owned } = await query(
+    'SELECT id FROM customer_addresses WHERE id = $1 AND customer_id = $2',
+    [id, req.customer.sub]
+  );
+  if (!owned.length) return res.status(404).json({ error: 'آدرس یافت نشد.' });
+
+  if (data.is_default) {
+    await query('UPDATE customer_addresses SET is_default = false WHERE customer_id = $1', [
+      req.customer.sub,
+    ]);
+  }
+
+  const { rows } = await query(
+    `UPDATE customer_addresses
+        SET title=$1, recipient=$2, phone=$3, province=$4, city=$5, address=$6,
+            postal_code=$7, is_default = CASE WHEN $8 THEN true ELSE is_default END
+      WHERE id=$9 AND customer_id=$10
+      RETURNING *`,
+    [
+      data.title,
+      data.recipient,
+      data.phone,
+      data.province,
+      data.city,
+      data.address,
+      data.postal_code,
+      data.is_default,
+      id,
+      req.customer.sub,
+    ]
+  );
+  res.json({ address: rows[0], message: 'آدرس به‌روزرسانی شد.' });
+}));
+
+router.delete('/addresses/:id', requireCustomer, wrap(async (req, res) => {
+  const id = toInt(req.params.id);
+  const { rows } = await query(
+    'DELETE FROM customer_addresses WHERE id = $1 AND customer_id = $2 RETURNING id, is_default',
+    [id, req.customer.sub]
+  );
+  if (!rows.length) return res.status(404).json({ error: 'آدرس یافت نشد.' });
+
+  if (rows[0].is_default) {
+    await query(
+      `UPDATE customer_addresses SET is_default = true
+        WHERE id = (SELECT id FROM customer_addresses WHERE customer_id = $1 ORDER BY id DESC LIMIT 1)`,
+      [req.customer.sub]
+    );
+  }
+  res.json({ ok: true, message: 'آدرس حذف شد.' });
 }));
 
 export { normalizePhone };
