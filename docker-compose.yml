@@ -43,6 +43,7 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Senz@12345}
       SEED_ON_BOOT: ${SEED_ON_BOOT:-1}
       CORS_ORIGIN: ${CORS_ORIGIN:-https://senzskinshop.com,https://www.senzskinshop.com}
+      PAYMENT_GATEWAY: ${PAYMENT_GATEWAY:-mock}
       UPLOAD_DIR: /app/uploads
     volumes:
       - uploads:/app/uploads

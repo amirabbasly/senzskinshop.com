@@ -428,18 +428,27 @@ router.get('/orders/:id', wrap(async (req, res) => {
   const { rows } = await query('SELECT * FROM orders WHERE id = $1', [id]);
   if (!rows.length) return res.status(404).json({ error: 'سفارش یافت نشد.' });
   const items = await query('SELECT * FROM order_items WHERE order_id = $1', [id]);
-  res.json({ ...rows[0], items: items.rows });
+  const paymentsRows = await query(
+    `SELECT id, gateway, amount, status, ref_id, authority, created_at, paid_at
+     FROM payments WHERE order_id = $1 ORDER BY id DESC`,
+    [id]
+  );
+  res.json({ ...rows[0], items: items.rows, payments: paymentsRows.rows });
 }));
 
 router.patch('/orders/:id', wrap(async (req, res) => {
-  const { status, note } = req.body || {};
+  const { status, note, payment_status } = req.body || {};
   const allowed = ['pending', 'confirmed', 'preparing', 'shipped', 'delivered', 'cancelled', 'returned'];
+  const allowedPayments = ['unpaid', 'paid', 'failed', 'refunded'];
   const id = toInt(req.params.id);
   if (status && !allowed.includes(status)) return res.status(400).json({ error: 'وضعیت نامعتبر است.' });
+  if (payment_status && !allowedPayments.includes(payment_status))
+    return res.status(400).json({ error: 'وضعیت پرداخت نامعتبر است.' });
   const { rows } = await query(
-    `UPDATE orders SET status = COALESCE($1, status), note = COALESCE($2, note), updated_at = now()
-     WHERE id = $3 RETURNING *`,
-    [status || null, note === undefined ? null : String(note), id]
+    `UPDATE orders SET status = COALESCE($1, status), note = COALESCE($2, note),
+       payment_status = COALESCE($3, payment_status), updated_at = now()
+     WHERE id = $4 RETURNING *`,
+    [status || null, note === undefined ? null : String(note), payment_status || null, id]
   );
   if (!rows.length) return res.status(404).json({ error: 'سفارش یافت نشد.' });
   res.json(rows[0]);

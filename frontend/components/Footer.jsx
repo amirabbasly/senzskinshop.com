@@ -101,6 +101,7 @@ export default function Footer({ settings = {}, categories = [] }) {
                 ['/about', 'درباره ما'],
                 ['/contact', 'تماس با ما'],
                 ['/track', 'پیگیری سفارش'],
+                ['/account', 'حساب کاربری من'],
                 ['/faq', 'سوالات متداول'],
               ].map(([href, label]) => (
                 <li key={href}>

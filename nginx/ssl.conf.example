@@ -1,15 +1,25 @@
 # ============================================================
-#  SSL setup (Let's Encrypt)
-#  1) point senzskinshop.com A-record to your server IP
-#  2) on the server run:
-#       sudo apt install certbot
-#       sudo certbot certonly --webroot -w /var/www/senzskinshop/nginx/acme \
-#            -d senzskinshop.com -d www.senzskinshop.com \
-#            --email info@senzskinshop.com --agree-tos --no-eff-email
-#  3) copy the files into ./nginx/certs:
-#       sudo cp /etc/letsencrypt/live/senzskinshop.com/fullchain.pem nginx/certs/
-#       sudo cp /etc/letsencrypt/live/senzskinshop.com/privkey.pem  nginx/certs/
-#  4) uncomment the HTTPS server block in nginx/default.conf and the
-#     http→https redirect, then:  docker compose exec nginx nginx -s reload
-#  5) auto-renew:  sudo certbot renew --deploy-hook "cd /var/www/senzskinshop && docker compose exec nginx nginx -s reload"
+#  SSL setup (Let's Encrypt) — AlmaLinux / Rocky / CentOS
+#  ساده‌ترین راه: اسکریپت آماده را اجرا کنید
+#
+#     sudo ./scripts/ssl-certbot.sh senzskinshop.com info@senzskinshop.com
+#
+#  این اسکریپت به‌صورت خودکار:
+#   1) certbot را با dnf نصب می‌کند
+#   2) گواهی را با webroot (پوشه nginx/acme) می‌گیرد
+#   3) fullchain.pem و privkey.pem را در nginx/certs کپی می‌کند
+#   4) فایل nginx/conf/ssl.conf را می‌سازد و ریدایرکت http→https را
+#      در nginx/conf/default.conf فعال می‌کند
+#   5) nginx را تست و reload می‌کند
+#   6) هوک تمدید خودکار را نصب می‌کند
+#
+#  اجرای دستی (در صورت نیاز):
+#     sudo dnf -y install epel-release certbot
+#     sudo certbot certonly --webroot -w /var/www/senzskinshop.com/nginx/acme \
+#          -d senzskinshop.com -d www.senzskinshop.com \
+#          --email info@senzskinshop.com --agree-tos --no-eff-email
+#     sudo cp /etc/letsencrypt/live/senzskinshop.com/fullchain.pem nginx/certs/
+#     sudo cp /etc/letsencrypt/live/senzskinshop.com/privkey.pem  nginx/certs/
+#     # سپس محتوای ssl.conf را همان‌طور که اسکریپت می‌سازد اضافه کنید
+#     docker compose exec nginx nginx -t && docker compose exec nginx nginx -s reload
 # ============================================================

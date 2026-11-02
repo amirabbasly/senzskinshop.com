@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useCart } from './CartProvider';
+import { useCustomer } from './CustomerProvider';
 import { CLIENT_API } from '@/lib/api';
+import { getCustomerToken } from '@/lib/customerApi';
 import { DEFAULT_SETTINGS, PAYMENT_LABELS, PLACEHOLDER_IMAGE, PROVINCES } from '@/lib/constants';
 import { formatPrice, toFa } from '@/lib/format';
 import { Check, CreditCard, ShoppingBag, Ticket, Truck } from './Icons';
@@ -32,6 +34,7 @@ export default function CheckoutView() {
   const [couponError, setCouponError] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { customer, ready: customerReady } = useCustomer();
 
   useEffect(() => {
     fetch(`${CLIENT_API}/settings`)
@@ -39,6 +42,16 @@ export default function CheckoutView() {
       .then((data) => data && setSettings({ ...DEFAULT_SETTINGS, ...data }))
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!customer) return;
+    setForm((prev) => ({
+      ...prev,
+      customer_name: prev.customer_name || customer.name || '',
+      phone: prev.phone || customer.phone || '',
+      email: prev.email || customer.email || '',
+    }));
+  }, [customer]);
 
   const shipping = useMemo(() => {
     const freeOver = Number(settings.free_shipping_min || 0);
@@ -79,9 +92,13 @@ export default function CheckoutView() {
     }
     setLoading(true);
     try {
+      const token = getCustomerToken();
       const res = await fetch(`${CLIENT_API}/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           ...form,
           payment_method: payment,
@@ -92,7 +109,11 @@ export default function CheckoutView() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'ثبت سفارش انجام نشد.');
       clear();
-      router.push(`/order/${data.code}`);
+      if (data.payment?.payment_url) {
+        router.push(data.payment.payment_url);
+      } else {
+        router.push(`/order/${data.code}`);
+      }
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -130,6 +151,24 @@ export default function CheckoutView() {
               </span>
               اطلاعات گیرنده
             </h2>
+
+            {customerReady && (
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-cream-100/80 px-4 py-2.5 text-[10.5px] text-ink/60">
+                {customer ? (
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    خرید با حساب <span className="font-bold text-brand-900">{customer.name}</span> — سفارش در پنل شما ذخیره می‌شود.
+                  </span>
+                ) : (
+                  <>
+                    <span>حساب کاربری دارید؟ وارد شوید تا سفارش‌ها ذخیره شوند.</span>
+                    <Link href="/login?next=/checkout" className="font-bold text-brand-700 hover:text-brand-900">
+                      ورود / ثبت‌نام
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -277,6 +316,12 @@ export default function CheckoutView() {
               </div>
             )}
 
+            {payment === 'online' && (
+              <p className="mt-4 rounded-2xl bg-brand-50/70 p-4 text-[11px] leading-6 text-brand-900/70">
+                پس از ثبت سفارش به صفحه پرداخت منتقل می‌شوید. سفارش شما تا تکمیل پرداخت در وضعیت «در انتظار پرداخت» می‌ماند.
+              </p>
+            )}
+
             {payment === 'cod' && (
               <p className="mt-4 rounded-2xl bg-cream-100/80 p-4 text-[11px] leading-6 text-ink/60">
                 مبلغ سفارش را هنگام تحویل، نقدی یا با کارت‌خوان پیک پرداخت می‌کنید.
@@ -355,7 +400,7 @@ export default function CheckoutView() {
             )}
 
             <button type="submit" disabled={loading} className="btn-primary mt-4 w-full">
-              {loading ? 'در حال ثبت سفارش…' : 'ثبت نهایی سفارش'}
+              {loading ? 'در حال ثبت سفارش…' : payment === 'online' ? 'ثبت سفارش و پرداخت' : 'ثبت نهایی سفارش'}
               {!loading && <Check className="h-4 w-4" />}
             </button>
 

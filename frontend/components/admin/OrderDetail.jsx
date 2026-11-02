@@ -3,15 +3,16 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { adminApi } from '@/lib/adminApi';
-import { ORDER_STATUS, PAYMENT_LABELS, PLACEHOLDER_IMAGE } from '@/lib/constants';
+import { ORDER_STATUS, PAYMENT_LABELS, PAYMENT_STATUS, PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { formatDate, formatPrice, toFa } from '@/lib/format';
 import { Alert, Card, Field, PageHeader, Select, Spinner, Textarea } from './ui';
-import { ArrowLeft, Check, MapPin, Phone } from '../Icons';
+import { ArrowLeft, Check, CreditCard, MapPin, Phone } from '../Icons';
 
 export default function OrderDetail({ orderId }) {
   const [order, setOrder] = useState(null);
   const [status, setStatus] = useState('');
   const [note, setNote] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('unpaid');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -21,6 +22,7 @@ export default function OrderDetail({ orderId }) {
       .then((data) => {
         setOrder(data);
         setStatus(data.status);
+        setPaymentStatus(data.payment_status || 'unpaid');
         setNote(data.note || '');
       })
       .catch((err) => setError(err.message));
@@ -33,7 +35,7 @@ export default function OrderDetail({ orderId }) {
     try {
       const updated = await adminApi(`/admin/orders/${orderId}`, {
         method: 'PATCH',
-        body: { status, note },
+        body: { status, note, payment_status: paymentStatus },
       });
       setOrder((prev) => ({ ...prev, ...updated }));
       setMessage('وضعیت سفارش به‌روزرسانی شد.');
@@ -49,6 +51,8 @@ export default function OrderDetail({ orderId }) {
   }
 
   const st = ORDER_STATUS[order.status] || ORDER_STATUS.pending;
+  const paySt = PAYMENT_STATUS[order.payment_status] || PAYMENT_STATUS.unpaid;
+  const payments = order.payments || [];
 
   return (
     <div>
@@ -68,7 +72,10 @@ export default function OrderDetail({ orderId }) {
           <Card>
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-xs font-extrabold text-brand-950">اقلام سفارش</h3>
-              <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${st.color}`}>{st.label}</span>
+              <div className="flex items-center gap-1.5">
+                <span className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${paySt.color}`}>{paySt.label}</span>
+                <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${st.color}`}>{st.label}</span>
+              </div>
             </div>
             <div className="space-y-2.5">
               {order.items.map((item) => (
@@ -140,6 +147,10 @@ export default function OrderDetail({ orderId }) {
                 </p>
               </div>
               <div className="rounded-xl bg-cream-50 p-3">
+                <p className="text-[10px] text-ink/40">وضعیت پرداخت</p>
+                <p className="mt-1 text-[11px] font-bold text-brand-950">{paySt.label}</p>
+              </div>
+              <div className="rounded-xl bg-cream-50 p-3">
                 <p className="text-[10px] text-ink/40">ایمیل</p>
                 <p className="mt-1 text-[11px] font-bold text-brand-950" dir="ltr">
                   {order.email || '—'}
@@ -167,6 +178,15 @@ export default function OrderDetail({ orderId }) {
                 ))}
               </Select>
             </Field>
+            <Field label="وضعیت پرداخت" className="mt-3">
+              <Select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)}>
+                {Object.entries(PAYMENT_STATUS).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value.label}
+                  </option>
+                ))}
+              </Select>
+            </Field>
             <Field label="یادداشت داخلی / توضیح برای مشتری" className="mt-3">
               <Textarea className="min-h-20" value={note} onChange={(e) => setNote(e.target.value)} />
             </Field>
@@ -178,6 +198,46 @@ export default function OrderDetail({ orderId }) {
               <Alert type="success">{message}</Alert>
               <Alert>{error}</Alert>
             </div>
+          </Card>
+
+          <Card>
+            <h3 className="mb-3 flex items-center gap-1.5 text-xs font-extrabold text-brand-950">
+              <CreditCard className="h-3.5 w-3.5 text-brand-700" />
+              تراکنش‌های پرداخت
+            </h3>
+            {payments.length === 0 ? (
+              <p className="rounded-xl bg-cream-50 px-3 py-3 text-center text-[10.5px] text-ink/40">
+                برای این سفارش تراکنش آنلاینی ثبت نشده است.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {payments.map((p) => {
+                  const state = PAYMENT_STATUS[p.status === 'paid' ? 'paid' : p.status === 'failed' ? 'failed' : 'unpaid'];
+                  return (
+                    <div key={p.id} className="rounded-xl border border-cream-200 p-2.5 text-[10.5px]">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-brand-950">{p.gateway === 'mock' ? 'درگاه آزمایشی' : p.gateway}</span>
+                        <span className={`rounded-full border px-2 py-0.5 font-bold ${state.color}`}>{state.label}</span>
+                      </div>
+                      <p className="mt-1.5 text-ink/50">
+                        مبلغ: <span className="font-bold text-brand-900">{formatPrice(p.amount)}</span>
+                      </p>
+                      {p.ref_id && (
+                        <p className="mt-1 text-ink/50">
+                          شماره پیگیری: <span className="font-mono" dir="ltr">{p.ref_id}</span>
+                        </p>
+                      )}
+                      <p className="mt-1 font-mono text-[9.5px] text-ink/35" dir="ltr">
+                        {p.authority || '—'}
+                      </p>
+                      <p className="mt-1 text-ink/40">
+                        {p.paid_at ? `پرداخت: ${formatDate(p.paid_at, { withTime: true })}` : `ایجاد: ${formatDate(p.created_at, { withTime: true })}`}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </Card>
 
           <Card>

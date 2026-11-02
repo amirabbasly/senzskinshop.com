@@ -20,8 +20,10 @@
 - دسته‌بندی دو سطحی (دسته اصلی + زیردسته) با فیلتر قیمت، نوع پوست، تخفیف‌دار، مرتب‌سازی و صفحه‌بندی
 - جست‌وجوی فارسی در نام، توضیح، برند و ترکیبات
 - سبد خرید (ذخیره در مرورگر)، کد تخفیف، محاسبه هزینه ارسال و ارسال رایگان
-- تسویه حساب با انتخاب استان/شهر، روش پرداخت (پرداخت در محل، کارت به کارت، آنلاین قابل فعال‌سازی)
-- ثبت سفارش با کد پیگیری `SENZ-XXXXXXX`، صفحه وضعیت سفارش با تایم‌لاین و فرم پیگیری
+- تسویه حساب با انتخاب استان/شهر، روش پرداخت (پرداخت در محل، کارت به کارت، پرداخت آنلاین)
+- **حساب کاربری مشتری**: ثبت‌نام/ورود با شماره موبایل، پنل `/account` با سفارش‌ها، ویرایش پروفایل و تغییر رمز
+- **پرداخت آنلاین** با صفحه درگاه `/payment/[code]` (درگاه نمونه/آزمایشی که با یک متغیر محیطی به درگاه واقعی وصل می‌شود)
+- ثبت سفارش با کد پیگیری `SENZ-XXXXXXX`، صفحه وضعیت سفارش با تایم‌لاین، وضعیت پرداخت و فرم پیگیری
 - مجله پوست (لیست + صفحه مقاله)، درباره ما، تماس با ما، سوالات متداول، خبرنامه
 - راست‌چین کامل، اعداد فارسی، تاریخ شمسی، سئو (متادیتا + Schema.org محصول)، ریسپانسیو موبایل
 
@@ -30,7 +32,7 @@
 - داشبورد: آمار فروش، تعداد سفارش، سفارش‌های در انتظار، نمودار ۱۴ روز اخیر، هشدار موجودی، پرفروش‌ترین‌ها
 - محصولات: افزودن/ویرایش/حذف، آپلود چند تصویر، قیمت و قیمت قبل از تخفیف، موجودی، SKU، حجم، نوع پوست، مشخصات دلخواه (کلید/مقدار)، فعال/ویژه/پرفروش
 - دسته‌بندی‌ها: ساخت دسته اصلی و زیردسته، تصویر، ترتیب نمایش، فعال/غیرفعال
-- سفارش‌ها: جست‌وجو، فیلتر وضعیت، جزئیات کامل، تغییر وضعیت (در انتظار → تأیید → آماده‌سازی → ارسال → تحویل / لغو / مرجوع)، یادداشت داخلی
+- سفارش‌ها: جست‌وجو، فیلتر وضعیت، جزئیات کامل، تغییر وضعیت (در انتظار → تأیید → آماده‌سازی → ارسال → تحویل / لغو / مرجوع)، **وضعیت پرداخت** (پرداخت‌نشده/پرداخت‌شده/ناموفق/بازگشت وجه)، لیست تراکنش‌های پرداخت، یادداشت داخلی
 - بنر و اسلایدر: عنوان، زیرعنوان، برچسب، دکمه، لینک، تصویر، ترتیب، محل نمایش
 - مقالات مجله: عنوان، خلاصه، متن (تیتر با `##` و لیست با `-`)، کاور، انتشار/پیش‌نویس
 - کدهای تخفیف: درصدی یا مبلغی، حداقل خرید، سقف استفاده، تاریخ انقضا
@@ -161,12 +163,32 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 ./deploy.sh seed            # اجرای دوباره داده‌های نمونه
 ```
 
-### دامنه و SSL
-1. رکورد `A` دامنه `senzskinshop.com` و `www` را به IP سرور بدهید.
-2. سایت روی `http://senzskinshop.com` بالا می‌آید.
-3. برای HTTPS، مراحل داخل `nginx/ssl.conf.example` را انجام دهید (Certbot + فعال‌سازی بلوک `443` در `nginx/conf/default.conf`) و سپس `docker compose exec nginx nginx -s reload`.
+### دامنه و SSL (Let's Encrypt)
 
-> اگر پشت CDN/پروکسی دیگری هستید (مثل Cloudflare)، `HTTP_PORT` را در `.env` تغییر دهید یا پورت‌ها را در `docker-compose.yml` تنظیم کنید.
+1. رکورد `A` دامنه `senzskinshop.com` و `www` را به IP سرور بدهید و صبر کنید DNS منتشر شود.
+2. مطمئن شوید سایت بالا است: `./deploy.sh status` و `curl -I http://senzskinshop.com`.
+3. پورت‌های ۸۰ و ۴۴۳ را در فایروال باز کنید:
+   ```bash
+   firewall-cmd --permanent --add-service={http,https} && firewall-cmd --reload
+   ```
+4. SSL را نصب کنید (روی AlmaLinux/Rocky — اسکریپت `certbot` را با `dnf` نصب می‌کند):
+   ```bash
+   cd /var/www/senzskinshop.com
+   sudo ./scripts/ssl-certbot.sh senzskinshop.com info@senzskinshop.com
+   # یا معادل آن:
+   sudo ./deploy.sh ssl senzskinshop.com info@senzskinshop.com
+   ```
+5. اسکریپت به‌صورت خودکار: گواهی را با **webroot** (`nginx/acme`) می‌گیرد، `fullchain.pem` و `privkey.pem` را در `nginx/certs` کپی می‌کند، فایل `nginx/conf/ssl.conf` (بلوک ۴۴۳) را می‌سازد، ریدایرکت `http → https` را در `nginx/conf/default.conf` فعال می‌کند، `nginx -t` و reload را انجام می‌دهد و هوک تمدید `/etc/letsencrypt/renewal-hooks/deploy/reload-senz.sh` را نصب می‌کند.
+6. تست: `curl -I https://senzskinshop.com` باید `HTTP/2 200` بدهد و `http://` باید `301` به `https://` بدهد.
+7. تمدید خودکار: `sudo certbot renew --dry-run` (تایمر systemd یا cron به‌صورت خودکار گواهی را ۳۰ روز قبل از انقضا تمدید و nginx را reload می‌کند).
+
+> اگر پشت CDN هستید (مثل Cloudflare)، حالت SSL را روی **Full (strict)** بگذارید و رکوردها را روی DNS-only نگذارید مگر در زمان صدور گواهی.
+
+### پرداخت آنلاین و درگاه بانکی
+
+- به‌صورت پیش‌فرض `PAYMENT_GATEWAY=mock` است: یک **درگاه نمونه** که در صفحه `/payment/[code]` دکمه‌های «پرداخت موفق» و «انصراف» را نشان می‌دهد و کل چرخه پرداخت (ایجاد تراکنش، authority، شماره پیگیری `ref_id`، تغییر وضعیت سفارش به «پرداخت‌شده») را شبیه‌سازی می‌کند — برای تست کامل سایت بدون درگاه واقعی.
+- برای اتصال درگاه واقعی (زرین‌پال، آیدی‌پی، زیبال، …) فقط فایل `backend/src/payments.js` را ویرایش کنید: در تابع `createPaymentForOrder` درخواست ساخت تراکنش را به API درگاه بزنید و در `settlePayment` تراکنش را verify کنید. سپس در `.env` مقدار `PAYMENT_GATEWAY` و کلیدهای درگاه (مثل `ZARINPAL_MERCHANT_ID`) را تنظیم کنید. بقیه سایت (صفحه پرداخت، بازگشت، وضعیت سفارش، پنل مدیریت) بدون تغییر کار می‌کند.
+- فعال/غیرفعال کردن روش «پرداخت آنلاین» برای مشتریان از پنل مدیریت → تنظیمات سایت → «پرداخت آنلاین فعال» انجام می‌شود.
 
 ---
 
@@ -181,6 +203,7 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 | `SEED_ON_BOOT` | درج داده نمونه در دیتابیس خالی | `1` |
 | `CORS_ORIGIN` | دامنه‌های مجاز | دامنه اصلی سایت |
 | `HTTP_PORT` / `HTTPS_PORT` | پورت‌های Nginx | `80` / `443` |
+| `PAYMENT_GATEWAY` | درگاه پرداخت: `mock` (آزمایشی) یا نام درگاه واقعی که در `backend/src/payments.js` پیاده‌سازی می‌کنید | `mock` |
 
 ---
 
@@ -212,6 +235,26 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 | GET | `/auth/me` | اطلاعات مدیر جاری |
 | POST | `/auth/password` | تغییر رمز |
 
+### حساب کاربری مشتری
+| متد | مسیر | توضیح |
+| --- | --- | --- |
+| POST | `/customer/register` | ثبت‌نام `{name, phone, password, email?}` → `{token, customer}` |
+| POST | `/customer/login` | ورود `{phone, password}` |
+| GET | `/customer/me` | پروفایل مشتری جاری |
+| PUT | `/customer/profile` | ویرایش نام/ایمیل |
+| POST | `/customer/password` | تغییر رمز `{current_password, new_password}` |
+| GET | `/customer/orders` | سفارش‌های همین مشتری (به‌همراه وضعیت پرداخت) |
+| GET | `/customer/orders/:code` | جزئیات یک سفارش |
+
+توکن مشتری با هدر `Authorization: Bearer <token>` فرستاده می‌شود و از توکن مدیر جدا است.
+
+### پرداخت (`/api/payments`)
+| متد | مسیر | توضیح |
+| --- | --- | --- |
+| POST | `/payments/start` | `{code}` → `{gateway, authority, amount, payment_url}` (برای همان سفارش، دوباره از همان authority استفاده می‌کند) |
+| GET | `/payments/status/:code` | وضعیت پرداخت سفارش + تراکنش‌ها |
+| POST | `/payments/mock/complete` | فقط در حالت `mock`: `{code, authority, success}` → تسویه یا انصراف |
+
 ### پنل مدیریت
 `/admin/dashboard`، `/admin/products` (+`/:id`)، `/admin/categories`، `/admin/banners`، `/admin/posts`، `/admin/coupons`، `/admin/orders` (+`/:id` patch وضعیت)، `/admin/reviews`، `/admin/settings`، `/admin/upload` (multipart، فیلد `files`)، `/admin/subscribers`
 
@@ -222,6 +265,7 @@ nano .env        # POSTGRES_PASSWORD، JWT_SECRET، ADMIN_PASSWORD را تغیی
 ```bash
 curl https://senzskinshop.com/api/health
 curl https://senzskinshop.com/api/products?limit=2
+curl https://senzskinshop.com/api/payments/status/ORDER-CODE
 curl -X POST https://senzskinshop.com/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"admin@senzskinshop.com","password":"Senz@12345"}'

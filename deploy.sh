@@ -2,7 +2,8 @@
 # ============================================================
 #  SENZ SKIN SHOP — one-command deployment for a Linux server
 #  usage: ./deploy.sh up | down | restart | logs | status |
-#                      update | backup | restore <file> | seed | help
+#                      update | backup | restore <file> | seed |
+#                      ssl <domain> <email> | help
 # ============================================================
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -107,6 +108,10 @@ case "$CMD" in
     require_docker
     $DC exec api node src/seed.js
     ;;
+  ssl)
+    require_docker
+    ./scripts/ssl-certbot.sh "${2:-senzskinshop.com}" "${3:-info@senzskinshop.com}"
+    ;;
   shell)
     require_docker
     $DC exec "${2:-api}" sh
@@ -123,6 +128,7 @@ SENZ SKIN SHOP deploy helper
   ./deploy.sh update        دریافت آخرین تغییرات و build مجدد
   ./deploy.sh backup        بکاپ دیتابیس در پوشه backups/
   ./deploy.sh restore FILE  بازگردانی بکاپ
+  ./deploy.sh ssl [domain] [email]   نصب/تمدید SSL رایگان با certbot
   ./deploy.sh seed          اجرای دوباره داده‌های نمونه
   ./deploy.sh shell [svc]   ورود به شل کانتینر
 EOF

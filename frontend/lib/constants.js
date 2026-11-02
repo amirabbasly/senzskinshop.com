@@ -20,7 +20,7 @@ export const DEFAULT_SETTINGS = {
   about_text: '',
   footer_text: '',
   map_link: '',
-  payment_online_enabled: false,
+  payment_online_enabled: true,
   services: [
     { title: 'ارسال سریع', desc: 'ارسال به سراسر ایران' },
     { title: 'ضمانت اصالت', desc: 'تضمین اورجینال بودن محصولات' },
@@ -51,6 +51,13 @@ export const PAYMENT_LABELS = {
   cod: 'پرداخت در محل (هنگام تحویل)',
   card: 'کارت به کارت',
   online: 'پرداخت آنلاین',
+};
+
+export const PAYMENT_STATUS = {
+  unpaid: { label: 'پرداخت نشده', color: 'bg-rose-50 text-rose-700 border-rose-100' },
+  paid: { label: 'پرداخت شده', color: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
+  failed: { label: 'پرداخت ناموفق', color: 'bg-rose-100 text-rose-800 border-rose-200' },
+  refunded: { label: 'بازگشت وجه', color: 'bg-stone-100 text-stone-700 border-stone-200' },
 };
 
 export const SORT_OPTIONS = [

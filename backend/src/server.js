@@ -7,6 +7,8 @@ import { initDb, migrate, closeDb } from './db.js';
 import { seed } from './seed.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
+import customerRoutes from './routes/customer.js';
+import paymentRoutes from './routes/payments.js';
 import { requireAdmin } from './auth.js';
 
 const app = express();
@@ -50,6 +52,8 @@ function rateLimit({ windowMs = 60_000, max = 20, message }) {
 }
 
 app.use('/api/auth/login', rateLimit({ windowMs: 10 * 60_000, max: 20 }));
+app.use('/api/customer/login', rateLimit({ windowMs: 10 * 60_000, max: 30 }));
+app.use('/api/customer/register', rateLimit({ windowMs: 60 * 60_000, max: 15 }));
 app.use('/api/orders', rateLimit({ windowMs: 10 * 60_000, max: 60 }));
 app.use('/api/newsletter', rateLimit({ windowMs: 60 * 60_000, max: 10 }));
 
@@ -70,6 +74,8 @@ app.get('/', (req, res) =>
   })
 );
 
+app.use('/api/customer', customerRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api', publicRoutes);
 app.use('/api/admin', requireAdmin, adminRoutes);
 

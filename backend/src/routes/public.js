@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { query, withTransaction } from '../db.js';
-import { requireAdmin, signToken } from '../auth.js';
+import { optionalCustomer, requireAdmin, signToken } from '../auth.js';
+import { createPaymentForOrder } from '../payments.js';
 import { parseMoney, publicSettings, toInt, wrap } from '../helpers.js';
 
 const router = Router();
@@ -291,7 +292,7 @@ router.post('/coupons/validate', wrap(async (req, res) => {
   });
 }));
 
-router.post('/orders', wrap(async (req, res) => {
+router.post('/orders', optionalCustomer, wrap(async (req, res) => {
   const body = req.body || {};
   const items = Array.isArray(body.items) ? body.items : [];
   if (!items.length) return res.status(400).json({ error: 'سبد خرید خالی است.' });
@@ -306,6 +307,13 @@ router.post('/orders', wrap(async (req, res) => {
 
   const { rows: settingsRows } = await query('SELECT key, value FROM settings');
   const settings = publicSettings(settingsRows);
+
+  const requestedPayment = ['cod', 'card', 'online'].includes(body.payment_method)
+    ? body.payment_method
+    : 'cod';
+  if (requestedPayment === 'online' && !settings.payment_online_enabled) {
+    return res.status(400).json({ error: 'پرداخت آنلاین در حال حاضر فعال نیست. لطفاً روش دیگری انتخاب کنید.' });
+  }
   const shippingBase = Number(settings.shipping_cost || 0);
   const freeOver = Number(settings.free_shipping_min || 0);
 
@@ -378,8 +386,8 @@ router.post('/orders', wrap(async (req, res) => {
     const { rows: inserted } = await tx.query(
       `INSERT INTO orders
         (code, customer_name, phone, email, province, city, address, postal_code, note,
-         subtotal, discount, shipping, total, coupon_code, payment_method, status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'pending')
+         subtotal, discount, shipping, total, coupon_code, payment_method, status, customer_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'pending',$16)
        RETURNING *`,
       [
         code,
@@ -396,7 +404,8 @@ router.post('/orders', wrap(async (req, res) => {
         shipping,
         total,
         couponCode,
-        ['cod', 'card', 'online'].includes(body.payment_method) ? body.payment_method : 'cod',
+        requestedPayment,
+        req.customer?.sub || null,
       ]
     );
     const order = inserted[0];
@@ -420,11 +429,17 @@ router.post('/orders', wrap(async (req, res) => {
     return { order, items: orderItems };
   });
 
+  let payment = null;
+  if (result.order.payment_method === 'online' && result.order.payment_status !== 'paid') {
+    payment = await createPaymentForOrder(result.order);
+  }
+
   res.status(201).json({
     ok: true,
     code: result.order.code,
     order: result.order,
     items: result.items,
+    payment,
     message: 'سفارش شما با موفقیت ثبت شد.',
   });
 }));
@@ -434,7 +449,11 @@ router.get('/orders/track/:code', wrap(async (req, res) => {
   if (!rows.length) return res.status(404).json({ error: 'سفارشی با این کد پیدا نشد.' });
   const order = rows[0];
   const items = await query('SELECT name, image, price, qty FROM order_items WHERE order_id = $1', [order.id]);
-  res.json({ ...order, items: items.rows });
+  const payments = await query(
+    'SELECT gateway, amount, status, ref_id, paid_at FROM payments WHERE order_id = $1 ORDER BY id DESC',
+    [order.id]
+  );
+  res.json({ ...order, items: items.rows, payments: payments.rows });
 }));
 
 router.post('/newsletter', wrap(async (req, res) => {

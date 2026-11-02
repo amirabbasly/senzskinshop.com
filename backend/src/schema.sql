@@ -146,8 +146,39 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews(product_id);
 
+CREATE TABLE IF NOT EXISTS customers (
+  id            SERIAL PRIMARY KEY,
+  name          TEXT NOT NULL,
+  phone         TEXT NOT NULL UNIQUE,
+  email         TEXT DEFAULT '',
+  password_hash TEXT NOT NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS subscribers (
   id         SERIAL PRIMARY KEY,
   email      TEXT NOT NULL UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- ------------------------------------------------------------
+--  customer accounts + online payments (added in v1.1)
+-- ------------------------------------------------------------
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_id INTEGER REFERENCES customers(id) ON DELETE SET NULL;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'unpaid';
+CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders(customer_id);
+CREATE INDEX IF NOT EXISTS idx_orders_phone ON orders(phone);
+
+CREATE TABLE IF NOT EXISTS payments (
+  id         SERIAL PRIMARY KEY,
+  order_id   INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  gateway    TEXT NOT NULL DEFAULT 'mock',
+  amount     INTEGER NOT NULL DEFAULT 0,
+  status     TEXT NOT NULL DEFAULT 'pending',
+  authority  TEXT DEFAULT '',
+  ref_id     TEXT DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  paid_at    TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id);
+CREATE INDEX IF NOT EXISTS idx_payments_authority ON payments(authority);

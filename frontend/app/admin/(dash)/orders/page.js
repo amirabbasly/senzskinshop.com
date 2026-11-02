@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { adminApi } from '@/lib/adminApi';
-import { ORDER_STATUS } from '@/lib/constants';
+import { ORDER_STATUS, PAYMENT_STATUS } from '@/lib/constants';
 import { formatDate, formatPrice, toFa } from '@/lib/format';
 import { Card, Empty, Input, PageHeader, Spinner } from '@/components/admin/ui';
 import { Search } from '@/components/Icons';
@@ -94,6 +94,7 @@ export default function AdminOrdersPage() {
                   <th>اقلام</th>
                   <th>مبلغ</th>
                   <th>وضعیت</th>
+                  <th>پرداخت</th>
                   <th>تاریخ</th>
                   <th />
                 </tr>
@@ -101,6 +102,7 @@ export default function AdminOrdersPage() {
               <tbody>
                 {data.items.map((order) => {
                   const st = ORDER_STATUS[order.status] || ORDER_STATUS.pending;
+                  const pay = PAYMENT_STATUS[order.payment_status] || PAYMENT_STATUS.unpaid;
                   return (
                     <tr key={order.id}>
                       <td className="whitespace-nowrap font-bold text-brand-800" dir="ltr">
@@ -115,6 +117,11 @@ export default function AdminOrdersPage() {
                       <td>
                         <span className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[9.5px] font-bold ${st.color}`}>
                           {st.label}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`whitespace-nowrap rounded-full border px-2 py-0.5 text-[9.5px] font-bold ${pay.color}`}>
+                          {pay.label}
                         </span>
                       </td>
                       <td className="whitespace-nowrap text-[10px] text-ink/40">{formatDate(order.created_at)}</td>

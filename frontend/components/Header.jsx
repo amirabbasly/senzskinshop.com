@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from './CartProvider';
+import { useCustomer } from './CustomerProvider';
 import Logo from './Logo';
 import { toFa } from '@/lib/format';
 import {
@@ -20,6 +21,7 @@ import {
 
 export default function Header({ settings = {}, categories = [] }) {
   const { count } = useCart();
+  const { customer, isLoggedIn } = useCustomer();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -121,11 +123,14 @@ export default function Header({ settings = {}, categories = [] }) {
 
           <div className="mr-auto flex items-center gap-1 sm:gap-2">
             <Link
-              href="/track"
+              href={isLoggedIn ? '/account' : '/login'}
               className="hidden items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-brand-900 hover:bg-brand-50 sm:flex"
+              title={isLoggedIn ? 'حساب کاربری من' : 'ورود یا ثبت‌نام'}
             >
               <User className="h-5 w-5" />
-              <span className="hidden lg:block">حساب من</span>
+              <span className="hidden max-w-24 truncate lg:block">
+                {isLoggedIn ? customer?.name?.split(' ')[0] || 'حساب من' : 'ورود / ثبت‌نام'}
+              </span>
             </Link>
             <Link
               href="/cart"
@@ -214,6 +219,20 @@ export default function Header({ settings = {}, categories = [] }) {
                 <X />
               </button>
             </div>
+
+            <Link
+              href={isLoggedIn ? '/account' : '/login'}
+              onClick={() => setMobileOpen(false)}
+              className="mb-4 flex items-center justify-between rounded-2xl bg-brand-900 px-4 py-3 text-xs font-bold text-cream-50"
+            >
+              <span className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                {isLoggedIn ? `حساب کاربری ${customer?.name || ''}` : 'ورود / ثبت‌نام'}
+              </span>
+              <span className="text-[10px] text-gold-300">
+                {isLoggedIn ? 'مشاهده سفارش‌ها' : 'ساخت حساب'}
+              </span>
+            </Link>
 
             <div className="mb-5 space-y-1">
               {navLinks.map((link) => (

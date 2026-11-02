@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { getOrder } from '@/lib/api';
-import { ORDER_STATUS, PAYMENT_LABELS, PLACEHOLDER_IMAGE } from '@/lib/constants';
+import { ORDER_STATUS, PAYMENT_LABELS, PAYMENT_STATUS, PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { formatDate, formatPrice, toFa } from '@/lib/format';
-import { ArrowLeft, Check, Clock, MapPin, Package, Phone, Truck } from '@/components/Icons';
+import { ArrowLeft, Check, Clock, CreditCard, MapPin, Package, Phone, Truck } from '@/components/Icons';
 
 const STEPS = [
   { key: 'pending', label: 'ثبت سفارش' },
@@ -18,8 +18,9 @@ export async function generateMetadata({ params }) {
   return { title: `سفارش ${code}` };
 }
 
-export default async function OrderPage({ params }) {
+export default async function OrderPage({ params, searchParams }) {
   const { code } = await params;
+  const { payment: paymentResult } = (await searchParams) || {};
   const order = await getOrder(code);
 
   if (!order) {
@@ -38,6 +39,8 @@ export default async function OrderPage({ params }) {
   }
 
   const status = ORDER_STATUS[order.status] || ORDER_STATUS.pending;
+  const payStatus = PAYMENT_STATUS[order.payment_status] || PAYMENT_STATUS.unpaid;
+  const needsPayment = order.payment_method === 'online' && order.payment_status !== 'paid';
   const activeIndex = Math.max(0, STEPS.findIndex((s) => s.key === order.status));
   const isCancelled = ['cancelled', 'returned'].includes(order.status);
 
@@ -65,8 +68,27 @@ export default async function OrderPage({ params }) {
               <p className="text-[10px] text-ink/50">مبلغ کل</p>
               <p className="text-lg font-black text-brand-900">{formatPrice(order.total)}</p>
               <p className="mt-1 text-[10px] text-ink/45">{PAYMENT_LABELS[order.payment_method] || order.payment_method}</p>
+              <span className={`mt-2 inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${payStatus.color}`}>
+                {payStatus.label}
+              </span>
             </div>
           </div>
+
+          {paymentResult === 'success' && (
+            <div className="mt-5 flex items-start gap-2 rounded-2xl bg-emerald-50 px-4 py-3 text-[11px] text-emerald-800">
+              <Check className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>پرداخت شما با موفقیت ثبت شد. سفارش در حال آماده‌سازی است و وضعیت آن را از همین صفحه پیگیری کنید.</span>
+            </div>
+          )}
+          {paymentResult === 'failed' && (
+            <div className="mt-5 flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-[11px] text-rose-700">
+              <CreditCard className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                پرداخت انجام نشد. مبلغی از حساب شما کسر نشده است؛ می‌توانید دوباره تلاش کنید
+                {needsPayment ? ' یا با پشتیبانی تماس بگیرید.' : '.'}
+              </span>
+            </div>
+          )}
 
           {!isCancelled ? (
             <div className="mt-8 grid grid-cols-5 gap-1">
@@ -149,6 +171,21 @@ export default async function OrderPage({ params }) {
           </div>
 
           <aside className="space-y-4">
+            {needsPayment && (
+              <div className="rounded-3xl border border-gold-300/60 bg-cream-50 p-5">
+                <h2 className="flex items-center gap-2 text-sm font-extrabold text-brand-950">
+                  <CreditCard className="h-4 w-4 text-brand-700" />
+                  پرداخت این سفارش
+                </h2>
+                <p className="mt-2 text-[10.5px] leading-6 text-ink/55">
+                  این سفارش با روش پرداخت آنلاین ثبت شده و هنوز تسویه نشده است. برای تکمیل خرید، پرداخت را انجام دهید.
+                </p>
+                <Link href={`/payment/${order.code}`} className="btn-primary btn-sm mt-4 w-full">
+                  پرداخت آنلاین {formatPrice(order.total)}
+                </Link>
+              </div>
+            )}
+
             <div className="rounded-3xl border border-cream-300/80 bg-white p-5">
               <h2 className="mb-3 flex items-center gap-2 text-sm font-extrabold text-brand-950">
                 <Truck className="h-4 w-4 text-brand-700" />
