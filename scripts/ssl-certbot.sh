@@ -116,17 +116,106 @@ server {
 }
 EOF
 
-# ریدایرکت http → https را از حالت کامنت خارج کن (فقط یک‌بار)
-if grep -q '^  # location / { return 301 https://\$host\$request_uri; }' "$CONF"; then
-  sed -i 's|^  # location / { return 301 https://\$host\$request_uri; }|  location / { return 301 https://$host$request_uri; }|' "$CONF"
-  info "ریدایرکت http→https فعال شد."
-else
-  info "ریدایرکت http→https از قبل فعال است."
+# بلاک HTTP باید فقط acme-challenge + ریدایرکت باشد؛ چون senz-app.inc
+# خودش "location /" دارد و اگر کنار ریدایرکت include شود nginx خطای
+# "duplicate location /" می‌دهد. پس include را در بلاک HTTP کامنت می‌کنیم.
+BACKUP="$CONF.bak-$(date +%Y%m%d-%H%M%S)"
+cp "$CONF" "$BACKUP"
+info "پشتیبان کانفیگ: $BACKUP"
+
+python3 - "$CONF" <<'PYEOF'
+import sys
+
+path = sys.argv[1]
+lines = open(path, encoding='utf-8').read().splitlines()
+
+marker = next((i for i, l in enumerate(lines) if l.startswith('# ---------- HTTPS')), len(lines))
+start = next(i for i, l in enumerate(lines[:marker]) if l.strip() == 'server {')
+
+depth, end = 0, None
+for i in range(start, marker):
+    depth += lines[i].count('{') - lines[i].count('}')
+    if depth == 0 and i > start:
+        end = i
+        break
+if end is None:
+    raise SystemExit('could not locate the HTTP server block')
+
+REDIRECT = 'location / { return 301 https://$host$request_uri; }'
+has_redirect = False
+
+for i in range(start, end + 1):
+    stripped = lines[i].strip()
+    if stripped.startswith('#') and 'location / {' in stripped and 'return 301' in stripped:
+        lines[i] = '  ' + REDIRECT
+        has_redirect = True
+    elif stripped.startswith('location / {') and 'return 301' in stripped:
+        has_redirect = True
+    if stripped.startswith('include /etc/nginx/conf.d/senz-app.inc;'):
+        lines[i] = '  # include /etc/nginx/conf.d/senz-app.inc;  # SSL فعال است: HTTP فقط ریدایرکت می‌کند'
+
+if not has_redirect:
+    lines.insert(end, '  # هدایت همه ترافیک HTTP به HTTPS')
+    lines.insert(end + 1, '  ' + REDIRECT)
+
+open(path, 'w', encoding='utf-8').write('\n'.join(lines) + '\n')
+print('http block prepared')
+PYEOF'
+import re, sys
+
+path = sys.argv[1]
+text = open(path, encoding='utf-8').read()
+marker = '# ---------- HTTPS'
+head, sep, tail = text.partition(marker)
+if not sep:
+    head, sep, tail = text, '', ''
+
+redirect = 'location / { return 301 https://$host$request_uri; }'
+
+# ۱) include اپ در بلاک HTTP غیرفعال شود
+head = re.sub(
+    r'(?m)^(\s*)include /etc/nginx/conf\.d/senz-app\.inc;[^\n]*$',
+    r'\1# include /etc/nginx/conf.d/senz-app.inc;  # SSL فعال است: HTTP فقط ریدایرکت می‌کند',
+    head,
+    count=1,
+)
+
+# ۲) ریدایرکت http→https فعال شود (از کامنت خارج یا اضافه شود)
+if 'return 301 https://$host$request_uri;' not in head:
+    head = re.sub(
+        r'(?m)^\s*#\s*location / \{ return 301 https://\$host\$request_uri; \}\s*$',
+        '  ' + redirect,
+        head,
+        count=1,
+    )
+if 'return 301 https://$host$request_uri;' not in head:
+    idx = head.rstrip().rfind('}')
+    head = head[:idx].rstrip('\n') + '\n\n  # هدایت همه ترافیک HTTP به HTTPS\n  ' + redirect + '\n' + head[idx:]
+
+open(path, 'w', encoding='utf-8').write(head + sep + tail)
+print('http block prepared')
+PYEOF
+
+if ! docker compose exec -T nginx nginx -t; then
+  warn "پیکربندی نامعتبر بود؛ بازگردانی تنظیمات قبلی ..."
+  cp "$BACKUP" "$CONF"
+  rm -f "$SSL_CONF"
+  docker compose exec -T nginx nginx -s reload >/dev/null 2>&1 || true
+  die "فعال‌سازی HTTPS انجام نشد و تنظیمات قبلی برگردانده شد. سایت روی HTTP سالم است."
 fi
 
-docker compose exec -T nginx nginx -t || die "پیکربندی nginx معتبر نیست. خروجی بالا را ببینید."
 docker compose exec -T nginx nginx -s reload
 info "nginx با موفقیت reload شد."
+info "ریدایرکت http→https فعال شد."
+
+# ---------- ۵.۱) بررسی نهایی HTTPS ----------
+sleep 1
+HTTPS_CODE="$(curl -fsS -o /dev/null -m 15 -w '%{http_code}' "https://${DOMAIN}" 2>/dev/null || true)"
+if [ "$HTTPS_CODE" = "200" ]; then
+  info "https://${DOMAIN} با موفقیت پاسخ ۲۰۰ داد."
+else
+  warn "بررسی HTTPS پاسخ '${HTTPS_CODE:-نامشخص}' داد؛ چند لحظه بعد با curl -I https://${DOMAIN} دوباره چک کنید."
+fi
 
 # ---------- ۶) هوک تمدید خودکار ----------
 info "ساخت هوک تمدید خودکار: $HOOK"
@@ -143,14 +232,20 @@ docker compose exec -T nginx nginx -s reload
 EOF
 chmod +x "$HOOK"
 
-# تایمر تمدید systemd (روی AlmaLinux با بسته certbot معمولاً خودکار است)
-if systemctl list-timers --all 2>/dev/null | grep -q certbot; then
-  info "تایمر تمدید خودکار certbot فعال است."
+# تایمر تمدید systemd — بسته certbot روی EL9 تایمر را نصب می‌کند
+# ولی به‌صورت پیش‌فرض استارت نمی‌کند، پس صریحاً فعالش می‌کنیم.
+if systemctl list-unit-files 2>/dev/null | grep -q '^certbot-renew.timer'; then
+  systemctl enable --now certbot-renew.timer >/dev/null 2>&1 || warn "فعال‌سازی certbot-renew.timer ناموفق بود."
+  if systemctl is-active --quiet certbot-renew.timer; then
+    info "تایمر تمدید خودکار certbot فعال است (certbot-renew.timer)."
+  else
+    warn "تایمر certbot فعال نشد؛ از cron استفاده می‌کنیم."
+    printf '0 3 * * * root certbot renew --quiet --deploy-hook "%s"\n' "$HOOK" > /etc/cron.d/certbot-senz
+    chmod 644 /etc/cron.d/certbot-senz
+  fi
 else
   warn "تایمر certbot پیدا نشد؛ یک cron ساده اضافه می‌کنیم."
-  cat > /etc/cron.d/certbot-senz <<EOF
-0 3 * * * root certbot renew --quiet --deploy-hook "${HOOK}"
-EOF
+  printf '0 3 * * * root certbot renew --quiet --deploy-hook "%s"\n' "$HOOK" > /etc/cron.d/certbot-senz
   chmod 644 /etc/cron.d/certbot-senz
 fi
 
