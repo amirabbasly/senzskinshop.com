@@ -112,7 +112,7 @@ router.get('/orders', requireCustomer, wrap(async (req, res) => {
      ORDER BY o.created_at DESC LIMIT 100`,
     [req.customer.sub, req.customer.phone]
   );
-  res.json(rows);
+  res.json({ orders: rows });
 }));
 
 router.get('/orders/:code', requireCustomer, wrap(async (req, res) => {
