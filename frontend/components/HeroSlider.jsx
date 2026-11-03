@@ -102,7 +102,7 @@ export default function HeroSlider({ banners = [], sideBanners = [] }) {
               </p>
               <Link
                 href={bigSlide.link || '/products'}
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-[12px] font-black text-white shadow-soft transition hover:bg-brand-600 sm:text-[13px]"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand-400 px-5 py-2.5 text-[12px] font-black text-brand-950 shadow-soft transition hover:bg-brand-500 sm:text-[13px]"
               >
                 {bigSlide.btn_text || 'مشاهده محصولات'}
                 <ArrowLeft className="h-4 w-4" />
@@ -167,7 +167,7 @@ export default function HeroSlider({ banners = [], sideBanners = [] }) {
             <p className="line-clamp-2 text-[10px] leading-5 text-ink/55 sm:text-[11px]">{sideSlide.subtitle}</p>
             <Link
               href={sideSlide.link || '/products'}
-              className="mt-1.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-500 px-3 py-1.5 text-[10px] font-black text-white transition hover:bg-brand-600 sm:text-[11px]"
+              className="mt-1.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-400 px-3 py-1.5 text-[10px] font-black text-brand-950 transition hover:bg-brand-500 sm:text-[11px]"
             >
               {sideSlide.btn_text || 'مشاهده محصولات'}
               <ArrowLeft className="h-3 w-3" />
