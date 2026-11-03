@@ -28,12 +28,12 @@ export default function CategoryCircles({ categories = [] }) {
       {list.map((cat) => (
         <Link key={cat.id} href={`/category/${cat.slug}`} className="group flex flex-col items-center">
           <span className="relative block w-full overflow-hidden rounded-full border border-cream-200 bg-white p-1 shadow-[0_1px_3px_rgba(90,55,50,.04)] sm:rounded-2xl sm:p-2">
-            <span className="block aspect-square overflow-hidden rounded-full bg-cream-100 sm:rounded-xl">
+            <span className="block aspect-square overflow-hidden rounded-full bg-white sm:rounded-xl">
               <img
                 src={cat.image || PLACEHOLDER_IMAGE}
                 alt={cat.name}
                 loading="lazy"
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                className="h-full w-full object-contain p-0.5 transition duration-500 group-hover:scale-105"
               />
             </span>
           </span>

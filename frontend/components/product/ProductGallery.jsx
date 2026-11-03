@@ -12,8 +12,8 @@ export default function ProductGallery({ images = [], name = '' }) {
   return (
     <div>
       <div className="relative overflow-hidden rounded-[1.75rem] border border-cream-300/80 bg-white">
-        <div className="aspect-square">
-          <img src={list[active]} alt={name} className="h-full w-full object-cover" />
+        <div className="aspect-square bg-white">
+          <img src={list[active]} alt={name} className="h-full w-full object-contain p-3" />
         </div>
         <button
           type="button"
@@ -40,7 +40,7 @@ export default function ProductGallery({ images = [], name = '' }) {
                 active === index ? 'border-brand-700' : 'border-cream-300 hover:border-brand-300'
               }`}
             >
-              <img src={image} alt={`${name} ${index + 1}`} className="h-full w-full object-cover" />
+              <img src={image} alt={`${name} ${index + 1}`} className="h-full w-full object-contain bg-white p-1" />
             </button>
           ))}
         </div>
