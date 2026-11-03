@@ -119,7 +119,7 @@ export default function AdminBannersPage() {
                 </span>
                 <span
                   className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-bold ${
-                    row.is_active ? 'bg-emerald-500 text-white' : 'bg-stone-500 text-white'
+                    row.is_active ? 'bg-brand-500 text-white' : 'bg-stone-500 text-white'
                   }`}
                 >
                   {row.is_active ? 'فعال' : 'غیرفعال'}

@@ -208,7 +208,7 @@ export default function CheckoutView() {
               <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-cream-100/80 px-4 py-2.5 text-[10.5px] text-ink/60">
                 {customer ? (
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    <Check className="h-3.5 w-3.5 text-brand-700" />
                     خرید با حساب <span className="font-bold text-brand-900">{customer.name}</span> — سفارش در پنل شما ذخیره می‌شود.
                   </span>
                 ) : (
@@ -464,7 +464,7 @@ export default function CheckoutView() {
                 </button>
               </div>
               {couponMessage && (
-                <p className={`mt-2 text-[10.5px] ${couponError ? 'text-rose-600' : 'text-emerald-600'}`}>
+                <p className={`mt-2 text-[10.5px] ${couponError ? 'text-rose-600' : 'text-brand-700'}`}>
                   {couponMessage}
                 </p>
               )}
@@ -480,7 +480,7 @@ export default function CheckoutView() {
                 <dd className="font-bold text-brand-950">{shipping === 0 ? 'رایگان' : formatPrice(shipping)}</dd>
               </div>
               {discount > 0 && (
-                <div className="flex items-center justify-between text-emerald-600">
+                <div className="flex items-center justify-between text-brand-700">
                   <dt>تخفیف ({coupon?.code})</dt>
                   <dd className="font-bold">−{formatPrice(discount)}</dd>
                 </div>

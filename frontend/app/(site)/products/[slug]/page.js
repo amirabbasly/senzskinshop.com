@@ -98,7 +98,7 @@ export default async function ProductPage({ params }) {
               <span className="h-1 w-1 rounded-full bg-ink/20" />
               <span>{toFa(product.sold || 0)} فروش موفق</span>
               <span className="h-1 w-1 rounded-full bg-ink/20" />
-              <span className={product.stock > 0 ? 'text-emerald-600' : 'text-rose-600'}>
+              <span className={product.stock > 0 ? 'text-brand-700' : 'text-rose-600'}>
                 {product.stock > 0 ? 'موجود در انبار' : 'ناموجود'}
               </span>
             </div>

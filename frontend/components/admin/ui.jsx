@@ -75,7 +75,7 @@ export function Alert({ type = 'error', children }) {
   if (!children) return null;
   const styles =
     type === 'success'
-      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      ? 'bg-brand-50 text-brand-700 border-brand-200'
       : 'bg-rose-50 text-rose-700 border-rose-200';
   return <div className={`rounded-xl border px-3.5 py-2.5 text-[11.5px] ${styles}`}>{children}</div>;
 }
@@ -262,7 +262,7 @@ export function SaveBar({ loading, message, error, onCancel, submitLabel = 'ذخ
   return (
     <div className="sticky bottom-0 -mx-4 mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-cream-300 bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
       <div className="min-w-0 text-[11px]">
-        {error ? <span className="text-rose-600">{error}</span> : message ? <span className="text-emerald-600">{message}</span> : null}
+        {error ? <span className="text-rose-600">{error}</span> : message ? <span className="text-brand-700">{message}</span> : null}
       </div>
       <div className="flex items-center gap-2">
         {onCancel && (

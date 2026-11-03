@@ -136,7 +136,7 @@ export default function AdminCategoriesPage() {
                   </span>
                   <span
                     className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${
-                      parent.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-200 text-stone-600'
+                      parent.is_active ? 'bg-emerald-100 text-brand-700' : 'bg-stone-200 text-stone-600'
                     }`}
                   >
                     {parent.is_active ? 'فعال' : 'غیرفعال'}

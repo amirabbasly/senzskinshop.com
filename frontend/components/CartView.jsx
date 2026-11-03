@@ -6,7 +6,7 @@ import { useCart } from './CartProvider';
 import { DEFAULT_SETTINGS, PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { CLIENT_API } from '@/lib/api';
 import { formatPrice, toFa } from '@/lib/format';
-import { ArrowLeft, Minus, Plus, ShoppingBag, Trash, Truck } from './Icons';
+import { ArrowLeft, Minus, Plus, ShoppingBag, Trash } from './Icons';
 
 export default function CartView() {
   const { items, setQty, remove, subtotal, ready } = useCart();
@@ -20,7 +20,6 @@ export default function CartView() {
   }, []);
 
   const freeShipping = Number(settings.free_shipping_min || 0);
-  const remaining = Math.max(freeShipping - subtotal, 0);
   const shipping = freeShipping > 0 && subtotal >= freeShipping ? 0 : Number(settings.shipping_cost || 0);
 
   if (!ready) {
@@ -53,15 +52,6 @@ export default function CartView() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="space-y-3">
-          {remaining > 0 && (
-            <div className="flex items-center gap-2 rounded-2xl bg-brand-50 px-4 py-3 text-[11px] text-brand-900">
-              <Truck className="h-4 w-4 shrink-0" />
-              <span>
-                تنها <strong className="font-black">{formatPrice(remaining)}</strong> تا ارسال رایگان باقی مانده است.
-              </span>
-            </div>
-          )}
-
           {items.map((item) => (
             <div
               key={item.id}

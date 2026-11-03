@@ -6,24 +6,18 @@ import { useCart } from './CartProvider';
 import { useCustomer } from './CustomerProvider';
 import Logo from './Logo';
 import { toFa } from '@/lib/format';
-import {
-  ChevronDown,
-  Clock,
-  Menu,
-  Phone,
-  Search,
-  ShoppingBag,
-  Sparkles,
-  Truck,
-  User,
-  X,
-} from './Icons';
+import { ChevronDown, Menu, Phone, Search, ShoppingBag, Sparkles, User, X } from './Icons';
 
 export default function Header({ settings = {}, categories = [] }) {
   const { count } = useCart();
   const { customer, isLoggedIn } = useCustomer();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [announcementClosed, setAnnouncementClosed] = useState(false);
+
+  const announcement = /ارسال رایگان/.test(settings.announcement || '')
+    ? 'ضمانت اصالت کالا — ارسال سریع به سراسر ایران'
+    : settings.announcement;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -54,41 +48,36 @@ export default function Header({ settings = {}, categories = [] }) {
           scrolled ? 'max-h-0 opacity-0' : 'max-h-24 opacity-100'
         }`}
       >
-        {settings.announcement && (
-          <div className="bg-brand-100 text-brand-800">
-            <div className="container-page flex h-8 items-center justify-center gap-2 text-[10.5px] font-bold sm:text-[11px]">
-              <Sparkles className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">{settings.announcement}</span>
+        {announcement && !announcementClosed && (
+          <div className="border-b border-brand-200/70 bg-brand-100 text-brand-900">
+            <div className="container-page flex h-9 items-center gap-3 text-[10.5px] font-semibold sm:text-[11.5px]">
+              <span className="flex min-w-0 items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 shrink-0 text-brand-600" />
+                <span className="truncate">{announcement}</span>
+              </span>
+              <div className="mr-auto flex shrink-0 items-center gap-3">
+                <a
+                  href={`tel:${settings.phone || ''}`}
+                  className="hidden items-center gap-1.5 text-brand-800 transition hover:text-brand-950 md:flex"
+                >
+                  <Phone className="h-3.5 w-3.5" />
+                  <span dir="ltr">{toFa(settings.phone || '')}</span>
+                </a>
+                <Link href="/track" className="hidden text-brand-800 transition hover:text-brand-950 sm:block">
+                  پیگیری سفارش
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setAnnouncementClosed(true)}
+                  aria-label="بستن اطلاعیه"
+                  className="rounded-full p-1 text-brand-700 transition hover:bg-white/70"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           </div>
         )}
-
-        <div className="bg-brand-950 text-cream-100">
-        <div className="container-page flex h-9 items-center justify-between gap-3 text-[11px]">
-          <div className="flex min-w-0 items-center gap-4">
-            <a href={`tel:${settings.phone || ''}`} className="flex items-center gap-1.5 hover:text-gold-300">
-              <Phone className="h-3.5 w-3.5" />
-              <span dir="ltr">{toFa(settings.phone || '')}</span>
-            </a>
-            <span className="hidden items-center gap-1.5 text-cream-100/70 sm:flex">
-              <Clock className="h-3.5 w-3.5" />
-              {settings.working_hours}
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-cream-100/80">
-            <span className="hidden items-center gap-1.5 md:flex">
-              <Truck className="h-3.5 w-3.5" />
-              ارسال به سراسر ایران
-            </span>
-            <Link href="/track" className="hover:text-gold-300">
-              پیگیری سفارش
-            </Link>
-            <Link href="/faq" className="hidden hover:text-gold-300 sm:block">
-              سوالات متداول
-            </Link>
-          </div>
-        </div>
-        </div>
       </div>
 
       <div className="border-b border-cream-300/70 bg-cream-50/95 backdrop-blur">
@@ -115,7 +104,7 @@ export default function Header({ settings = {}, categories = [] }) {
                 className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
                 aria-label="جست‌وجو"
               />
-              <button type="submit" className="rounded-full bg-brand-800 px-3 py-1 text-[11px] font-bold text-cream-50">
+              <button type="submit" className="rounded-full bg-brand-700 px-3 py-1 text-[11px] font-bold text-cream-50 transition hover:bg-brand-800">
                 جست‌وجو
               </button>
             </label>
@@ -134,7 +123,7 @@ export default function Header({ settings = {}, categories = [] }) {
             </Link>
             <Link
               href="/cart"
-              className="relative flex items-center gap-2 rounded-full bg-brand-800 px-4 py-2.5 text-cream-50 transition hover:bg-brand-900"
+              className="relative flex items-center gap-2 rounded-full bg-brand-700 px-4 py-2.5 text-cream-50 transition hover:bg-brand-800"
             >
               <ShoppingBag className="h-5 w-5" />
               <span className="hidden text-xs font-bold sm:block">سبد خرید</span>
@@ -200,7 +189,7 @@ export default function Header({ settings = {}, categories = [] }) {
               key={link.href}
               href={link.href}
               className={`px-4 py-3.5 text-sm font-bold hover:text-brand-600 ${
-                link.accent ? 'text-rose-600' : 'text-brand-900'
+                link.accent ? 'text-brand-700' : 'text-brand-900'
               }`}
             >
               {link.label}
@@ -223,7 +212,7 @@ export default function Header({ settings = {}, categories = [] }) {
             <Link
               href={isLoggedIn ? '/account' : '/login'}
               onClick={() => setMobileOpen(false)}
-              className="mb-4 flex items-center justify-between rounded-2xl bg-brand-900 px-4 py-3 text-xs font-bold text-cream-50"
+              className="mb-4 flex items-center justify-between rounded-2xl bg-brand-800 px-4 py-3 text-xs font-bold text-cream-50"
             >
               <span className="flex items-center gap-2">
                 <User className="h-4 w-4" />

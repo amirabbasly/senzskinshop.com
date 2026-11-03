@@ -41,7 +41,7 @@ export default async function HomePage() {
 
       <BrandsStrip brands={brands} />
 
-      <section className="container-page mt-14">
+      <section className="container-page mt-10 sm:mt-14">
         <SectionHeading
           title="خرید بر اساس نیاز پوست"
           subtitle="از سرم‌های تخصصی تا مراقبت روزانه، دسته مورد نظرت را انتخاب کن"
@@ -57,15 +57,30 @@ export default async function HomePage() {
         href="/products?on_sale=1"
       />
 
+      {bestsellers.length > 0 && (
+        <section className="container-page mt-12 sm:mt-16">
+          <SectionHeading
+            title="پرفروش‌ترین محصولات"
+            subtitle="انتخاب بیشترین تعداد از مشتریان سنز اسکین در این ماه"
+            href="/products?sort=popular"
+          />
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {bestsellers.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
       <HighlightSplit settings={settings} />
 
-      <section className="container-page mt-16">
+      <section className="container-page mt-12 sm:mt-16">
         <SectionHeading
           title="جدیدترین محصولات"
           subtitle="تازه‌ترین محصولاتی که به قفسه‌های سنز اسکین اضافه شده‌اند"
           href="/products?sort=newest"
         />
-        <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {newest.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -73,7 +88,7 @@ export default async function HomePage() {
       </section>
 
       {posts.length > 0 && (
-        <section className="container-page mt-16">
+        <section className="container-page mt-12 sm:mt-16">
           <SectionHeading
             title="مجله پوست سنز"
             subtitle="آموزش‌های کاربردی برای انتخاب و استفاده درست از محصولات"

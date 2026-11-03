@@ -138,7 +138,7 @@ export default function AdminProductsPage() {
                     <td>
                       <span
                         className={`text-[11px] font-bold ${
-                          product.stock <= 0 ? 'text-rose-600' : product.stock <= 5 ? 'text-amber-600' : 'text-emerald-600'
+                          product.stock <= 0 ? 'text-rose-600' : product.stock <= 5 ? 'text-amber-600' : 'text-brand-700'
                         }`}
                       >
                         {toFa(product.stock)}
@@ -148,7 +148,7 @@ export default function AdminProductsPage() {
                       <div className="flex flex-wrap gap-1">
                         <span
                           className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${
-                            product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-200 text-stone-600'
+                            product.is_active ? 'bg-emerald-100 text-brand-700' : 'bg-stone-200 text-stone-600'
                           }`}
                         >
                           {product.is_active ? 'فعال' : 'غیرفعال'}

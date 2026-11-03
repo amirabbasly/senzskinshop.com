@@ -58,7 +58,7 @@ export default function HeroSlider({ banners = [] }) {
           <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
             <Link
               href={slide.link || '/products'}
-              className="inline-flex items-center gap-2 rounded-full bg-cream-50 px-5 py-2.5 text-[12.5px] font-black text-brand-700 shadow-soft transition hover:bg-cream-100 sm:px-6 sm:py-3 sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-200 px-5 py-2.5 text-[12.5px] font-black text-brand-900 shadow-soft transition hover:bg-brand-100 sm:px-6 sm:py-3 sm:text-sm"
             >
               {slide.btn_text || 'مشاهده محصولات'}
               <ArrowLeft className="h-4 w-4" />
@@ -74,7 +74,7 @@ export default function HeroSlider({ banners = [] }) {
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] text-cream-100/70 sm:mt-8 sm:gap-x-5 sm:text-[11px]">
             <span className="flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />
-              ارسال رایگان بالای ۱٫۵ میلیون
+              ارسال سریع به سراسر ایران
             </span>
             <span className="flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />

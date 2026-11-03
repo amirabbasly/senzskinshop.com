@@ -35,14 +35,14 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #fdf6f8;
+    background: #faf4f1;
   }
   ::-webkit-scrollbar-thumb {
-    background: #f3c9d6;
+    background: #e8d3ce;
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #e79db3;
+    background: #c79c95;
   }
 }
 
@@ -115,7 +115,7 @@
     @apply mb-4 list-inside list-disc space-y-1.5;
   }
   .prose-fa li::marker {
-    color: #d97a5d;
+    color: #a66f59;
   }
 
   .admin-card {

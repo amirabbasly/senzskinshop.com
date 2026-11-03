@@ -41,7 +41,7 @@ export default async function PaymentPage({ params, searchParams }) {
       {paid ? (
         <div className="container-page py-14">
           <div className="mx-auto max-w-md rounded-[2rem] border border-emerald-100 bg-white p-10 text-center shadow-soft">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-brand-700">
               <Check className="h-7 w-7" />
             </span>
             <h1 className="mt-4 text-lg font-black text-brand-950">این سفارش قبلاً پرداخت شده است</h1>

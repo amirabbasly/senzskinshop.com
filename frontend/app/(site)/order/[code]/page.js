@@ -75,7 +75,7 @@ export default async function OrderPage({ params, searchParams }) {
           </div>
 
           {paymentResult === 'success' && (
-            <div className="mt-5 flex items-start gap-2 rounded-2xl bg-emerald-50 px-4 py-3 text-[11px] text-emerald-800">
+            <div className="mt-5 flex items-start gap-2 rounded-2xl bg-brand-50 px-4 py-3 text-[11px] text-emerald-800">
               <Check className="mt-0.5 h-4 w-4 shrink-0" />
               <span>پرداخت شما با موفقیت ثبت شد. سفارش در حال آماده‌سازی است و وضعیت آن را از همین صفحه پیگیری کنید.</span>
             </div>
@@ -158,7 +158,7 @@ export default async function OrderPage({ params, searchParams }) {
                 <dd className="font-bold">{order.shipping === 0 ? 'رایگان' : formatPrice(order.shipping)}</dd>
               </div>
               {order.discount > 0 && (
-                <div className="flex justify-between text-emerald-600">
+                <div className="flex justify-between text-brand-700">
                   <dt>تخفیف</dt>
                   <dd className="font-bold">−{formatPrice(order.discount)}</dd>
                 </div>

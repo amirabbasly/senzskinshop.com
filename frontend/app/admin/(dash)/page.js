@@ -25,7 +25,7 @@ export default function AdminDashboardPage() {
   const maxRevenue = Math.max(...days.map((d) => d.revenue), 1);
 
   const cards = [
-    { label: 'کل فروش', value: formatPrice(stats.revenue), icon: Ticket, tone: 'bg-emerald-50 text-emerald-700' },
+    { label: 'کل فروش', value: formatPrice(stats.revenue), icon: Ticket, tone: 'bg-brand-50 text-brand-700' },
     { label: 'سفارش‌ها', value: toFa(stats.orders), icon: ShoppingBag, tone: 'bg-sky-50 text-sky-700' },
     { label: 'در انتظار بررسی', value: toFa(stats.pending), icon: Package, tone: 'bg-amber-50 text-amber-700' },
     { label: 'محصولات فعال', value: toFa(stats.products), icon: Users, tone: 'bg-brand-50 text-brand-700' },

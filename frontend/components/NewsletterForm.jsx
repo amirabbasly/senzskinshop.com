@@ -48,7 +48,7 @@ export default function NewsletterForm() {
         </button>
       </div>
       {state.message && (
-        <p className={`mt-2 text-[11px] ${state.error ? 'text-rose-300' : 'text-emerald-300'}`}>{state.message}</p>
+        <p className={`mt-2 text-[11px] ${state.error ? 'text-rose-300' : 'text-gold-300'}`}>{state.message}</p>
       )}
     </form>
   );

@@ -72,7 +72,7 @@ export default function HighlightSplit({ settings = {} }) {
               className="inline-flex items-center gap-2 rounded-xl border border-dashed border-cream-50/35 bg-cream-50/10 px-4 py-2.5 text-xs font-black tracking-widest text-cream-50 backdrop-blur transition hover:bg-cream-50/15"
               aria-label="کپی کد تخفیف SENZ15"
             >
-              {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Ticket className="h-3.5 w-3.5 text-gold-300" />}
+              {copied ? <Check className="h-3.5 w-3.5 text-gold-300" /> : <Ticket className="h-3.5 w-3.5 text-gold-300" />}
               <span dir="ltr">SENZ15</span>
               <span className="text-[9.5px] font-medium text-cream-100/60">
                 {copied ? 'کپی شد' : 'کپی کد'}

@@ -320,7 +320,7 @@ function ProfilePanel({ customer, refresh }) {
 
       {state.error && <p className="mt-4 rounded-xl bg-rose-50 px-3 py-2 text-[11px] text-rose-700">{state.error}</p>}
       {state.message && (
-        <p className="mt-4 flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
+        <p className="mt-4 flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-[11px] text-brand-700">
           <Check className="h-3.5 w-3.5" />
           {state.message}
         </p>
@@ -384,7 +384,7 @@ function SecurityPanel({ phone }) {
 
       {state.error && <p className="mt-4 rounded-xl bg-rose-50 px-3 py-2 text-[11px] text-rose-700">{state.error}</p>}
       {state.message && (
-        <p className="mt-4 flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
+        <p className="mt-4 flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-[11px] text-brand-700">
           <Check className="h-3.5 w-3.5" />
           {state.message}
         </p>
@@ -484,7 +484,7 @@ function AddressesPanel({ customer }) {
 
         {state.error && <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-[11px] text-rose-700">{state.error}</p>}
         {state.message && (
-          <p className="mt-3 flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] text-emerald-700">
+          <p className="mt-3 flex items-center gap-1.5 rounded-xl bg-brand-50 px-3 py-2 text-[11px] text-brand-700">
             <Check className="h-3.5 w-3.5" />
             {state.message}
           </p>
@@ -595,7 +595,7 @@ function AddressesPanel({ customer }) {
                     <MapPin className="h-3.5 w-3.5 text-brand-600" />
                     {address.title}
                     {address.is_default && (
-                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700">
+                      <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[9px] font-bold text-brand-700">
                         پیش‌فرض
                       </span>
                     )}

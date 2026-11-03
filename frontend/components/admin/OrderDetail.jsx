@@ -106,7 +106,7 @@ export default function OrderDetail({ orderId }) {
                 <dd className="font-bold">{order.shipping === 0 ? 'رایگان' : formatPrice(order.shipping)}</dd>
               </div>
               {order.discount > 0 && (
-                <div className="flex justify-between text-emerald-600">
+                <div className="flex justify-between text-brand-700">
                   <dt>تخفیف {order.coupon_code ? `(${order.coupon_code})` : ''}</dt>
                   <dd className="font-bold">−{formatPrice(order.discount)}</dd>
                 </div>

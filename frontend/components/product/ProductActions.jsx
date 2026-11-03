@@ -52,7 +52,7 @@ export default function ProductActions({ product }) {
           type="button"
           onClick={() => handleAdd(false)}
           disabled={outOfStock}
-          className={`btn flex-1 ${added ? 'bg-emerald-600 text-white' : 'btn-primary'}`}
+          className={`btn flex-1 ${added ? 'bg-brand-800 text-white' : 'btn-primary'}`}
         >
           {added ? (
             <>

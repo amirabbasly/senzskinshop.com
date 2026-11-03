@@ -90,7 +90,7 @@ export default function AdminReviewsPage() {
                 <div className="flex items-center gap-1.5">
                   <span
                     className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${
-                      row.is_approved ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                      row.is_approved ? 'bg-emerald-100 text-brand-700' : 'bg-amber-100 text-amber-700'
                     }`}
                   >
                     {row.is_approved ? 'تأیید شده' : 'در انتظار'}
@@ -111,7 +111,7 @@ export default function AdminReviewsPage() {
                       لغو تأیید
                     </button>
                   ) : (
-                    <button type="button" onClick={() => approve(row, true)} className="admin-btn bg-emerald-50 text-emerald-700">
+                    <button type="button" onClick={() => approve(row, true)} className="admin-btn bg-brand-50 text-brand-700">
                       <Check className="h-3.5 w-3.5" />
                       تأیید نمایش
                     </button>

@@ -78,7 +78,7 @@ export default function ReviewForm({ slug }) {
           {state.loading ? 'در حال ارسال…' : 'ارسال نظر'}
         </button>
         {state.message && (
-          <span className={`text-[11px] ${state.error ? 'text-rose-600' : 'text-emerald-600'}`}>{state.message}</span>
+          <span className={`text-[11px] ${state.error ? 'text-rose-600' : 'text-brand-700'}`}>{state.message}</span>
         )}
       </div>
     </form>
