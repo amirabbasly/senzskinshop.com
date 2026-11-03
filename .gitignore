@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnp/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+.swc/
+
+# env & secrets
+.env
+.env.local
+.env.*.local
+
+# runtime data
+backend/uploads/
+backend/.pgdata/
+nginx/certs/*
+!nginx/certs/.gitkeep
+nginx/acme/*
+!nginx/acme/.gitkeep
+backups/
+
+# logs / os / editors
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage/
