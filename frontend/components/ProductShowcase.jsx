@@ -101,7 +101,7 @@ export default function ProductShowcase({
   };
 
   return (
-    <section className="container-page mt-10 sm:mt-14">
+    <section className="container-page mt-7 sm:mt-9">
       <div className="relative overflow-hidden rounded-[1.6rem] border border-brand-200 bg-gradient-to-l from-brand-100 via-brand-50 to-brand-200 p-2.5 shadow-soft sm:rounded-[2rem] sm:p-4 lg:p-5">
         <span className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-white/50" />
         <span className="pointer-events-none absolute -bottom-24 left-10 h-56 w-56 rounded-full bg-brand-200/40" />
