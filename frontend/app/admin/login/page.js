@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="relative hidden overflow-hidden bg-brand-950 lg:block">
+      <div className="relative hidden overflow-hidden bg-brand-200 lg:block">
         <img
           src="/images/banners/hero-1.jpg"
           alt="senzskinshop"
@@ -49,22 +49,22 @@ export default function AdminLoginPage() {
         <div className="relative flex h-full flex-col justify-between p-10">
           <LogoMark className="h-14 w-14" />
           <div>
-            <h1 className="text-2xl font-black leading-10 text-cream-50">
+            <h1 className="text-2xl font-black leading-10 text-brand-950">
               پنل مدیریت senzskinshop
             </h1>
-            <p className="mt-3 max-w-sm text-xs leading-7 text-cream-100/70">
+            <p className="mt-3 max-w-sm text-xs leading-7 text-ink/60">
               محصولات، دسته‌بندی‌ها، سفارش‌ها، بنرها و تنظیمات سایت را از یک داشبورد ساده مدیریت کنید.
             </p>
-            <div className="mt-6 flex flex-wrap gap-4 text-[11px] text-cream-100/60">
+            <div className="mt-6 flex flex-wrap gap-4 text-[11px] text-ink/55">
               {['مدیریت کامل محصولات', 'پیگیری سفارش‌ها', 'تنظیمات سایت'].map((item) => (
                 <span key={item} className="flex items-center gap-1.5">
-                  <Check className="h-3.5 w-3.5 text-gold-300" />
+                  <Check className="h-3.5 w-3.5 text-brand-600" />
                   {item}
                 </span>
               ))}
             </div>
           </div>
-          <p className="text-[10px] tracking-widest text-cream-100/40" dir="ltr">
+          <p className="text-[10px] tracking-widest text-ink/40" dir="ltr">
             SENZ SKIN SHOP — ADMIN
           </p>
         </div>

@@ -41,7 +41,7 @@ export default function ProductCard({ product }) {
             </span>
           )}
           {product.is_bestseller && (
-            <span className="rounded-md bg-brand-900/90 px-1.5 py-0.5 text-[9.5px] font-bold text-cream-50 backdrop-blur">
+            <span className="rounded-md bg-white/85 px-1.5 py-0.5 text-[9.5px] font-bold text-brand-900 backdrop-blur">
               پرفروش
             </span>
           )}
@@ -49,7 +49,7 @@ export default function ProductCard({ product }) {
 
         {outOfStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
-            <span className="rounded-full bg-brand-950 px-4 py-1.5 text-xs font-bold text-cream-50">ناموجود</span>
+            <span className="rounded-full bg-white/90 px-4 py-1.5 text-xs font-bold text-brand-900">ناموجود</span>
           </div>
         )}
 
@@ -87,8 +87,8 @@ export default function ProductCard({ product }) {
           aria-label={`افزودن ${product.name} به سبد خرید`}
           className={`mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-[11px] font-bold transition ${
             added
-              ? 'bg-brand-800 text-white'
-              : 'bg-brand-700 text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-cream-200 disabled:text-ink/40'
+              ? 'bg-brand-500 text-white'
+              : 'bg-brand-400 text-brand-950 hover:bg-brand-500 disabled:cursor-not-allowed disabled:bg-cream-200 disabled:text-ink/40'
           }`}
         >
           {added ? <Check className="h-3.5 w-3.5" /> : <ShoppingBag className="h-3.5 w-3.5" />}

@@ -71,7 +71,7 @@ export default function MockGateway({ order }) {
               <p className="text-[10px] text-ink/45">محیط آزمایشی (شبیه‌ساز) — بدون تراکنش واقعی</p>
             </div>
           </div>
-          <span className="rounded-full bg-brand-950 px-3 py-1 text-[10px] font-bold text-cream-50">
+          <span className="rounded-full bg-brand-100 px-3 py-1 text-[10px] font-bold text-brand-900">
             {gateway === 'mock' ? 'SENZ PAY' : gateway.toUpperCase()}
           </span>
         </div>

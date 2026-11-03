@@ -61,9 +61,9 @@ export default function FaqPage() {
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl bg-brand-900 p-6 text-center text-cream-50">
+        <div className="mt-8 rounded-2xl bg-brand-100 p-6 text-center text-brand-950">
           <p className="text-sm font-extrabold">پاسخ سوال خود را پیدا نکردید؟</p>
-          <p className="mt-2 text-[11px] text-cream-100/70">کارشناسان ما در ساعات کاری پاسخگوی شما هستند.</p>
+          <p className="mt-2 text-[11px] text-ink/60">کارشناسان ما در ساعات کاری پاسخگوی شما هستند.</p>
           <Link href="/contact" className="btn-gold btn-sm mt-4">
             تماس با پشتیبانی
           </Link>

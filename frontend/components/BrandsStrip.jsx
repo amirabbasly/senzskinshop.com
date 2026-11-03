@@ -20,8 +20,15 @@ export const CURATED_BRANDS = [
 ];
 
 export default function BrandsStrip({ brands = [] }) {
-  const counts = new Map((brands || []).map((brand) => [String(brand.name).trim(), Number(brand.count) || 0]));
-  const list = CURATED_BRANDS.map((brand) => ({ ...brand, count: counts.get(brand.name) || 0 }));
+  const fromApi = (brands || [])
+    .filter((brand) => brand && brand.name)
+    .map((brand) => ({
+      name: brand.name,
+      latin: brand.latin || brand.name,
+      image: brand.logo || brand.image,
+      count: Number(brand.count) || 0,
+    }));
+  const list = fromApi.length ? fromApi : CURATED_BRANDS.map((brand) => ({ ...brand, count: 0 }));
 
   return (
     <section className="container-page mt-7 sm:mt-10">

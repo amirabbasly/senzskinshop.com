@@ -19,7 +19,7 @@ function FilterLink({ href, active, children }) {
     <Link
       href={href}
       className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs transition ${
-        active ? 'bg-brand-800 font-bold text-cream-50' : 'text-ink/65 hover:bg-cream-100 hover:text-brand-900'
+        active ? 'bg-brand-300 font-bold text-brand-950' : 'text-ink/65 hover:bg-cream-100 hover:text-brand-900'
       }`}
     >
       {children}
@@ -119,7 +119,7 @@ export default async function ProductListing({ searchParams = {}, categorySlug =
               href={hrefFor({ skin_type: sp.skin_type === type ? '' : type, page: '' })}
               className={`rounded-full px-3 py-1.5 text-[11px] transition ${
                 sp.skin_type === type
-                  ? 'bg-brand-800 text-cream-50'
+                  ? 'bg-brand-300 text-brand-950'
                   : 'border border-cream-300 text-ink/60 hover:border-brand-300 hover:text-brand-800'
               }`}
             >
@@ -129,9 +129,9 @@ export default async function ProductListing({ searchParams = {}, categorySlug =
         </div>
       </div>
 
-      <div className="rounded-2xl bg-brand-900 p-5 text-cream-50">
+      <div className="rounded-2xl bg-brand-100 p-5 text-brand-950">
         <p className="text-xs font-extrabold">مشاوره رایگان پوست</p>
-        <p className="mt-2 text-[11px] leading-6 text-cream-100/70">
+        <p className="mt-2 text-[11px] leading-6 text-ink/60">
           نمی‌دانی کدام محصول برای پوستت مناسب است؟ کارشناسان ما راهنمایی‌ات می‌کنند.
         </p>
         <Link href="/contact" className="btn-gold btn-sm mt-4 w-full">
@@ -221,7 +221,7 @@ export default async function ProductListing({ searchParams = {}, categorySlug =
                       href={`${basePath}${toQueryString(baseParams, { page: String(p) })}`}
                       className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition ${
                         p === page
-                          ? 'bg-brand-800 text-cream-50'
+                          ? 'bg-brand-300 text-brand-950'
                           : 'border border-cream-300 bg-white text-brand-900 hover:border-brand-700'
                       }`}
                     >

@@ -13,8 +13,8 @@ export default function PromoPanel({
     <section className="relative overflow-hidden rounded-[2rem] bg-cream-200">
       <div className="grid items-center gap-6 md:grid-cols-2">
         <div className="relative z-10 p-7 sm:p-10">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-900 px-3 py-1 text-[11px] font-bold text-cream-50">
-            <Sparkles className="h-3.5 w-3.5 text-gold-300" />
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-[11px] font-bold text-brand-900">
+            <Sparkles className="h-3.5 w-3.5 text-brand-600" />
             {badge}
           </span>
           <h2 className="mt-4 text-balance text-xl font-black leading-9 text-brand-950 sm:text-2xl">{title}</h2>

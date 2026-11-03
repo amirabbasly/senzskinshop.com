@@ -44,21 +44,21 @@ export default function AuthView() {
   return (
     <div className="container-page py-8">
       <div className="mx-auto grid max-w-4xl overflow-hidden rounded-[2rem] border border-cream-300/80 bg-white shadow-soft lg:grid-cols-2">
-        <div className="relative hidden flex-col justify-between overflow-hidden bg-brand-950 p-8 lg:flex lg:min-h-[38rem]">
+        <div className="relative hidden flex-col justify-between overflow-hidden bg-brand-200 p-8 lg:flex lg:min-h-[38rem]">
           <img
             src="/images/banners/auth-panel.jpg"
             alt="محصولات مراقبت پوست senzskinshop"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/10" />
-          <div className="absolute inset-0 bg-gradient-to-l from-brand-950/75 via-brand-950/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/10" />
+          <div className="absolute inset-0 bg-gradient-to-l from-white/80 via-white/20 to-transparent" />
 
           <div className="relative">
             <LogoMark className="h-12 w-12" />
-            <h2 className="mt-6 text-xl font-black leading-9 text-cream-50">
+            <h2 className="mt-6 text-xl font-black leading-9 text-brand-950">
               حساب کاربری senzskinshop
             </h2>
-            <p className="mt-3 max-w-xs text-[11.5px] leading-6 text-cream-100/75">
+            <p className="mt-3 max-w-xs text-[11.5px] leading-6 text-ink/65">
               با ساخت حساب، سفارش‌ها و آدرس‌های خود را در یک‌جا ببینید و سریع‌تر خرید کنید.
             </p>
           </div>
@@ -69,9 +69,9 @@ export default function AuthView() {
               { icon: ShieldCheck, text: 'پرداخت امن و ضمانت اصالت' },
               { icon: Leaf, text: 'پیشنهادهای اختصاصی برای پوست شما' },
             ].map((item) => (
-              <p key={item.text} className="flex items-center gap-2 text-[11px] text-cream-100/75">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cream-50/10 backdrop-blur">
-                  <item.icon className="h-3.5 w-3.5 text-gold-300" />
+              <p key={item.text} className="flex items-center gap-2 text-[11px] text-ink/65">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/70 backdrop-blur">
+                  <item.icon className="h-3.5 w-3.5 text-brand-700" />
                 </span>
                 {item.text}
               </p>
@@ -80,18 +80,18 @@ export default function AuthView() {
 
           <div className="relative mt-8 flex items-center justify-between gap-3 rounded-2xl border border-cream-50/15 bg-cream-50/[0.07] px-4 py-3 backdrop-blur-sm">
             <div>
-              <p className="text-sm font-black text-cream-50">+۱۲٬۰۰۰</p>
-              <p className="mt-0.5 text-[9.5px] text-cream-100/60">مشتری راضی</p>
+              <p className="text-sm font-black text-brand-950">+۱۲٬۰۰۰</p>
+              <p className="mt-0.5 text-[9.5px] text-ink/55">مشتری راضی</p>
             </div>
             <span className="h-8 w-px bg-cream-50/15" />
             <div>
-              <p className="text-sm font-black text-cream-50">۷ روز</p>
-              <p className="mt-0.5 text-[9.5px] text-cream-100/60">ضمانت بازگشت</p>
+              <p className="text-sm font-black text-brand-950">۷ روز</p>
+              <p className="mt-0.5 text-[9.5px] text-ink/55">ضمانت بازگشت</p>
             </div>
             <span className="h-8 w-px bg-cream-50/15" />
             <div>
-              <p className="text-sm font-black text-cream-50">۱۰۰٪</p>
-              <p className="mt-0.5 text-[9.5px] text-cream-100/60">اصالت کالا</p>
+              <p className="text-sm font-black text-brand-950">۱۰۰٪</p>
+              <p className="mt-0.5 text-[9.5px] text-ink/55">اصالت کالا</p>
             </div>
           </div>
         </div>

@@ -62,7 +62,7 @@ export default function CategoryCircles({ categories = [] }) {
               {brand && (
                 <span
                   dir="ltr"
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-800 px-1.5 py-[1px] text-[6.5px] font-black tracking-[0.1em] text-cream-50 shadow-[0_2px_6px_rgba(60,30,28,.25)] transition group-hover:bg-brand-700 sm:px-2 sm:py-[2px] sm:text-[8px]"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/92 px-1.5 py-[1px] text-[6.5px] font-black tracking-[0.1em] text-brand-800 shadow-[0_2px_6px_rgba(214,120,160,.22)] ring-1 ring-brand-200 transition group-hover:bg-white sm:px-2 sm:py-[2px] sm:text-[8px]"
                 >
                   {brand}
                 </span>

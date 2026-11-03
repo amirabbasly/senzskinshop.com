@@ -431,7 +431,58 @@ async function getCategoryMap() {
   return map;
 }
 
+const BRAND_BY_SLUG = {
+  'serum-vitamin-c-15': 'اوردینری',
+  'hyaluronic-acid-serum': 'نامبوزین',
+  'probiotic-night-cream': 'سراوی',
+  'mineral-sunscreen-spf50': 'ایزدین',
+  'gentle-cleansing-foam': 'سنتلا',
+  'green-tea-toner': 'آنوا',
+  'papaya-enzyme-peel-mask': 'آرنسیا',
+  'caffeine-eye-cream': 'اس تی ایوز',
+  'argan-rosemary-hair-oil': 'فینو',
+  'body-lotion-b5': 'وازلین',
+  'retinol-serum-03': 'مدیکیوپ',
+  'collagen-skin-hair-nails': 'کلاژن',
+  'clay-pore-mask': 'اکسیس وای',
+};
+
+async function seedBrands() {
+  const { rows: existing } = await query('SELECT COUNT(*)::int AS c FROM brands');
+  if (existing[0].c > 0) return;
+
+  const brandSeed = [
+    ['آنوا', 'ANUA', 'anua', '/images/brands/brand-anua.jpg', true],
+    ['اوردینری', 'THE ORDINARY', 'ordinary', '/images/brands/brand-ordinary.jpg', true],
+    ['سراوی', 'CeraVe', 'cerave', '/images/brands/brand-cerave.jpg', true],
+    ['نامبوزین', 'Numbuzin', 'numbuzin', '/images/brands/brand-numbuzin.jpg', true],
+    ['وازلین', 'Vaseline', 'vaseline', '/images/products/body-lotion.jpg', false],
+    ['ایزدین', 'ISDIN', 'isdin', '/images/products/sunscreen.jpg', false],
+    ['سنتلا', 'Centella', 'centella', '/images/products/cleansing-foam.jpg', false],
+    ['اکسیس وای', 'AXIS-Y', 'axis-y', '/images/products/toner.jpg', false],
+    ['آرنسیا', 'ARENCIA', 'arencia', '/images/products/clay-mask.jpg', false],
+    ['اس تی ایوز', 'ST.EVE', 'steve', '/images/products/eye-cream.jpg', false],
+    ['فینو', 'Fino', 'fino', '/images/products/argan-hair-oil.jpg', false],
+    ['کلاژن', 'Collagen', 'collagen', '/images/products/supplements.jpg', false],
+    ['مدیکیوپ', 'medicube', 'medicube', '/images/products/retinol-serum.jpg', false],
+    ['سیمپل', 'Simple', 'simple', '/images/products/night-cream.jpg', false],
+    ['senzskinshop', 'SENZ', 'senz', '/images/products/serum-vitamin-c.jpg', false],
+  ];
+
+  let order = 1;
+  for (const [name, latin, slug, image, featured] of brandSeed) {
+    await query(
+      `INSERT INTO brands (name, latin, logo, image, sort_order, is_active, is_featured)
+       VALUES ($1,$2,$3,$4,$5,true,$6)`,
+      [name, latin, `/images/brands/${slug}.png`, image, order, featured]
+    );
+    order += 1;
+  }
+  console.log('[seed] brands ready');
+}
+
 export async function seed({ force = false } = {}) {
+  await seedBrands();
   const { rows: adminRows } = await query('SELECT COUNT(*)::int AS c FROM admins');
   const { rows: productRows } = await query('SELECT COUNT(*)::int AS c FROM products');
   const isEmpty = adminRows[0].c === 0 && productRows[0].c === 0;
@@ -533,7 +584,7 @@ export async function seed({ force = false } = {}) {
           [
             p.name,
             p.slug,
-            'senzskinshop',
+            BRAND_BY_SLUG[p.slug] || 'senzskinshop',
             map[p.category] || null,
             p.short_desc,
             `${p.short_desc}\n\n${p.name} با فرمولاسیون تخصصی و مواد اولیه اصل، برای استفاده روزانه طراحی شده است. تمام محصولات senzskinshop قبل از عرضه از نظر ایمنی و کیفیت بررسی می‌شوند.\n\nاین محصول بدون تست روی حیوانات است و در بسته‌بندی ایمن ارسال می‌شود.`,
@@ -588,13 +639,13 @@ export async function seed({ force = false } = {}) {
           'ضدآفتاب ایزدین',
           'محافظت روزانه با SPF50',
           'ISDIN',
-          '/images/banners/cat-skin.jpg',
+          '/images/banners/side-isdin.jpg',
           '/category/sunscreen',
           'خرید ضدآفتاب',
           'مراقبت از مو با فینو',
           'ماسک و روغن موی ژاپنی',
           'Fino',
-          '/images/banners/cat-hair.jpg',
+          '/images/banners/side-fino.jpg',
           '/category/hair',
           'خرید محصولات مو',
         ]

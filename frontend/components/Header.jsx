@@ -49,7 +49,7 @@ export default function Header({ settings = {}, categories = [] }) {
         }`}
       >
         {announcement && !announcementClosed && (
-          <div className="relative overflow-hidden bg-gradient-to-l from-brand-700 via-brand-600 to-brand-700 text-cream-50">
+          <div className="relative overflow-hidden bg-gradient-to-l from-brand-200 via-brand-100 to-brand-200 text-brand-900">
             <div className="flex w-max animate-marquee items-center py-2 text-[10.5px] font-bold sm:text-[11.5px]">
               {[0, 1].map((group) => (
                 <div key={group} className="flex shrink-0 items-center">
@@ -68,7 +68,7 @@ export default function Header({ settings = {}, categories = [] }) {
               type="button"
               onClick={() => setAnnouncementClosed(true)}
               aria-label="بستن اطلاعیه"
-              className="absolute left-1.5 top-1/2 -translate-y-1/2 rounded-full bg-brand-900/45 p-1 text-cream-50 backdrop-blur transition hover:bg-brand-900/70"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 rounded-full bg-white/70 p-1 text-brand-900 backdrop-blur transition hover:bg-white"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -100,7 +100,7 @@ export default function Header({ settings = {}, categories = [] }) {
                 className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
                 aria-label="جست‌وجو"
               />
-              <button type="submit" className="rounded-full bg-brand-700 px-3 py-1 text-[11px] font-bold text-cream-50 transition hover:bg-brand-800">
+              <button type="submit" className="rounded-full bg-brand-300 px-3 py-1 text-[11px] font-bold text-brand-950 transition hover:bg-brand-400">
                 جست‌وجو
               </button>
             </label>
@@ -119,12 +119,12 @@ export default function Header({ settings = {}, categories = [] }) {
             </Link>
             <Link
               href="/cart"
-              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-brand-700 text-cream-50 transition hover:bg-brand-800 lg:h-auto lg:w-auto lg:gap-2 lg:px-4 lg:py-2.5"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-brand-200 text-brand-950 transition hover:bg-brand-300 lg:h-auto lg:w-auto lg:gap-2 lg:px-4 lg:py-2.5"
             >
               <ShoppingBag className="h-5 w-5" />
               <span className="hidden text-xs font-bold sm:block">سبد خرید</span>
               {count > 0 && (
-                <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold-400 px-1 text-[10px] font-black text-brand-950">
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-500 px-1 text-[10px] font-black text-white">
                   {toFa(count)}
                 </span>
               )}
@@ -173,12 +173,12 @@ export default function Header({ settings = {}, categories = [] }) {
                 aria-label="جست‌وجو"
               />
             </label>
-            <button type="submit" className="shrink-0 rounded-lg bg-brand-800 px-3 text-[11px] font-bold text-white">
+            <button type="submit" className="shrink-0 rounded-lg bg-brand-300 px-3 text-[11px] font-bold text-brand-950">
               جست‌وجو
             </button>
             <Link
               href="/products?on_sale=1"
-              className="flex shrink-0 items-center rounded-lg bg-brand-600 px-3 text-[11px] font-bold text-white"
+              className="flex shrink-0 items-center rounded-lg bg-brand-300 px-3 text-[11px] font-bold text-brand-950"
             >
               تخفیفات
             </Link>
@@ -237,7 +237,7 @@ export default function Header({ settings = {}, categories = [] }) {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-brand-950/50" onClick={() => setMobileOpen(false)} />
+          <div className="absolute inset-0 bg-brand-900/25 backdrop-blur-[1px]" onClick={() => setMobileOpen(false)} />
           <div className="absolute inset-y-0 right-0 flex w-[86%] max-w-sm flex-col overflow-y-auto bg-cream-50 p-5">
             <div className="mb-6 flex items-center justify-between">
               <Logo settings={settings} />
@@ -249,13 +249,13 @@ export default function Header({ settings = {}, categories = [] }) {
             <Link
               href={isLoggedIn ? '/account' : '/login'}
               onClick={() => setMobileOpen(false)}
-              className="mb-4 flex items-center justify-between rounded-2xl bg-brand-800 px-4 py-3 text-xs font-bold text-cream-50"
+              className="mb-4 flex items-center justify-between rounded-2xl bg-brand-100 px-4 py-3 text-xs font-bold text-brand-950"
             >
               <span className="flex items-center gap-2">
                 <User className="h-4 w-4" />
                 {isLoggedIn ? `حساب کاربری ${customer?.name || ''}` : 'ورود / ثبت‌نام'}
               </span>
-              <span className="text-[10px] text-gold-300">
+              <span className="text-[10px] text-brand-700">
                 {isLoggedIn ? 'مشاهده سفارش‌ها' : 'ساخت حساب'}
               </span>
             </Link>

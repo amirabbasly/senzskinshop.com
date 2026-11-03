@@ -65,11 +65,12 @@ router.get('/categories', wrap(async (req, res) => {
 
 router.get('/brands', wrap(async (req, res) => {
   const { rows } = await query(
-    `SELECT TRIM(brand) AS name, COUNT(*)::int AS count
-       FROM products
-      WHERE is_active = true AND COALESCE(TRIM(brand), '') <> ''
-      GROUP BY TRIM(brand)
-      ORDER BY count DESC, name ASC`
+    `SELECT b.id, b.name, b.latin, b.logo, b.image, b.sort_order, b.is_featured,
+            (SELECT COUNT(*)::int FROM products p
+              WHERE p.is_active = true AND TRIM(p.brand) = b.name) AS count
+       FROM brands b
+      WHERE b.is_active = true
+      ORDER BY b.sort_order, b.id`
   );
   res.json({ brands: rows });
 }));

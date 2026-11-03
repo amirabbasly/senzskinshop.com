@@ -34,13 +34,13 @@ export default function CategoryBanners() {
                 className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
               />
             </span>
-            <span className="absolute inset-0 bg-gradient-to-l from-brand-950/45 via-brand-950/10 to-transparent" />
+            <span className="absolute inset-0 bg-gradient-to-l from-white/90 via-white/35 to-transparent" />
             <span className="absolute inset-y-0 right-0 flex w-[58%] flex-col justify-center gap-1.5 px-4 text-right sm:gap-2 sm:px-7">
-              <span className="text-[13px] font-black leading-6 text-cream-50 drop-shadow-sm sm:text-[19px] sm:leading-8">
+              <span className="text-[13px] font-black leading-6 text-brand-950 drop-shadow-sm sm:text-[19px] sm:leading-8">
                 {banner.title}
               </span>
-              <span className="text-[9.5px] leading-4 text-cream-50/85 sm:text-[11.5px]">{banner.subtitle}</span>
-              <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-md bg-cream-50/95 px-2.5 py-1 text-[9.5px] font-bold text-brand-800 transition group-hover:bg-cream-50 sm:px-3 sm:py-1.5 sm:text-[11px]">
+              <span className="text-[9.5px] leading-4 text-brand-900/70 sm:text-[11.5px]">{banner.subtitle}</span>
+              <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-md bg-brand-500 px-2.5 py-1 text-[9.5px] font-bold text-white transition group-hover:bg-brand-600 sm:px-3 sm:py-1.5 sm:text-[11px]">
                 مشاهده محصولات
                 <ArrowLeft className="h-3 w-3" />
               </span>

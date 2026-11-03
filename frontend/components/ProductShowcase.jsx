@@ -34,12 +34,12 @@ function ShowcaseCard({ product }) {
           />
         </div>
         {off > 0 && (
-          <span className="absolute right-1.5 top-1.5 rounded-md bg-brand-700 px-1.5 py-0.5 text-[9.5px] font-black text-white shadow-sm sm:right-2 sm:top-2 sm:rounded-lg sm:px-2 sm:text-[10.5px]">
+          <span className="absolute right-1.5 top-1.5 rounded-md bg-brand-500 px-1.5 py-0.5 text-[9.5px] font-black text-white shadow-sm sm:right-2 sm:top-2 sm:rounded-lg sm:px-2 sm:text-[10.5px]">
             {toFa(off)}٪
           </span>
         )}
         {outOfStock && (
-          <span className="absolute inset-x-1.5 bottom-1.5 rounded-md bg-brand-950/85 py-0.5 text-center text-[8.5px] font-bold text-cream-50 backdrop-blur sm:inset-x-2 sm:bottom-2 sm:rounded-lg sm:py-1 sm:text-[9.5px]">
+          <span className="absolute inset-x-1.5 bottom-1.5 rounded-md bg-white/90 py-0.5 text-center text-[8.5px] font-bold text-brand-900 backdrop-blur sm:inset-x-2 sm:bottom-2 sm:rounded-lg sm:py-1 sm:text-[9.5px]">
             ناموجود
           </span>
         )}
@@ -69,7 +69,7 @@ function ShowcaseCard({ product }) {
           onClick={handleAdd}
           disabled={outOfStock}
           aria-label="افزودن به سبد خرید"
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-cream-300 disabled:text-ink/40 sm:h-8 sm:w-8"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-300 text-brand-950 transition hover:bg-brand-400 disabled:cursor-not-allowed disabled:bg-cream-300 disabled:text-ink/40 sm:h-8 sm:w-8"
         >
           {added ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
         </button>
@@ -114,7 +114,7 @@ export default function ProductShowcase({
           </div>
           <Link
             href={href}
-            className="shrink-0 rounded-lg bg-brand-700 px-2 py-1 text-[9.5px] font-bold text-white shadow-sm"
+            className="shrink-0 rounded-lg bg-brand-500 px-2 py-1 text-[9.5px] font-bold text-white shadow-sm"
           >
             مشاهده همه
           </Link>
@@ -135,7 +135,7 @@ export default function ProductShowcase({
             <p className="text-[9px] leading-4 text-ink/50">{subtitle}</p>
             <Link
               href={href}
-              className="mt-1 inline-flex items-center gap-1.5 rounded-lg bg-brand-700 px-3 py-1.5 text-[10px] font-bold text-white shadow-sm transition hover:bg-brand-800"
+              className="mt-1 inline-flex items-center gap-1.5 rounded-lg bg-brand-400 px-3 py-1.5 text-[10px] font-bold text-brand-950 shadow-sm transition hover:bg-brand-800"
             >
               مشاهده همه
               <ArrowLeft className="h-3 w-3" />

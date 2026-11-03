@@ -198,7 +198,7 @@ export default function CheckoutView() {
         <div className="space-y-5">
           <section className="rounded-3xl border border-cream-300/80 bg-white p-5 sm:p-6">
             <h2 className="mb-4 flex items-center gap-2 text-sm font-extrabold text-brand-950">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-800 text-[11px] text-cream-50">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-400 text-[11px] text-brand-950">
                 ۱
               </span>
               اطلاعات گیرنده
@@ -359,7 +359,7 @@ export default function CheckoutView() {
 
           <section className="rounded-3xl border border-cream-300/80 bg-white p-5 sm:p-6">
             <h2 className="mb-4 flex items-center gap-2 text-sm font-extrabold text-brand-950">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-800 text-[11px] text-cream-50">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-400 text-[11px] text-brand-950">
                 ۲
               </span>
               روش پرداخت

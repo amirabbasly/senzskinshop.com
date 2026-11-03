@@ -60,7 +60,7 @@ export default function AccountView() {
       <div className="grid gap-5 lg:grid-cols-[260px_1fr]">
         <aside className="space-y-4">
           <div className="rounded-[1.7rem] border border-cream-300/80 bg-white p-5 text-center shadow-soft">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-950 text-xl font-black text-cream-50">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-200 text-xl font-black text-brand-900">
               {(customer?.name || '؟').trim().charAt(0)}
             </div>
             <p className="mt-3 text-sm font-black text-brand-950">{customer?.name}</p>

@@ -17,6 +17,7 @@ import {
   Settings,
   ShoppingBag,
   Star,
+  Tag,
   Ticket,
   X,
 } from '../Icons';
@@ -25,6 +26,7 @@ const LINKS = [
   { href: '/admin', label: 'داشبورد', icon: LayoutDashboard },
   { href: '/admin/products', label: 'محصولات', icon: Package },
   { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: Grid },
+  { href: '/admin/brands', label: 'برندها', icon: Tag },
   { href: '/admin/orders', label: 'سفارش‌ها', icon: ShoppingBag },
   { href: '/admin/banners', label: 'بنر و اسلایدر', icon: ImageIcon },
   { href: '/admin/posts', label: 'مقالات', icon: Pencil },
@@ -37,6 +39,7 @@ const TITLES = {
   '/admin': 'داشبورد مدیریت',
   '/admin/products': 'مدیریت محصولات',
   '/admin/categories': 'مدیریت دسته‌بندی‌ها',
+  '/admin/brands': 'مدیریت برندها',
   '/admin/orders': 'مدیریت سفارش‌ها',
   '/admin/banners': 'مدیریت بنر و اسلایدر',
   '/admin/posts': 'مدیریت مقالات',
@@ -94,12 +97,12 @@ export default function AdminShell({ children }) {
     'پنل مدیریت';
 
   const sidebar = (
-    <div className="flex h-full flex-col bg-brand-950 text-cream-100">
+    <div className="flex h-full flex-col border-l border-brand-100 bg-white text-ink">
       <div className="flex items-center gap-3 border-b border-cream-50/10 px-5 py-5">
         <LogoMark className="h-10 w-10" />
         <div>
-          <p className="text-sm font-black text-cream-50">senzskinshop</p>
-          <p className="text-[10px] tracking-widest text-gold-300">ADMIN PANEL</p>
+          <p className="text-sm font-black text-brand-950">senzskinshop</p>
+          <p className="text-[10px] tracking-widest text-brand-600">ADMIN PANEL</p>
         </div>
       </div>
 
@@ -111,7 +114,7 @@ export default function AdminShell({ children }) {
               key={link.href}
               href={link.href}
               className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[12.5px] font-semibold transition ${
-                active ? 'bg-cream-50/10 text-gold-300' : 'text-cream-100/65 hover:bg-cream-50/5 hover:text-cream-50'
+                active ? 'bg-brand-100 text-brand-900' : 'text-ink/60 hover:bg-brand-50 hover:text-brand-900'
               }`}
             >
               <link.icon className="h-[18px] w-[18px]" />
@@ -125,7 +128,7 @@ export default function AdminShell({ children }) {
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[12px] font-semibold text-cream-100/60 hover:bg-cream-50/5 hover:text-cream-50"
+          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[12px] font-semibold text-ink/55 hover:bg-brand-50 hover:text-brand-900"
         >
           <ArrowUpLeft className="h-4 w-4" />
           مشاهده سایت
@@ -148,7 +151,7 @@ export default function AdminShell({ children }) {
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-brand-950/50" onClick={() => setOpen(false)} />
+          <div className="absolute inset-0 bg-brand-900/25" onClick={() => setOpen(false)} />
           <div className="absolute inset-y-0 right-0 w-64">{sidebar}</div>
         </div>
       )}
@@ -173,7 +176,7 @@ export default function AdminShell({ children }) {
                 {admin?.email}
               </p>
             </div>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-800 text-[11px] font-black text-cream-50">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-200 text-[11px] font-black text-brand-900">
               {(admin?.name || 'م').charAt(0)}
             </span>
           </div>

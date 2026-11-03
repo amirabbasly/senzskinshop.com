@@ -38,7 +38,7 @@ export default function ProductTabs({ product, reviews = [] }) {
             type="button"
             onClick={() => setTab(item.key)}
             className={`rounded-full px-4 py-2 text-xs font-bold transition ${
-              tab === item.key ? 'bg-brand-800 text-cream-50' : 'text-ink/60 hover:bg-cream-100'
+              tab === item.key ? 'bg-brand-300 text-brand-950' : 'text-ink/60 hover:bg-cream-100'
             }`}
           >
             {item.label}

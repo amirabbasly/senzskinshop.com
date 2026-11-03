@@ -76,6 +76,18 @@ CREATE TABLE IF NOT EXISTS banners (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS brands (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL,
+  latin       TEXT DEFAULT '',
+  logo        TEXT DEFAULT '',
+  image       TEXT DEFAULT '',
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  is_featured BOOLEAN NOT NULL DEFAULT false,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS posts (
   id         SERIAL PRIMARY KEY,
   title      TEXT NOT NULL,

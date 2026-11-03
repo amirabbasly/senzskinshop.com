@@ -81,15 +81,15 @@ export default async function AboutPage() {
         ))}
       </section>
 
-      <section className="mt-10 grid gap-4 rounded-[2rem] bg-brand-950 p-7 text-cream-50 sm:grid-cols-3 sm:p-9">
+      <section className="mt-10 grid gap-4 rounded-[2rem] bg-brand-100 p-7 text-brand-950 sm:grid-cols-3 sm:p-9">
         {[
           { value: toFa('+۱۲٬۰۰۰'), label: 'سفارش موفق' },
           { value: toFa('+۱۵۰'), label: 'محصول تخصصی' },
           { value: toFa('۹۶٪'), label: 'رضایت مشتریان' },
         ].map((stat) => (
           <div key={stat.label} className="text-center">
-            <p className="text-2xl font-black text-gold-300">{stat.value}</p>
-            <p className="mt-1 text-[11px] text-cream-100/60">{stat.label}</p>
+            <p className="text-2xl font-black text-brand-700">{stat.value}</p>
+            <p className="mt-1 text-[11px] text-ink/55">{stat.label}</p>
           </div>
         ))}
       </section>

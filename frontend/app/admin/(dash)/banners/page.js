@@ -115,7 +115,11 @@ export default function AdminBannersPage() {
                   <div className="flex h-full items-center justify-center text-[11px] text-ink/35">بدون تصویر</div>
                 )}
                 <span className="absolute right-2 top-2 rounded-full bg-brand-950/70 px-2 py-0.5 text-[9px] font-bold text-cream-50">
-                  {row.placement === 'hero' ? 'اسلایدر اصلی' : 'بنر نواری'}
+                  {row.placement === 'hero'
+                    ? 'اسلایدر بزرگ'
+                    : row.placement === 'hero_side'
+                      ? 'اسلایدر کنار'
+                      : 'بنر نواری'}
                 </span>
                 <span
                   className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-bold ${
@@ -158,8 +162,8 @@ export default function AdminBannersPage() {
             <Field label="زیرعنوان" className="sm:col-span-2">
               <Textarea className="min-h-16" value={form.subtitle} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} />
             </Field>
-            <Field label="برچسب">
-              <Input value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} placeholder="مثلاً کالکشن جدید" />
+            <Field label="نام برند / برچسب روی بنر">
+              <Input dir="ltr" value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} placeholder="مثلاً CeraVe" />
             </Field>
             <Field label="متن دکمه">
               <Input value={form.btn_text} onChange={(e) => setForm({ ...form, btn_text: e.target.value })} />
@@ -169,7 +173,8 @@ export default function AdminBannersPage() {
             </Field>
             <Field label="محل نمایش">
               <Select value={form.placement} onChange={(e) => setForm({ ...form, placement: e.target.value })}>
-                <option value="hero">اسلایدر صفحه اصلی</option>
+                <option value="hero">اسلایدر بزرگ (هیرو)</option>
+                <option value="hero_side">اسلایدر کوچک کنار هیرو</option>
                 <option value="strip">بنر نواری</option>
               </Select>
             </Field>

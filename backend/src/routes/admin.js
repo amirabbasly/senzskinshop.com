@@ -286,6 +286,51 @@ router.delete('/categories/:id', wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+/* ------------------------------ brands ------------------------------ */
+router.get('/brands', wrap(async (req, res) => {
+  const { rows } = await query(
+    `SELECT b.*, (SELECT COUNT(*)::int FROM products p WHERE p.brand = b.name) AS product_count
+       FROM brands b ORDER BY b.sort_order, b.id`
+  );
+  res.json(rows);
+}));
+
+router.post('/brands', wrap(async (req, res) => {
+  const b = req.body || {};
+  if (!b.name) return res.status(400).json({ error: 'نام برند الزامی است.' });
+  const { rows } = await query(
+    `INSERT INTO brands (name, latin, logo, image, sort_order, is_active, is_featured)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [String(b.name).trim(), String(b.latin || ''), String(b.logo || ''), String(b.image || ''),
+      toInt(b.sort_order, 0), toBool(b.is_active, true), toBool(b.is_featured, false)]
+  );
+  res.status(201).json(rows[0]);
+}));
+
+router.put('/brands/:id', wrap(async (req, res) => {
+  const b = req.body || {};
+  if (!b.name) return res.status(400).json({ error: 'نام برند الزامی است.' });
+  const id = toInt(req.params.id);
+  const { rows: before } = await query('SELECT name FROM brands WHERE id = $1', [id]);
+  const { rows } = await query(
+    `UPDATE brands SET name=$1, latin=$2, logo=$3, image=$4, sort_order=$5,
+       is_active=$6, is_featured=$7 WHERE id=$8 RETURNING *`,
+    [String(b.name).trim(), String(b.latin || ''), String(b.logo || ''), String(b.image || ''),
+      toInt(b.sort_order, 0), toBool(b.is_active, true), toBool(b.is_featured, false), id]
+  );
+  if (!rows.length) return res.status(404).json({ error: 'برند یافت نشد.' });
+  // با تغییر نام برند، نام برند محصولات مرتبط هم هم‌سان می‌شود
+  if (before.length && before[0].name !== rows[0].name) {
+    await query('UPDATE products SET brand = $1 WHERE brand = $2', [rows[0].name, before[0].name]);
+  }
+  res.json(rows[0]);
+}));
+
+router.delete('/brands/:id', wrap(async (req, res) => {
+  await query('DELETE FROM brands WHERE id = $1', [toInt(req.params.id)]);
+  res.json({ ok: true });
+}));
+
 /* ------------------------------ banners ------------------------------ */
 router.get('/banners', wrap(async (req, res) => {
   const { rows } = await query('SELECT * FROM banners ORDER BY placement, sort_order, id');

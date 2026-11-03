@@ -71,21 +71,21 @@ export default async function ContactPage() {
             )}
           </div>
 
-          <div className="mt-7 rounded-2xl bg-brand-950 p-5 text-cream-50">
+          <div className="mt-7 rounded-2xl bg-brand-100 p-5 text-brand-950">
             <h2 className="flex items-center gap-2 text-sm font-extrabold">
-              <MapPin className="h-4 w-4 text-gold-300" />
+              <MapPin className="h-4 w-4 text-brand-600" />
               آدرس دفتر مرکزی
             </h2>
-            <p className="mt-2 text-[11.5px] leading-7 text-cream-100/70">{settings.address}</p>
+            <p className="mt-2 text-[11.5px] leading-7 text-ink/60">{settings.address}</p>
             {settings.postal_code && (
-              <p className="mt-1 text-[11px] text-cream-100/50">کد پستی: {toFa(settings.postal_code)}</p>
+              <p className="mt-1 text-[11px] text-ink/45">کد پستی: {toFa(settings.postal_code)}</p>
             )}
             {settings.map_link && (
               <a
                 href={settings.map_link}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-bold text-gold-300"
+                className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-700"
               >
                 مشاهده روی نقشه
               </a>

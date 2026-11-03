@@ -104,7 +104,7 @@ export default async function OrderPage({ params, searchParams }) {
                     )}
                     <span
                       className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-bold ${
-                        done ? 'bg-brand-700 text-cream-50' : 'bg-cream-200 text-ink/40'
+                        done ? 'bg-brand-400 text-brand-950' : 'bg-cream-200 text-ink/40'
                       }`}
                     >
                       {done ? <Check className="h-4 w-4" /> : toFa(index + 1)}
@@ -208,9 +208,9 @@ export default async function OrderPage({ params, searchParams }) {
               )}
             </div>
 
-            <div className="rounded-3xl bg-brand-900 p-5 text-cream-50">
+            <div className="rounded-3xl bg-brand-100 p-5 text-brand-950">
               <p className="text-xs font-extrabold">سوالی دارید؟</p>
-              <p className="mt-2 text-[11px] leading-6 text-cream-100/70">
+              <p className="mt-2 text-[11px] leading-6 text-ink/60">
                 کد سفارش خود را هنگام تماس با پشتیبانی اعلام کنید تا سریع‌تر راهنمایی شوید.
               </p>
               <Link href="/contact" className="btn-gold btn-sm mt-4 w-full">
