@@ -3,7 +3,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { getSettings } from '@/lib/api';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
 import { toFa } from '@/lib/format';
-import { Clock, Instagram, Mail, MapPin, Phone, Telegram, Whatsapp } from '@/components/Icons';
+import { Clock, Mail, MapPin, Phone } from '@/components/Icons';
 
 export const metadata = {
   title: 'تماس با ما',
@@ -53,19 +53,19 @@ export default async function ContactPage() {
           <div className="mt-4 flex flex-wrap gap-2.5">
             {settings.whatsapp && (
               <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" className="btn-primary btn-sm">
-                <Whatsapp className="h-4 w-4" />
+                <img src="/images/icons/social-whatsapp.png" alt="واتس‌اپ" className="h-4 w-4 rounded-[4px] object-contain" />
                 گفت‌وگو در واتس‌اپ
               </a>
             )}
             {settings.instagram && (
               <a href={settings.instagram} target="_blank" rel="noreferrer" className="btn-outline btn-sm">
-                <Instagram className="h-4 w-4" />
+                <img src="/images/icons/social-instagram.png" alt="اینستاگرام" className="h-4 w-4 rounded-[4px] object-contain" />
                 اینستاگرام
               </a>
             )}
             {settings.telegram && (
               <a href={settings.telegram} target="_blank" rel="noreferrer" className="btn-outline btn-sm">
-                <Telegram className="h-4 w-4" />
+                <img src="/images/icons/social-telegram.png" alt="تلگرام" className="h-4 w-4 rounded-[4px] object-contain" />
                 تلگرام
               </a>
             )}

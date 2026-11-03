@@ -8,7 +8,6 @@ import ProductTabs from '@/components/product/ProductTabs';
 import Stars from '@/components/product/Stars';
 import { getProduct } from '@/lib/api';
 import { discountPercent, formatPrice, toFa } from '@/lib/format';
-import { Check, RefreshCw, ShieldCheck, Truck } from '@/components/Icons';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -126,16 +125,16 @@ export default async function ProductPage({ params }) {
 
             <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
               {[
-                { icon: ShieldCheck, label: 'ضمانت اصالت' },
-                { icon: Truck, label: 'ارسال سریع' },
-                { icon: RefreshCw, label: '۷ روز بازگشت' },
-                { icon: Check, label: 'پرداخت امن' },
+                { image: '/images/icons/service-authentic.png', label: 'ضمانت اصالت' },
+                { image: '/images/icons/service-shipping.png', label: 'ارسال سریع' },
+                { image: '/images/icons/service-return.png', label: '۷ روز بازگشت' },
+                { image: '/images/icons/service-payment.png', label: 'پرداخت امن' },
               ].map((item) => (
                 <div
                   key={item.label}
                   className="flex flex-col items-center gap-1.5 rounded-2xl bg-cream-100/70 px-2 py-3 text-center"
                 >
-                  <item.icon className="h-5 w-5 text-brand-700" />
+                  <img src={item.image} alt={item.label} loading="lazy" className="h-8 w-8 rounded-full object-contain" />
                   <span className="text-[10px] font-bold text-brand-900">{item.label}</span>
                 </div>
               ))}

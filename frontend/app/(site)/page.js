@@ -9,7 +9,7 @@ import ProductShowcase from '@/components/ProductShowcase';
 import HighlightSplit from '@/components/HighlightSplit';
 import SectionHeading from '@/components/SectionHeading';
 import ProductCard from '@/components/ProductCard';
-import { getBrands, getHome } from '@/lib/api';
+import { getBanners, getBrands, getHome } from '@/lib/api';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
 import { formatDate } from '@/lib/format';
 import { ArrowLeft } from '@/components/Icons';
@@ -23,7 +23,11 @@ function dateParts(iso) {
 }
 
 export default async function HomePage() {
-  const [data, brandsData] = await Promise.all([getHome(), getBrands()]);
+  const [data, brandsData, sideBannerData] = await Promise.all([
+    getHome(),
+    getBrands(),
+    getBanners('hero_side'),
+  ]);
   const settings = { ...DEFAULT_SETTINGS, ...(data?.settings || {}) };
   const categories = data?.categories || [];
   const featured = data?.featured || [];
@@ -31,6 +35,7 @@ export default async function HomePage() {
   const newest = data?.newest || [];
   const posts = data?.posts || [];
   const banners = data?.banners || [];
+  const sideBanners = Array.isArray(sideBannerData) ? sideBannerData : sideBannerData?.banners || [];
   const brands = brandsData?.brands || [];
 
   const showcase = [];
@@ -43,7 +48,7 @@ export default async function HomePage() {
     <div className="pb-5">
       <BrandCircles brands={brands} />
 
-      <HeroSlider banners={banners} />
+      <HeroSlider banners={banners} sideBanners={sideBanners} />
 
       <div className="container-page mt-3 hidden sm:mt-4 lg:block">
         <ServiceStrip services={settings.services || []} />

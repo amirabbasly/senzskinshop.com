@@ -2,42 +2,39 @@ import Link from 'next/link';
 import Logo from './Logo';
 import NewsletterForm from './NewsletterForm';
 import { toFa } from '@/lib/format';
-import {
-  Instagram,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Telegram,
-  Truck,
-  Whatsapp,
-  Headset,
-  RefreshCw,
-} from './Icons';
+import { Mail, MapPin, Phone } from './Icons';
+import { serviceImage } from '@/lib/service-media';
+
+const SOCIAL_IMAGES = {
+  instagram: '/images/icons/social-instagram.png',
+  telegram: '/images/icons/social-telegram.png',
+  whatsapp: '/images/icons/social-whatsapp.png',
+};
 
 export default function Footer({ settings = {}, categories = [] }) {
   const year = toFa(new Date().getFullYear() - 621);
   const services = Array.isArray(settings.services) && settings.services.length
     ? settings.services
     : [
-        { title: 'ارسال سریع', desc: 'ارسال به سراسر ایران' },
-        { title: 'ضمانت اصالت', desc: 'تضمین اورجینال بودن محصولات' },
-        { title: 'مشاوره تخصصی', desc: 'راهنمای انتخاب محصول' },
-        { title: '۷ روز بازگشت', desc: 'بازگشت کالا تا ۷ روز' },
+        { title: 'ارسال سریع', desc: 'ارسال به سراسر ایران با پست پیشتاز و تیپاکس' },
+        { title: 'ضمانت اصالت', desc: 'تضمین اورجینال بودن تمام محصولات' },
+        { title: 'پرداخت امن', desc: 'پرداخت آنلاین از طریق درگاه بانکی معتبر' },
+        { title: 'مشاوره تخصصی', desc: 'راهنمای انتخاب محصول توسط کارشناس پوست' },
       ];
-  const icons = [Truck, ShieldCheck, Headset, RefreshCw];
 
   return (
     <footer className="mt-20 bg-brand-950 text-cream-100">
       <div className="container-page">
         <div className="grid gap-8 border-b border-cream-50/10 py-10 sm:grid-cols-2 lg:grid-cols-4">
           {services.slice(0, 4).map((service, index) => {
-            const Icon = icons[index % icons.length];
             return (
               <div key={service.title} className="flex items-start gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-cream-50/10 text-gold-300">
-                  <Icon />
-                </span>
+                <img
+                  src={serviceImage(index)}
+                  alt={service.title}
+                  loading="lazy"
+                  className="h-11 w-11 shrink-0 rounded-xl object-contain"
+                />
                 <div>
                   <p className="text-sm font-bold text-cream-50">{service.title}</p>
                   <p className="mt-1 text-[11px] leading-5 text-cream-100/60">{service.desc}</p>
@@ -62,7 +59,7 @@ export default function Footer({ settings = {}, categories = [] }) {
                   aria-label="اینستاگرام"
                   className="flex h-9 w-9 items-center justify-center rounded-xl bg-cream-50/10 transition hover:bg-gold-400 hover:text-brand-950"
                 >
-                  <Instagram className="h-4 w-4" />
+                  <img src={SOCIAL_IMAGES.instagram} alt="اینستاگرام" className="h-5 w-5 rounded-[6px] object-contain" />
                 </a>
               )}
               {settings.telegram && (
@@ -73,7 +70,7 @@ export default function Footer({ settings = {}, categories = [] }) {
                   aria-label="تلگرام"
                   className="flex h-9 w-9 items-center justify-center rounded-xl bg-cream-50/10 transition hover:bg-gold-400 hover:text-brand-950"
                 >
-                  <Telegram className="h-4 w-4" />
+                  <img src={SOCIAL_IMAGES.telegram} alt="تلگرام" className="h-5 w-5 rounded-[6px] object-contain" />
                 </a>
               )}
               {settings.whatsapp && (
@@ -84,7 +81,7 @@ export default function Footer({ settings = {}, categories = [] }) {
                   aria-label="واتس‌اپ"
                   className="flex h-9 w-9 items-center justify-center rounded-xl bg-cream-50/10 transition hover:bg-gold-400 hover:text-brand-950"
                 >
-                  <Whatsapp className="h-4 w-4" />
+                  <img src={SOCIAL_IMAGES.whatsapp} alt="واتس‌اپ" className="h-5 w-5 rounded-[6px] object-contain" />
                 </a>
               )}
             </div>

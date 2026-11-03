@@ -2,122 +2,194 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles } from './Icons';
+import { ArrowLeft, ChevronLeft, ChevronRight } from './Icons';
 
-const FALLBACK = [
+const BIG_FALLBACK = [
   {
-    id: 'fallback',
-    title: 'پوست شما، شایسته بهترین مراقبت',
-    subtitle: 'کالکشن تخصصی سرم و آبرسان senzskinshop با فرمولاسیون علمی',
-    badge: 'کالکشن جدید',
-    image: '/images/banners/hero-1.jpg',
+    id: 'big-1',
+    brand: 'THE ORDINARY',
+    title: 'پوست شفاف با سرم‌های اوردینری',
+    subtitle: 'هیالورونیک اسید، نیاسینامید و رتینول — اورجینال با ضمانت اصالت senzskinshop',
+    image: '/images/banners/hero-ordinary.jpg',
     link: '/products',
-    btn_text: 'مشاهده کالکشن',
+    btn_text: 'مشاهده محصولات',
+  },
+  {
+    id: 'big-2',
+    brand: 'CeraVe',
+    title: 'پاکسازی و آبرسانی با سراوی',
+    subtitle: 'کلینزر و مرطوب‌کننده سراوی برای پوست خشک و حساس',
+    image: '/images/banners/hero-cerave.jpg',
+    link: '/products',
+    btn_text: 'خرید محصولات سراوی',
   },
 ];
 
-export default function HeroSlider({ banners = [] }) {
-  const slides = banners.length ? banners : FALLBACK;
+const SIDE_FALLBACK = [
+  {
+    id: 'side-1',
+    brand: 'ISDIN',
+    title: 'ضدآفتاب ایزدین',
+    subtitle: 'محافظت روزانه با SPF50',
+    image: '/images/banners/cat-skin.jpg',
+    link: '/category/sunscreen',
+    btn_text: 'خرید ضدآفتاب',
+  },
+  {
+    id: 'side-2',
+    brand: 'Fino',
+    title: 'مراقبت از مو با فینو',
+    subtitle: 'ماسک و روغن موی ژاپنی',
+    image: '/images/banners/cat-hair.jpg',
+    link: '/category/hair',
+    btn_text: 'خرید محصولات مو',
+  },
+];
+
+function useAutoSlide(length, delay = 6500) {
   const [index, setIndex] = useState(0);
-
   useEffect(() => {
-    if (slides.length < 2) return undefined;
-    const timer = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6500);
+    if (length < 2) return undefined;
+    const timer = setInterval(() => setIndex((i) => (i + 1) % length), delay);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [length, delay]);
+  return [index, setIndex];
+}
 
-  const go = (dir) => setIndex((i) => (i + dir + slides.length) % slides.length);
-  const slide = slides[index];
+export default function HeroSlider({ banners = [], sideBanners = [] }) {
+  const big = banners.length ? banners : BIG_FALLBACK;
+  const side = sideBanners.length ? sideBanners : SIDE_FALLBACK;
+  const [bigIndex, setBigIndex] = useAutoSlide(big.length);
+  const [sideIndex, setSideIndex] = useAutoSlide(side.length, 5200);
+
+  const bigSlide = big[bigIndex % big.length];
+  const sideSlide = side[sideIndex % side.length];
+  const goBig = (dir) => setBigIndex((i) => (i + dir + big.length) % big.length);
 
   return (
     <section className="container-page mt-2 sm:mt-3">
-      <div className="relative isolate mx-auto overflow-hidden rounded-2xl bg-brand-950 shadow-soft sm:rounded-[1.75rem]">
-      {/* تصویر اسلاید */}
-      <img
-        key={slide.id || index}
-        src={slide.image || '/images/banners/hero-1.jpg'}
-        alt={slide.title || 'senzskinshop'}
-        className="absolute inset-0 h-full w-full object-cover object-center animate-floatUp"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/15 lg:bg-gradient-to-l lg:from-brand-950/95 lg:via-brand-950/65 lg:to-brand-950/10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-transparent to-transparent" />
+      <div className="grid gap-2.5 lg:grid-cols-[1.9fr_1fr] lg:gap-3">
+        {/* ---------- اسلایدر بزرگ ---------- */}
+        <div className="relative isolate min-h-[52svh] overflow-hidden rounded-2xl bg-brand-950 shadow-soft sm:min-h-[58svh] sm:rounded-[1.75rem] lg:min-h-[520px]">
+          <img
+            key={bigSlide.id || bigIndex}
+            src={bigSlide.image || '/images/banners/hero-ordinary.jpg'}
+            alt={bigSlide.title || 'senzskinshop'}
+            className="absolute inset-0 h-full w-full animate-floatUp object-cover object-[32%_58%] lg:object-[38%_52%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/55 to-brand-950/10 lg:bg-gradient-to-l lg:from-brand-950/90 lg:via-brand-950/45 lg:to-transparent" />
 
-      <div className="relative z-10 flex min-h-[58svh] items-end pb-14 pt-20 sm:min-h-[62svh] sm:pb-16 md:min-h-[480px] md:items-center md:pb-0 lg:min-h-[calc(100vh-18rem)] lg:py-16">
-        <div className="w-full px-5 sm:px-8 lg:max-w-2xl lg:px-14 xl:px-20">
-          {slide.badge && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-300/40 bg-gold-300/10 px-3 py-1 text-[10.5px] font-bold text-gold-200 backdrop-blur sm:text-[11px]">
-              <Sparkles className="h-3.5 w-3.5" />
-              {slide.badge}
-            </span>
-          )}
-          <h1 className="mt-3.5 text-balance text-[1.65rem] font-black leading-[1.5] text-cream-50 sm:mt-4 sm:text-3xl lg:text-[3.15rem] lg:leading-[1.4]">
-            {slide.title}
-          </h1>
-          <p className="mt-3 max-w-md text-[11.5px] leading-7 text-cream-100/80 sm:mt-4 sm:text-sm lg:max-w-lg lg:text-base lg:leading-8">
-            {slide.subtitle}
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
-            <Link
-              href={slide.link || '/products'}
-              className="inline-flex items-center gap-2 rounded-full bg-brand-200 px-5 py-2.5 text-[12.5px] font-black text-brand-900 shadow-soft transition hover:bg-brand-100 sm:px-6 sm:py-3 sm:text-sm"
-            >
-              {slide.btn_text || 'مشاهده محصولات'}
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 rounded-full border border-cream-50/30 px-5 py-2.5 text-[12.5px] font-bold text-cream-50 transition hover:bg-cream-50/10 sm:px-6 sm:py-3 sm:text-sm"
-            >
-              درباره senzskinshop
-            </Link>
+          <span
+            className="absolute right-4 top-4 hidden text-[15px] font-black tracking-[0.22em] text-cream-50/90 drop-shadow-sm sm:right-6 sm:top-5 sm:block sm:text-[20px] lg:text-[24px]"
+            dir="ltr"
+          >
+            {bigSlide.badge || bigSlide.brand}
+          </span>
+
+          <div className="relative z-10 flex min-h-[52svh] items-end pb-12 pt-16 sm:min-h-[58svh] sm:pb-14 lg:min-h-[520px] lg:items-center lg:pb-0">
+            <div className="w-full px-5 sm:px-8 lg:max-w-xl lg:px-11">
+              <span
+                className="inline-flex items-center rounded-full bg-cream-50/95 px-3 py-1 text-[10px] font-black tracking-[0.14em] text-brand-900 shadow-sm sm:hidden"
+                dir="ltr"
+              >
+                {bigSlide.badge || bigSlide.brand}
+              </span>
+              <h1 className="mt-3 text-balance text-[1.35rem] font-black leading-[1.6] text-cream-50 sm:mt-4 sm:text-[1.75rem] lg:text-[2.35rem] lg:leading-[1.55]">
+                {bigSlide.title}
+              </h1>
+              <p className="mt-2.5 max-w-md text-[11px] leading-6 text-cream-100/80 sm:text-[12.5px] lg:text-sm lg:leading-7">
+                {bigSlide.subtitle}
+              </p>
+              <Link
+                href={bigSlide.link || '/products'}
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand-200 px-5 py-2.5 text-[12px] font-black text-brand-900 shadow-soft transition hover:bg-cream-50 sm:text-[13px]"
+              >
+                {bigSlide.btn_text || 'مشاهده محصولات'}
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] text-cream-100/70 sm:mt-8 sm:gap-x-5 sm:text-[11px]">
-            <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />
-              ارسال سریع به سراسر ایران
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />
-              ضمانت اصالت کالا
-            </span>
+          {big.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => goBig(1)}
+                aria-label="اسلاید بعدی"
+                className="absolute right-3 top-1/2 z-20 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/20 text-cream-50 backdrop-blur transition hover:bg-cream-50/30 md:flex"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => goBig(-1)}
+                aria-label="اسلاید قبلی"
+                className="absolute left-3 top-1/2 z-20 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/20 text-cream-50 backdrop-blur transition hover:bg-cream-50/30 md:flex"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <div className="absolute bottom-3.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5">
+                {big.map((slide, index) => (
+                  <button
+                    key={slide.id || index}
+                    type="button"
+                    onClick={() => setBigIndex(index)}
+                    aria-label={`اسلاید ${index + 1}`}
+                    className={`h-1.5 rounded-full transition-all ${
+                      index === bigIndex % big.length ? 'w-6 bg-cream-50' : 'w-2.5 bg-cream-50/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ---------- اسلایدر کوچک ---------- */}
+        <div className="relative isolate min-h-[190px] overflow-hidden rounded-2xl bg-brand-900 shadow-soft sm:min-h-[220px] sm:rounded-[1.75rem] lg:min-h-0">
+          <img
+            key={sideSlide.id || sideIndex}
+            src={sideSlide.image || '/images/banners/cat-skin.jpg'}
+            alt={sideSlide.title || 'senzskinshop'}
+            className="absolute inset-0 h-full w-full animate-floatUp object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/95 via-brand-950/55 to-brand-950/5" />
+
+          <span
+            className="absolute right-4 top-3.5 text-[12px] font-black tracking-[0.2em] text-cream-50/90 drop-shadow-sm sm:text-[14px]"
+            dir="ltr"
+          >
+            {sideSlide.badge || sideSlide.brand}
+          </span>
+
+          <div className="relative z-10 flex h-full min-h-[190px] flex-col justify-end gap-1.5 p-4 sm:min-h-[220px] sm:p-5 lg:min-h-0">
+            <h2 className="text-[15px] font-black leading-6 text-cream-50 sm:text-[17px]">{sideSlide.title}</h2>
+            <p className="line-clamp-2 text-[10px] leading-5 text-cream-100/75 sm:text-[11px]">{sideSlide.subtitle}</p>
+            <Link
+              href={sideSlide.link || '/products'}
+              className="mt-1.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-cream-50/95 px-3 py-1.5 text-[10px] font-black text-brand-900 transition hover:bg-cream-50 sm:text-[11px]"
+            >
+              {sideSlide.btn_text || 'مشاهده محصولات'}
+              <ArrowLeft className="h-3 w-3" />
+            </Link>
+
+            {side.length > 1 && (
+              <div className="mt-2 flex items-center gap-1.5">
+                {side.map((slide, index) => (
+                  <button
+                    key={slide.id || index}
+                    type="button"
+                    onClick={() => setSideIndex(index)}
+                    aria-label={`اسلاید ${index + 1}`}
+                    className={`h-1.5 rounded-full transition-all ${
+                      index === sideIndex % side.length ? 'w-5 bg-cream-50' : 'w-2 bg-cream-50/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </div>
-
-      {slides.length > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label="اسلاید بعدی"
-            className="absolute right-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex lg:right-6"
-          >
-            <ChevronRight />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label="اسلاید قبلی"
-            className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-cream-50/15 text-cream-50 backdrop-blur transition hover:bg-cream-50/25 md:flex lg:left-6"
-          >
-            <ChevronLeft />
-          </button>
-          <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-5">
-            {slides.map((s, i) => (
-              <button
-                key={s.id || i}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`اسلاید ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === index ? 'w-7 bg-cream-50' : 'w-3 bg-cream-50/40'
-                }`}
-              />
-            ))}
-          </div>
-        </>
-      )}
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import { useCart } from './CartProvider';
 import { useCustomer } from './CustomerProvider';
 import Logo from './Logo';
 import { toFa } from '@/lib/format';
-import { ChevronDown, Instagram, Menu, Phone, Search, ShoppingBag, Telegram, User, Whatsapp, X } from './Icons';
+import { ChevronDown, Menu, Phone, Search, ShoppingBag, User, X } from './Icons';
 
 export default function Header({ settings = {}, categories = [] }) {
   const { count } = useCart();
@@ -136,11 +136,10 @@ export default function Header({ settings = {}, categories = [] }) {
           <div className="mb-2 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               {[
-                { href: settings.telegram || 'https://t.me/senzskinshop', icon: Telegram, label: 'تلگرام' },
-                { href: settings.instagram || 'https://instagram.com/senzskinshop', icon: Instagram, label: 'اینستاگرام' },
-                { href: `https://wa.me/${settings.whatsapp || ''}`, icon: Whatsapp, label: 'واتس‌اپ' },
+                { href: settings.telegram || 'https://t.me/senzskinshop', image: '/images/icons/social-telegram.png', label: 'تلگرام' },
+                { href: settings.instagram || 'https://instagram.com/senzskinshop', image: '/images/icons/social-instagram.png', label: 'اینستاگرام' },
+                { href: `https://wa.me/${settings.whatsapp || ''}`, image: '/images/icons/social-whatsapp.png', label: 'واتس‌اپ' },
               ].map((social) => {
-                const Icon = social.icon;
                 return (
                   <a
                     key={social.label}
@@ -150,7 +149,7 @@ export default function Header({ settings = {}, categories = [] }) {
                     aria-label={social.label}
                     className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-700 ring-1 ring-brand-100 transition hover:bg-brand-100"
                   >
-                    <Icon className="h-4 w-4" />
+                    <img src={social.image} alt={social.label} className="h-[18px] w-[18px] rounded-[5px] object-contain" />
                   </a>
                 );
               })}
