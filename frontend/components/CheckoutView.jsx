@@ -501,7 +501,7 @@ export default function CheckoutView() {
             </button>
 
             <p className="mt-3 text-center text-[10px] leading-5 text-ink/40">
-              با ثبت سفارش، قوانین فروشگاه سنز اسکین شاپ را می‌پذیرید.
+              با ثبت سفارش، قوانین فروشگاه senzskinshop را می‌پذیرید.
             </p>
           </div>
         </aside>

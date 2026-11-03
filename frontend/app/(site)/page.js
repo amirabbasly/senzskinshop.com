@@ -53,7 +53,7 @@ export default async function HomePage() {
       <ProductShowcase
         products={showcase.slice(0, 10)}
         title="پیشنهاد روزانه"
-        subtitle="منتخب کارشناسان سنز با بهترین قیمت"
+        subtitle="منتخب کارشناسان SENZ با بهترین قیمت"
         href="/products?on_sale=1"
       />
 
@@ -61,7 +61,7 @@ export default async function HomePage() {
         <section className="container-page mt-12 sm:mt-16">
           <SectionHeading
             title="پرفروش‌ترین محصولات"
-            subtitle="انتخاب بیشترین تعداد از مشتریان سنز اسکین در این ماه"
+            subtitle="انتخاب بیشترین تعداد از مشتریان senzskinshop در این ماه"
             href="/products?sort=popular"
           />
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
@@ -77,7 +77,7 @@ export default async function HomePage() {
       <section className="container-page mt-12 sm:mt-16">
         <SectionHeading
           title="جدیدترین محصولات"
-          subtitle="تازه‌ترین محصولاتی که به قفسه‌های سنز اسکین اضافه شده‌اند"
+          subtitle="تازه‌ترین محصولاتی که به قفسه‌های senzskinshop اضافه شده‌اند"
           href="/products?sort=newest"
         />
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
@@ -90,7 +90,7 @@ export default async function HomePage() {
       {posts.length > 0 && (
         <section className="container-page mt-12 sm:mt-16">
           <SectionHeading
-            title="مجله پوست سنز"
+            title="مجله پوست SENZ"
             subtitle="آموزش‌های کاربردی برای انتخاب و استفاده درست از محصولات"
             href="/blog"
           />

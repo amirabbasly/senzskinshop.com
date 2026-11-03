@@ -10,7 +10,7 @@ export async function generateMetadata({ params }) {
   const category = flat.find((c) => c.slug === slug);
   return {
     title: category ? `${category.name} | خرید آنلاین` : 'دسته‌بندی محصولات',
-    description: category?.description || 'محصولات تخصصی مراقبت از پوست در سنز اسکین شاپ',
+    description: category?.description || 'محصولات تخصصی مراقبت از پوست در senzskinshop',
   };
 }
 

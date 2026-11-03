@@ -17,8 +17,8 @@ export default async function BlogPage() {
     <div className="container-page py-8">
       <Breadcrumbs items={[{ label: 'مجله پوست' }]} />
       <SectionHeading
-        title="مجله پوست سنز"
-        subtitle="آموزش، راهنما و نکات تخصصی مراقبت از پوست از تیم کارشناسان سنز اسکین"
+        title="مجله پوست SENZ"
+        subtitle="آموزش، راهنما و نکات تخصصی مراقبت از پوست از تیم کارشناسان senzskinshop"
       />
 
       {posts.length === 0 ? (

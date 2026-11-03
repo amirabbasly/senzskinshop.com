@@ -15,8 +15,13 @@ export default function Logo({ settings = {}, light = false, className = '' }) {
     <div className={`flex items-center gap-2.5 ${className}`}>
       <LogoMark className="h-11 w-11 drop-shadow-sm sm:h-12 sm:w-12" />
       <div className="leading-tight">
-        <div className={`text-[13.5px] font-black sm:text-[15px] ${light ? 'text-cream-50' : 'text-brand-950'}`}>
-          {settings.site_name || 'سنز اسکین شاپ'}
+        <div
+          className={`text-[13px] font-black tracking-tight sm:text-[15.5px] ${
+            light ? 'text-cream-50' : 'text-brand-950'
+          }`}
+          dir="ltr"
+        >
+          {settings.site_name || 'senzskinshop'}
         </div>
         <div
           className={`mt-1 hidden text-[8.5px] font-bold tracking-[0.3em] sm:block ${

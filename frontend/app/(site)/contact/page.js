@@ -7,7 +7,7 @@ import { Clock, Instagram, Mail, MapPin, Phone, Telegram, Whatsapp } from '@/com
 
 export const metadata = {
   title: 'تماس با ما',
-  description: 'راه‌های ارتباط با پشتیبانی سنز اسکین شاپ؛ تلفن، واتس‌اپ، ایمیل و آدرس دفتر.',
+  description: 'راه‌های ارتباط با پشتیبانی senzskinshop؛ تلفن، واتس‌اپ، ایمیل و آدرس دفتر.',
 };
 
 export default async function ContactPage() {
@@ -26,7 +26,7 @@ export default async function ContactPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <div className="rounded-[2rem] border border-cream-300/80 bg-white p-7 sm:p-9">
-          <h1 className="text-xl font-black text-brand-950 sm:text-2xl">تماس با سنز اسکین شاپ</h1>
+          <h1 className="text-xl font-black text-brand-950 sm:text-2xl">تماس با senzskinshop</h1>
           <p className="mt-3 text-xs leading-7 text-ink/60">
             برای مشاوره انتخاب محصول، پیگیری سفارش یا هر سوالی درباره مراقبت از پوست، از راه‌های زیر با ما در
             ارتباط باشید. تیم پشتیبانی در ساعات کاری پاسخگوی شماست.
@@ -95,7 +95,7 @@ export default async function ContactPage() {
 
         <aside className="space-y-4">
           <div className="overflow-hidden rounded-[2rem] border border-cream-300/80 bg-white">
-            <img src="/images/about/team.jpg" alt="سنز اسکین شاپ" className="h-44 w-full object-cover" />
+            <img src="/images/about/team.jpg" alt="senzskinshop" className="h-44 w-full object-cover" />
             <div className="p-5">
               <h2 className="text-sm font-extrabold text-brand-950">مشاوره رایگان روتین پوستی</h2>
               <p className="mt-2 text-[11px] leading-6 text-ink/55">

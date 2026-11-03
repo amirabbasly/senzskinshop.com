@@ -24,7 +24,7 @@ const EMPTY = {
   excerpt: '',
   content: '',
   cover: '',
-  author: 'تیم سنز',
+  author: 'تیم SENZ',
   is_published: true,
 };
 

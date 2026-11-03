@@ -34,7 +34,7 @@ export default async function PostPage({ params }) {
           </div>
           <div className="p-6 sm:p-8">
             <div className="flex flex-wrap items-center gap-3 text-[11px] text-ink/45">
-              <span className="font-bold text-gold-600">مجله پوست سنز</span>
+              <span className="font-bold text-gold-600">مجله پوست SENZ</span>
               <span className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
                 {readingTime(post.content)} دقیقه مطالعه

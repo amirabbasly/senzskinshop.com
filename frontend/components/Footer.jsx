@@ -51,7 +51,7 @@ export default function Footer({ settings = {}, categories = [] }) {
           <div>
             <Logo settings={settings} light />
             <p className="mt-5 text-xs leading-6 text-cream-100/65">
-              {settings.footer_text || settings.about_short || 'سنز اسکین شاپ، مقصد خرید محصولات اصل و تخصصی مراقبت از پوست.'}
+              {settings.footer_text || settings.about_short || 'senzskinshop، مقصد خرید محصولات اصل و تخصصی مراقبت از پوست.'}
             </p>
             <div className="mt-5 flex items-center gap-2">
               {settings.instagram && (
@@ -96,7 +96,7 @@ export default function Footer({ settings = {}, categories = [] }) {
               {[
                 ['/products', 'همه محصولات'],
                 ['/products?on_sale=1', 'محصولات تخفیف‌دار'],
-                ['/products?featured=1', 'پیشنهاد سنز'],
+                ['/products?featured=1', 'پیشنهاد SENZ'],
                 ['/blog', 'مجله پوست'],
                 ['/about', 'درباره ما'],
                 ['/contact', 'تماس با ما'],
@@ -147,14 +147,14 @@ export default function Footer({ settings = {}, categories = [] }) {
               </li>
             </ul>
 
-            <h3 className="mb-3 mt-6 text-sm font-extrabold text-cream-50">خبرنامه سنز</h3>
+            <h3 className="mb-3 mt-6 text-sm font-extrabold text-cream-50">خبرنامه SENZ</h3>
             <NewsletterForm />
           </div>
         </div>
 
         <div className="flex flex-col items-center justify-between gap-3 border-t border-cream-50/10 py-6 text-[11px] text-cream-100/45 sm:flex-row">
           <p>
-            © {year} {settings.site_name || 'سنز اسکین شاپ'} — تمامی حقوق محفوظ است.
+            © {year} {settings.site_name || 'senzskinshop'} — تمامی حقوق محفوظ است.
           </p>
           <p className="flex items-center gap-3">
             <span>پرداخت امن</span>

@@ -177,7 +177,7 @@ export default async function ProductListing({ searchParams = {}, categorySlug =
             <div className="mb-4 flex flex-wrap gap-2">
               {sp.q && <span className="chip">جست‌وجو: {sp.q}</span>}
               {sp.on_sale && <span className="chip">فقط تخفیف‌دار</span>}
-              {sp.featured && <span className="chip">پیشنهاد سنز</span>}
+              {sp.featured && <span className="chip">پیشنهاد SENZ</span>}
               {sp.skin_type && <span className="chip">نوع پوست: {sp.skin_type}</span>}
               <Link href="/products" className="chip border-rose-200 text-rose-600">
                 حذف فیلترها

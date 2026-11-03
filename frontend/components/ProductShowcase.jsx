@@ -81,7 +81,7 @@ function ShowcaseCard({ product }) {
 export default function ProductShowcase({
   products = [],
   title = 'پیشنهادهای امروز',
-  subtitle = 'منتخب کارشناسان سنز با بهترین قیمت',
+  subtitle = 'منتخب کارشناسان SENZ با بهترین قیمت',
   href = '/products',
 }) {
   const railRef = useRef(null);

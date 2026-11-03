@@ -23,7 +23,7 @@ import { Trash } from '../Icons';
 const EMPTY = {
   name: '',
   slug: '',
-  brand: 'سنز اسکین',
+  brand: 'senzskinshop',
   category_id: '',
   short_desc: '',
   description: '',
@@ -279,8 +279,8 @@ export default function ProductForm({ productId }) {
               <Toggle
                 checked={form.is_featured}
                 onChange={(v) => set('is_featured', v)}
-                label="نمایش در پیشنهاد سنز"
-                description="در بخش «پیشنهاد سنز اسکین» صفحه اصلی نمایش داده می‌شود."
+                label="نمایش در پیشنهاد SENZ"
+                description="در بخش «پیشنهاد senzskinshop» صفحه اصلی نمایش داده می‌شود."
               />
               <Toggle
                 checked={form.is_bestseller}

@@ -3,7 +3,7 @@ import AuthView from '@/components/AuthView';
 
 export const metadata = {
   title: 'ورود و ثبت‌نام',
-  description: 'ورود به حساب کاربری یا ساخت حساب جدید در فروشگاه سنز اسکین شاپ.',
+  description: 'ورود به حساب کاربری یا ساخت حساب جدید در فروشگاه senzskinshop.',
 };
 
 export default function LoginPage() {

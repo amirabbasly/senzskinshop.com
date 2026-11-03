@@ -453,7 +453,7 @@ export async function seed({ force = false } = {}) {
     );
 
     const settings = {
-      site_name: 'سنز اسکین شاپ',
+      site_name: 'senzskinshop',
       site_name_en: 'SENZ SKIN SHOP',
       tagline: 'مراقبت تخصصی پوست با فرمولاسیون علمی',
       announcement: 'ضمانت اصالت کالا — ارسال سریع به سراسر ایران',
@@ -470,12 +470,12 @@ export async function seed({ force = false } = {}) {
       shipping_cost: 49000,
       free_shipping_min: 1500000,
       bank_card: '6219-8619-0000-0000',
-      bank_name: 'بانک ملت - به نام شرکت سنز اسکین',
+      bank_name: 'بانک ملت - به نام شرکت senzskinshop',
       about_short:
-        'سنز اسکین شاپ از سال ۱۳۹۶ با تمرکز بر محصولات تخصصی مراقبت پوست فعالیت می‌کند. همه محصولات دارای اصالت، تست‌شده و مناسب آب‌وهوای ایران انتخاب می‌شوند.',
+        'senzskinshop از سال ۱۳۹۶ با تمرکز بر محصولات تخصصی مراقبت پوست فعالیت می‌کند. همه محصولات دارای اصالت، تست‌شده و مناسب آب‌وهوای ایران انتخاب می‌شوند.',
       about_text:
-        'ما در سنز اسکین شاپ باور داریم مراقبت از پوست باید ساده، علمی و قابل اعتماد باشد. تیم ما شامل کارشناسان پوست و داروسازان است که محصولات را بر اساس ترکیبات مؤثره، تست حساسیت و بازخورد واقعی مشتریان انتخاب می‌کنند.',
-      footer_text: 'سنز اسکین شاپ، مقصد خرید محصولات اصل و تخصصی مراقبت از پوست.',
+        'ما در senzskinshop باور داریم مراقبت از پوست باید ساده، علمی و قابل اعتماد باشد. تیم ما شامل کارشناسان پوست و داروسازان است که محصولات را بر اساس ترکیبات مؤثره، تست حساسیت و بازخورد واقعی مشتریان انتخاب می‌کنند.',
+      footer_text: 'senzskinshop، مقصد خرید محصولات اصل و تخصصی مراقبت از پوست.',
       map_link: 'https://maps.google.com/?q=Tehran+Valiasr',
       payment_online_enabled: true,
       services: [
@@ -533,10 +533,10 @@ export async function seed({ force = false } = {}) {
           [
             p.name,
             p.slug,
-            'سنز اسکین',
+            'senzskinshop',
             map[p.category] || null,
             p.short_desc,
-            `${p.short_desc}\n\n${p.name} با فرمولاسیون تخصصی و مواد اولیه اصل، برای استفاده روزانه طراحی شده است. تمام محصولات سنز اسکین قبل از عرضه از نظر ایمنی و کیفیت بررسی می‌شوند.\n\nاین محصول بدون تست روی حیوانات است و در بسته‌بندی ایمن ارسال می‌شود.`,
+            `${p.short_desc}\n\n${p.name} با فرمولاسیون تخصصی و مواد اولیه اصل، برای استفاده روزانه طراحی شده است. تمام محصولات senzskinshop قبل از عرضه از نظر ایمنی و کیفیت بررسی می‌شوند.\n\nاین محصول بدون تست روی حیوانات است و در بسته‌بندی ایمن ارسال می‌شود.`,
             p.ingredients,
             p.how_to_use,
             p.price,
@@ -565,7 +565,7 @@ export async function seed({ force = false } = {}) {
          ($7,$8,$9,$10,$11,$12,'hero',2,true)`,
         [
           'پوست شما، شایسته بهترین مراقبت',
-          'کالکشن تخصصی سرم و آبرسان سنز اسکین با فرمولاسیون کره جنوبی و سوئیس',
+          'کالکشن تخصصی سرم و آبرسان senzskinshop با فرمولاسیون کره جنوبی و سوئیس',
           'کالکشن جدید ۱۴۰۴',
           '/images/banners/hero-1.jpg',
           '/products',
@@ -598,7 +598,7 @@ export async function seed({ force = false } = {}) {
         await tx.query(
           `INSERT INTO posts (title, slug, excerpt, content, cover, author, is_published)
            VALUES ($1,$2,$3,$4,$5,$6,true) ON CONFLICT (slug) DO NOTHING`,
-          [post.title, post.slug, post.excerpt, post.content, post.cover, 'تیم سنز']
+          [post.title, post.slug, post.excerpt, post.content, post.cover, 'تیم SENZ']
         );
       }
     }

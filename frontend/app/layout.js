@@ -11,17 +11,17 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   metadataBase: new URL('https://senzskinshop.com'),
   title: {
-    default: 'سنز اسکین شاپ | مراقبت تخصصی پوست',
-    template: '%s | سنز اسکین شاپ',
+    default: 'senzskinshop | مراقبت تخصصی پوست',
+    template: '%s | senzskinshop',
   },
   description:
-    'فروشگاه آنلاین سنز اسکین شاپ؛ سرم، کرم، ضدآفتاب، شوینده و ماسک صورت اصل با ضمانت اصالت، ارسال سریع به سراسر ایران و مشاوره تخصصی پوست.',
+    'فروشگاه آنلاین senzskinshop؛ سرم، کرم، ضدآفتاب، شوینده و ماسک صورت اصل با ضمانت اصالت، ارسال سریع به سراسر ایران و مشاوره تخصصی پوست.',
   keywords: [
     'سرم ویتامین سی',
     'ضدآفتاب',
     'کرم آبرسان',
     'مراقبت پوست',
-    'سنز اسکین شاپ',
+    'senzskinshop',
     'senz skin shop',
   ],
   icons: {
@@ -34,8 +34,8 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'fa_IR',
-    siteName: 'سنز اسکین شاپ',
-    title: 'سنز اسکین شاپ | مراقبت تخصصی پوست',
+    siteName: 'senzskinshop',
+    title: 'senzskinshop | مراقبت تخصصی پوست',
     description: 'محصولات اصل مراقبت از پوست با ضمانت اصالت و ارسال سریع.',
     images: ['/images/banners/hero-1.jpg'],
   },

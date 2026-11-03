@@ -51,7 +51,7 @@ export default function ProductTabs({ product, reviews = [] }) {
           <Paragraphs text={product.description} fallback="توضیحاتی برای این محصول ثبت نشده است." />
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              { icon: Check, title: 'اصالت تضمین‌شده', desc: 'ارسال از انبار رسمی سنز' },
+              { icon: Check, title: 'اصالت تضمین‌شده', desc: 'ارسال از انبار رسمی SENZ' },
               { icon: Leaf, title: 'مناسب پوست حساس', desc: 'بدون الکل و اسانس قوی' },
               { icon: Sparkles, title: 'تست‌شده در آزمایشگاه', desc: 'کنترل کیفیت هر بچ تولید' },
             ].map((item) => (

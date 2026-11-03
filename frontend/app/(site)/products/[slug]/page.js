@@ -78,7 +78,7 @@ export default async function ProductPage({ params }) {
 
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="chip border-gold-200 bg-gold-50 text-gold-700">{product.brand || 'سنز اسکین'}</span>
+              <span className="chip border-gold-200 bg-gold-50 text-gold-700">{product.brand || 'senzskinshop'}</span>
               {product.category_name && (
                 <Link href={`/category/${product.category_slug}`} className="chip hover:border-brand-400">
                   {product.category_name}

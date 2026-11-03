@@ -86,7 +86,7 @@ export default function MockGateway({ order }) {
           </div>
           <div className="rounded-2xl border border-cream-200 p-4">
             <p className="text-[10px] text-ink/45">پذیرنده</p>
-            <p className="mt-1 text-[12px] font-bold text-brand-950">سنز اسکین شاپ</p>
+            <p className="mt-1 text-[12px] font-bold text-brand-950">senzskinshop</p>
             <p className="mt-2 line-clamp-1 text-[10px] text-ink/45">
               {order.customer_name} — <span dir="ltr">{toFa(order.phone || '')}</span>
             </p>

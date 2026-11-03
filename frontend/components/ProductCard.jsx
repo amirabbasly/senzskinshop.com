@@ -59,7 +59,7 @@ export default function ProductCard({ product }) {
       </Link>
 
       <div className="flex flex-1 flex-col px-3 pb-3 pt-1">
-        <span className="text-[9.5px] font-semibold text-brand-500">{product.brand || 'سنز اسکین'}</span>
+        <span className="text-[9.5px] font-semibold text-brand-500">{product.brand || 'senzskinshop'}</span>
         <Link
           href={`/products/${product.slug}`}
           className="mt-1 line-clamp-2 min-h-[2.5rem] text-[12px] font-bold leading-5 text-brand-950 transition hover:text-brand-700"

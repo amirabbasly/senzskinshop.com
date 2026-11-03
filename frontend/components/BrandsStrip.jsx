@@ -16,7 +16,7 @@ export const CURATED_BRANDS = [
   { name: 'کلاژن', latin: 'COLLAGEN', image: '/images/brands/collagen.png' },
   { name: 'مدیکیوپ', latin: 'MEDICUBE', image: '/images/brands/medicube.png' },
   { name: 'سیمپل', latin: 'SIMPLE', image: '/images/brands/simple.png' },
-  { name: 'سنز اسکین', latin: 'SENZ', image: '/images/logo-senz.png', own: true },
+  { name: 'senzskinshop', latin: 'SENZ', image: '/images/logo-senz.png', own: true },
 ];
 
 export default function BrandsStrip({ brands = [] }) {
@@ -37,7 +37,7 @@ export default function BrandsStrip({ brands = [] }) {
             </span>
             <h2 className="mt-2.5 text-[17px] font-black text-brand-950 sm:text-xl">محبوب‌ترین برندها</h2>
             <p className="mt-1 text-[10.5px] text-ink/50 sm:text-[11px]">
-              فقط برندهای اورجینال و قابل استعلام — با ضمانت اصالت سنز اسکین
+              فقط برندهای اورجینال و قابل استعلام — با ضمانت اصالت senzskinshop
             </p>
           </div>
           <Link

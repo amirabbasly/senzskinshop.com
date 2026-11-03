@@ -47,7 +47,7 @@ export default function AuthView() {
         <div className="relative hidden flex-col justify-between overflow-hidden bg-brand-950 p-8 lg:flex lg:min-h-[38rem]">
           <img
             src="/images/banners/auth-panel.jpg"
-            alt="محصولات مراقبت پوست سنز اسکین"
+            alt="محصولات مراقبت پوست senzskinshop"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/10" />
@@ -56,7 +56,7 @@ export default function AuthView() {
           <div className="relative">
             <LogoMark className="h-12 w-12" />
             <h2 className="mt-6 text-xl font-black leading-9 text-cream-50">
-              حساب کاربری سنز اسکین
+              حساب کاربری senzskinshop
             </h2>
             <p className="mt-3 max-w-xs text-[11.5px] leading-6 text-cream-100/75">
               با ساخت حساب، سفارش‌ها و آدرس‌های خود را در یک‌جا ببینید و سریع‌تر خرید کنید.
@@ -220,7 +220,7 @@ export default function AuthView() {
           </div>
 
           <p className="mt-5 border-t border-cream-200 pt-4 text-center text-[10px] text-ink/35">
-            ورود شما به معنی پذیرش قوانین فروشگاه {toFa('سنز اسکین')} است.
+            ورود شما به معنی پذیرش قوانین فروشگاه senzskinshop است.
           </p>
         </div>
       </div>

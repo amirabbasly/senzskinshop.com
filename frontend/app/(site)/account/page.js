@@ -3,7 +3,7 @@ import AccountView from '@/components/AccountView';
 
 export const metadata = {
   title: 'حساب کاربری',
-  description: 'سفارش‌ها، اطلاعات حساب و تنظیمات امنیتی شما در سنز اسکین شاپ.',
+  description: 'سفارش‌ها، اطلاعات حساب و تنظیمات امنیتی شما در senzskinshop.',
 };
 
 export default function AccountPage() {

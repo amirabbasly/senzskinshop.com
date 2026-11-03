@@ -4,7 +4,7 @@ import { ArrowLeft, Sparkles } from './Icons';
 export default function PromoPanel({
   badge = 'پیشنهاد ویژه',
   title = '۱۵٪ تخفیف اولین خرید',
-  text = 'با کد تخفیف SENZ15 روی تمام محصولات سنز اسکین، پوستت را از همین امروز جدی بگیر.',
+  text = 'با کد تخفیف SENZ15 روی تمام محصولات senzskinshop، پوستت را از همین امروز جدی بگیر.',
   image = '/images/banners/hero-2.jpg',
   href = '/products',
   code = 'SENZ15',

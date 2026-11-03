@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
       <div className="relative hidden overflow-hidden bg-brand-950 lg:block">
         <img
           src="/images/banners/hero-1.jpg"
-          alt="سنز اسکین شاپ"
+          alt="senzskinshop"
           className="absolute inset-0 h-full w-full object-cover opacity-45"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/30" />
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
           <LogoMark className="h-14 w-14" />
           <div>
             <h1 className="text-2xl font-black leading-10 text-cream-50">
-              پنل مدیریت سنز اسکین شاپ
+              پنل مدیریت senzskinshop
             </h1>
             <p className="mt-3 max-w-sm text-xs leading-7 text-cream-100/70">
               محصولات، دسته‌بندی‌ها، سفارش‌ها، بنرها و تنظیمات سایت را از یک داشبورد ساده مدیریت کنید.
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
           <div className="mb-8 flex items-center gap-3 lg:hidden">
             <LogoMark className="h-11 w-11" />
             <div>
-              <p className="text-sm font-black text-brand-950">سنز اسکین شاپ</p>
+              <p className="text-sm font-black text-brand-950">senzskinshop</p>
               <p className="text-[10px] tracking-widest text-gold-600">ADMIN PANEL</p>
             </div>
           </div>

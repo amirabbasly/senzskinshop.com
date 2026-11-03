@@ -97,7 +97,7 @@ function normalizeProduct(body) {
   return {
     name: String(body.name || '').trim(),
     slug: slugify(body.slug || body.name),
-    brand: String(body.brand || 'سنز اسکین').trim(),
+    brand: String(body.brand || 'senzskinshop').trim(),
     category_id: body.category_id ? toInt(body.category_id) : null,
     short_desc: String(body.short_desc || ''),
     description: String(body.description || ''),
@@ -335,7 +335,7 @@ router.post('/posts', wrap(async (req, res) => {
   const { rows } = await query(
     `INSERT INTO posts (title, slug, excerpt, content, cover, author, is_published)
      VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-    [b.title, slug, b.excerpt || '', b.content || '', b.cover || '', b.author || 'تیم سنز', toBool(b.is_published, true)]
+    [b.title, slug, b.excerpt || '', b.content || '', b.cover || '', b.author || 'تیم SENZ', toBool(b.is_published, true)]
   );
   res.status(201).json(rows[0]);
 }));
@@ -348,7 +348,7 @@ router.put('/posts/:id', wrap(async (req, res) => {
   const { rows } = await query(
     `UPDATE posts SET title=$1, slug=$2, excerpt=$3, content=$4, cover=$5, author=$6, is_published=$7
      WHERE id=$8 RETURNING *`,
-    [b.title, slug, b.excerpt || '', b.content || '', b.cover || '', b.author || 'تیم سنز',
+    [b.title, slug, b.excerpt || '', b.content || '', b.cover || '', b.author || 'تیم SENZ',
       toBool(b.is_published, true), id]
   );
   if (!rows.length) return res.status(404).json({ error: 'مقاله یافت نشد.' });

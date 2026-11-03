@@ -7,8 +7,8 @@ import { toFa } from '@/lib/format';
 import { ArrowLeft, Droplet, Leaf, ShieldCheck, Sparkles } from '@/components/Icons';
 
 export const metadata = {
-  title: 'درباره سنز اسکین شاپ',
-  description: 'داستان سنز اسکین شاپ، رویکرد علمی به مراقبت پوست و تعهد ما به اصالت محصولات.',
+  title: 'درباره senzskinshop',
+  description: 'داستان senzskinshop، رویکرد علمی به مراقبت پوست و تعهد ما به اصالت محصولات.',
 };
 
 export default async function AboutPage() {
@@ -32,7 +32,7 @@ export default async function AboutPage() {
           </p>
           <p className="mt-3 text-[13px] leading-7 text-ink/65">
             ما محصولات را بر اساس ترکیبات مؤثره، فرمولاسیون و بازخورد واقعی مشتریان انتخاب می‌کنیم؛ نه بر اساس
-            تبلیغات. هر محصول قبل از ورود به انبار سنز از نظر اصالت و شرایط نگهداری بررسی می‌شود.
+            تبلیغات. هر محصول قبل از ورود به انبار SENZ از نظر اصالت و شرایط نگهداری بررسی می‌شود.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/products" className="btn-primary">
@@ -45,7 +45,7 @@ export default async function AboutPage() {
           </div>
         </div>
         <div className="relative h-64 overflow-hidden rounded-[1.5rem] bg-cream-100 lg:h-[380px]">
-          <img src="/images/about/team.jpg" alt="تیم سنز اسکین" className="h-full w-full object-cover" />
+          <img src="/images/about/team.jpg" alt="تیم senzskinshop" className="h-full w-full object-cover" />
         </div>
       </section>
 

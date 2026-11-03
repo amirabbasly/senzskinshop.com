@@ -98,7 +98,7 @@ export default function AdminShell({ children }) {
       <div className="flex items-center gap-3 border-b border-cream-50/10 px-5 py-5">
         <LogoMark className="h-10 w-10" />
         <div>
-          <p className="text-sm font-black text-cream-50">سنز اسکین</p>
+          <p className="text-sm font-black text-cream-50">senzskinshop</p>
           <p className="text-[10px] tracking-widest text-gold-300">ADMIN PANEL</p>
         </div>
       </div>

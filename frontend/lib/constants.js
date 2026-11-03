@@ -1,5 +1,5 @@
 export const DEFAULT_SETTINGS = {
-  site_name: 'سنز اسکین شاپ',
+  site_name: 'senzskinshop',
   site_name_en: 'SENZ SKIN SHOP',
   tagline: 'مراقبت تخصصی پوست با فرمولاسیون علمی',
   announcement: 'ضمانت اصالت کالا — ارسال سریع به سراسر ایران',

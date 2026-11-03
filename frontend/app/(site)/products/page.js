@@ -17,10 +17,10 @@ export default async function ProductsPage({ searchParams }) {
       </div>
       <ProductListing
         searchParams={sp || {}}
-        title={sp?.on_sale ? 'محصولات تخفیف‌دار' : sp?.featured ? 'پیشنهاد سنز اسکین' : `همه محصولات${query}`}
+        title={sp?.on_sale ? 'محصولات تخفیف‌دار' : sp?.featured ? 'پیشنهاد senzskinshop' : `همه محصولات${query}`}
         subtitle={
           sp?.on_sale
-            ? 'بهترین فرصت‌های خرید محصولات مراقبت پوست با تخفیف‌های ویژه سنز اسکین.'
+            ? 'بهترین فرصت‌های خرید محصولات مراقبت پوست با تخفیف‌های ویژه senzskinshop.'
             : 'محصولات تخصصی مراقبت از پوست، مو و بدن؛ انتخاب‌شده توسط کارشناسان پوست.'
         }
       />

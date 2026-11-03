@@ -16,7 +16,7 @@ export default function HighlightSplit({ settings = {} }) {
   const phone = settings.phone || '021-91006655';
   const about =
     settings.about_short ||
-    'سنز اسکین شاپ از سال ۱۳۹۶ با تمرکز بر محصولات تخصصی مراقبت پوست فعالیت می‌کند. همه محصولات دارای اصالت، تست‌شده و مناسب آب‌وهوای ایران انتخاب می‌شوند.';
+    'senzskinshop از سال ۱۳۹۶ با تمرکز بر محصولات تخصصی مراقبت پوست فعالیت می‌کند. همه محصولات دارای اصالت، تست‌شده و مناسب آب‌وهوای ایران انتخاب می‌شوند.';
 
   async function copyCode() {
     try {
@@ -86,7 +86,7 @@ export default function HighlightSplit({ settings = {} }) {
         </div>
       </div>
 
-      {/* ---------- پنل ۲: چرا سنز اسکین ---------- */}
+      {/* ---------- پنل ۲: چرا senzskinshop ---------- */}
       <div id="why-senz" className="relative isolate overflow-hidden">
         <img
           src="/images/banners/why-senz.jpg"
@@ -100,7 +100,7 @@ export default function HighlightSplit({ settings = {} }) {
         <div className="relative z-10 flex h-full flex-col justify-center px-5 py-14 sm:px-9 lg:min-h-[38rem] lg:px-12 lg:py-16 xl:px-16">
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-cream-50/20 bg-cream-50/10 px-3 py-1 text-[11px] font-bold text-cream-100 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
-            چرا سنز اسکین؟
+            چرا senzskinshop؟
           </span>
 
           <h2 className="mt-4 max-w-sm text-2xl font-black leading-[1.55] text-cream-50 sm:text-3xl lg:text-[2.1rem] lg:leading-[1.5]">

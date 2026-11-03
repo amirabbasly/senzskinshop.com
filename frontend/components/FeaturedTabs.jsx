@@ -14,7 +14,7 @@ export default function FeaturedTabs({ tabs = [] }) {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="section-title">منتخب‌های سنز اسکین</h2>
+          <h2 className="section-title">منتخب‌های senzskinshop</h2>
           <p className="section-sub">محصولاتی که مشتریان بیشترین رضایت را از آن‌ها داشته‌اند</p>
         </div>
         <div className="flex flex-wrap gap-1.5 rounded-full border border-cream-300 bg-white p-1.5">

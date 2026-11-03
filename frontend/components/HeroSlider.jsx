@@ -8,7 +8,7 @@ const FALLBACK = [
   {
     id: 'fallback',
     title: 'پوست شما، شایسته بهترین مراقبت',
-    subtitle: 'کالکشن تخصصی سرم و آبرسان سنز اسکین با فرمولاسیون علمی',
+    subtitle: 'کالکشن تخصصی سرم و آبرسان senzskinshop با فرمولاسیون علمی',
     badge: 'کالکشن جدید',
     image: '/images/banners/hero-1.jpg',
     link: '/products',
@@ -35,7 +35,7 @@ export default function HeroSlider({ banners = [] }) {
       <img
         key={slide.id || index}
         src={slide.image || '/images/banners/hero-1.jpg'}
-        alt={slide.title || 'سنز اسکین شاپ'}
+        alt={slide.title || 'senzskinshop'}
         className="absolute inset-0 h-full w-full object-cover object-center animate-floatUp"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/15 lg:bg-gradient-to-l lg:from-brand-950/95 lg:via-brand-950/65 lg:to-brand-950/10" />
@@ -67,7 +67,7 @@ export default function HeroSlider({ banners = [] }) {
               href="/about"
               className="inline-flex items-center gap-2 rounded-full border border-cream-50/30 px-5 py-2.5 text-[12.5px] font-bold text-cream-50 transition hover:bg-cream-50/10 sm:px-6 sm:py-3 sm:text-sm"
             >
-              درباره سنز اسکین
+              درباره senzskinshop
             </Link>
           </div>
 
