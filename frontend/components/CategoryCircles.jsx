@@ -7,7 +7,11 @@ export default function CategoryCircles({ categories = [] }) {
   if (!parents.length) return null;
 
   return (
-    <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3.5 lg:grid-cols-6">
+    <div
+      className={`grid gap-2.5 sm:grid-cols-4 sm:gap-3.5 ${
+        parents.length > 4 ? 'grid-cols-3 lg:grid-cols-6' : 'grid-cols-2 lg:grid-cols-4'
+      }`}
+    >
       {parents.map((cat) => (
         <Link
           key={cat.id}

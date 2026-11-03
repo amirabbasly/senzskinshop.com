@@ -52,6 +52,10 @@ export default function ProductCard({ product }) {
             <span className="rounded-full bg-brand-950 px-4 py-1.5 text-xs font-bold text-cream-50">ناموجود</span>
           </div>
         )}
+
+        <span className="pointer-events-none absolute inset-x-2 bottom-2 hidden translate-y-2 rounded-lg bg-white/95 py-1.5 text-center text-[10px] font-bold text-brand-800 opacity-0 shadow-sm backdrop-blur transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 sm:block">
+          مشاهده سریع
+        </span>
       </Link>
 
       <div className="flex flex-1 flex-col px-3 pb-3 pt-1">
