@@ -21,14 +21,14 @@ export default function CategoryCircles({ categories = [] }) {
 
   return (
     <div
-      className={`grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3.5 ${
+      className={`grid grid-cols-4 gap-2 sm:grid-cols-4 sm:gap-3.5 ${
         list.length > 8 ? 'lg:grid-cols-6' : 'lg:grid-cols-4'
       }`}
     >
       {list.map((cat) => (
-        <Link key={cat.id} href={`/category/${cat.slug}`} className="group block">
-          <span className="relative block overflow-hidden rounded-xl border border-cream-200 bg-white p-1.5 shadow-[0_1px_3px_rgba(90,55,50,.04)] sm:rounded-2xl sm:p-2">
-            <span className="block aspect-square overflow-hidden rounded-lg bg-cream-100 sm:rounded-xl">
+        <Link key={cat.id} href={`/category/${cat.slug}`} className="group flex flex-col items-center">
+          <span className="relative block w-full overflow-hidden rounded-full border border-cream-200 bg-white p-1 shadow-[0_1px_3px_rgba(90,55,50,.04)] sm:rounded-2xl sm:p-2">
+            <span className="block aspect-square overflow-hidden rounded-full bg-cream-100 sm:rounded-xl">
               <img
                 src={cat.image || PLACEHOLDER_IMAGE}
                 alt={cat.name}

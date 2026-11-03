@@ -203,6 +203,11 @@ export const LayoutDashboard = (p) => (
     <rect x="13.5" y="13.5" width="7" height="7" rx="1.6" />
   </Svg>
 );
+export const Home = (p) => (
+  <Svg {...p}>
+    <path d="M3.5 10.5 12 3.8l8.5 6.7V20a.8.8 0 0 1-.8.8h-4.4v-6.3H8.7v6.3H4.3a.8.8 0 0 1-.8-.8v-9.5Z" />
+  </Svg>
+);
 export const Grid = (p) => (
   <Svg {...p}>
     <path d="M4 9h16M4 15h16M9 4v16M15 4v16" />

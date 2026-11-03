@@ -6,7 +6,7 @@ import { useCart } from './CartProvider';
 import { useCustomer } from './CustomerProvider';
 import Logo from './Logo';
 import { toFa } from '@/lib/format';
-import { ChevronDown, Menu, Phone, Search, ShoppingBag, Sparkles, User, X } from './Icons';
+import { ChevronDown, Instagram, Menu, Phone, Search, ShoppingBag, Telegram, User, Whatsapp, X } from './Icons';
 
 export default function Header({ settings = {}, categories = [] }) {
   const { count } = useCart();
@@ -49,39 +49,35 @@ export default function Header({ settings = {}, categories = [] }) {
         }`}
       >
         {announcement && !announcementClosed && (
-          <div className="border-b border-brand-200/70 bg-brand-100 text-brand-900">
-            <div className="container-page flex h-9 items-center gap-3 text-[10.5px] font-semibold sm:text-[11.5px]">
-              <span className="flex min-w-0 items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 shrink-0 text-brand-600" />
-                <span className="truncate">{announcement}</span>
-              </span>
-              <div className="mr-auto flex shrink-0 items-center gap-3">
-                <a
-                  href={`tel:${settings.phone || ''}`}
-                  className="hidden items-center gap-1.5 text-brand-800 transition hover:text-brand-950 md:flex"
-                >
-                  <Phone className="h-3.5 w-3.5" />
-                  <span dir="ltr">{toFa(settings.phone || '')}</span>
-                </a>
-                <Link href="/track" className="hidden text-brand-800 transition hover:text-brand-950 sm:block">
-                  پیگیری سفارش
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setAnnouncementClosed(true)}
-                  aria-label="بستن اطلاعیه"
-                  className="rounded-full p-1 text-brand-700 transition hover:bg-white/70"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
+          <div className="relative overflow-hidden bg-gradient-to-l from-brand-700 via-brand-600 to-brand-700 text-cream-50">
+            <div className="flex w-max animate-marquee items-center py-2 text-[10.5px] font-bold sm:text-[11.5px]">
+              {[0, 1].map((group) => (
+                <div key={group} className="flex shrink-0 items-center">
+                  {[announcement, 'مشاوره تخصصی پوست و مو', 'پرداخت امن و ضمانت اصالت'].map((text, index) => (
+                    <span key={`${group}-${index}`} className="flex items-center gap-2 px-4">
+                      <span aria-hidden="true" className="text-[9px] opacity-80">
+                        ✿
+                      </span>
+                      <span className="whitespace-nowrap">{text}</span>
+                    </span>
+                  ))}
+                </div>
+              ))}
             </div>
+            <button
+              type="button"
+              onClick={() => setAnnouncementClosed(true)}
+              aria-label="بستن اطلاعیه"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 rounded-full bg-brand-900/45 p-1 text-cream-50 backdrop-blur transition hover:bg-brand-900/70"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
           </div>
         )}
       </div>
 
       <div className="border-b border-cream-300/70 bg-cream-50/95 backdrop-blur">
-        <div className="container-page flex h-[74px] items-center gap-3 sm:gap-5">
+        <div className="container-page flex h-16 items-center gap-2 sm:h-[74px] lg:gap-5">
           <button
             type="button"
             aria-label="منو"
@@ -91,7 +87,7 @@ export default function Header({ settings = {}, categories = [] }) {
             <Menu />
           </button>
 
-          <Link href="/" className="shrink-0">
+          <Link href="/" className="mx-auto shrink-0 lg:mx-0">
             <Logo settings={settings} />
           </Link>
 
@@ -110,7 +106,7 @@ export default function Header({ settings = {}, categories = [] }) {
             </label>
           </form>
 
-          <div className="mr-auto flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 lg:mr-auto">
             <Link
               href={isLoggedIn ? '/account' : '/login'}
               className="hidden items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-brand-900 hover:bg-brand-50 sm:flex"
@@ -123,7 +119,7 @@ export default function Header({ settings = {}, categories = [] }) {
             </Link>
             <Link
               href="/cart"
-              className="relative flex items-center gap-2 rounded-full bg-brand-700 px-4 py-2.5 text-cream-50 transition hover:bg-brand-800"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-brand-700 text-cream-50 transition hover:bg-brand-800 lg:h-auto lg:w-auto lg:gap-2 lg:px-4 lg:py-2.5"
             >
               <ShoppingBag className="h-5 w-5" />
               <span className="hidden text-xs font-bold sm:block">سبد خرید</span>
@@ -136,17 +132,59 @@ export default function Header({ settings = {}, categories = [] }) {
           </div>
         </div>
 
-        <form action="/products" className="container-page pb-3 md:hidden">
-          <label className="flex items-center gap-2 rounded-full border border-cream-300 bg-white px-4 py-2.5">
-            <Search className="h-4 w-4 text-ink/40" />
-            <input
-              name="q"
-              placeholder="جست‌وجوی محصول…"
-              className="w-full bg-transparent text-sm outline-none placeholder:text-ink/40"
-              aria-label="جست‌وجو"
-            />
-          </label>
-        </form>
+        <div className="container-page pb-2.5 md:hidden">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              {[
+                { href: settings.telegram || 'https://t.me/senzskinshop', icon: Telegram, label: 'تلگرام' },
+                { href: settings.instagram || 'https://instagram.com/senzskinshop', icon: Instagram, label: 'اینستاگرام' },
+                { href: `https://wa.me/${settings.whatsapp || ''}`, icon: Whatsapp, label: 'واتس‌اپ' },
+              ].map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-700 ring-1 ring-brand-100 transition hover:bg-brand-100"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
+            </div>
+            <Link
+              href="/products"
+              aria-label="مشاهده محصولات"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-700 ring-1 ring-brand-100"
+            >
+              <Search className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <form action="/products" className="flex items-stretch gap-1.5">
+            <label className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-cream-300 bg-white px-3 py-2">
+              <Search className="h-4 w-4 shrink-0 text-ink/35" />
+              <input
+                name="q"
+                placeholder="نام برند، دسته‌بندی یا محصول…"
+                className="w-full bg-transparent text-[11.5px] outline-none placeholder:text-ink/35"
+                aria-label="جست‌وجو"
+              />
+            </label>
+            <button type="submit" className="shrink-0 rounded-lg bg-brand-800 px-3 text-[11px] font-bold text-white">
+              جست‌وجو
+            </button>
+            <Link
+              href="/products?on_sale=1"
+              className="flex shrink-0 items-center rounded-lg bg-brand-600 px-3 text-[11px] font-bold text-white"
+            >
+              تخفیفات
+            </Link>
+          </form>
+        </div>
       </div>
 
       <nav className="hidden border-b border-cream-300/60 bg-white/85 backdrop-blur lg:block">

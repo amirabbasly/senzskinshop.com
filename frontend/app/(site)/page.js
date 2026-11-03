@@ -2,6 +2,7 @@ import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
 import ServiceStrip from '@/components/ServiceStrip';
 import BrandsStrip from '@/components/BrandsStrip';
+import BrandCircles from '@/components/BrandCircles';
 import CategoryCircles from '@/components/CategoryCircles';
 import CategoryBanners from '@/components/CategoryBanners';
 import ProductShowcase from '@/components/ProductShowcase';
@@ -40,6 +41,8 @@ export default async function HomePage() {
 
   return (
     <div className="pb-5">
+      <BrandCircles brands={brands} />
+
       <HeroSlider banners={banners} />
 
       <div className="container-page mt-3 sm:mt-4">
