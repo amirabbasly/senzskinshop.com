@@ -41,7 +41,7 @@ export default function HeroSlider({ banners = [] }) {
       <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-950/15 lg:bg-gradient-to-l lg:from-brand-950/95 lg:via-brand-950/65 lg:to-brand-950/10" />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-transparent to-transparent" />
 
-      <div className="relative z-10 flex min-h-[76svh] items-end pb-16 pt-24 sm:min-h-[78svh] sm:pb-20 md:min-h-[560px] md:items-center md:pb-0 lg:min-h-[calc(100vh-9.5rem)] lg:py-20">
+      <div className="relative z-10 flex min-h-[76svh] items-end pb-16 pt-24 sm:min-h-[78svh] sm:pb-20 md:min-h-[560px] md:items-center md:pb-0 lg:min-h-[calc(100vh-16.5rem)] lg:py-20">
         <div className="w-full px-5 sm:px-8 lg:max-w-2xl lg:px-14 xl:px-20">
           {slide.badge && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-300/40 bg-gold-300/10 px-3 py-1 text-[10.5px] font-bold text-gold-200 backdrop-blur sm:text-[11px]">

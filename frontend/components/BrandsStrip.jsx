@@ -32,23 +32,25 @@ export default function BrandsStrip({ brands = [] }) {
         linkLabel="همه محصولات"
       />
 
-      <div className="rounded-xl border border-cream-300 bg-white p-2 shadow-[0_1px_3px_rgba(90,55,50,.05)] sm:rounded-2xl sm:p-3">
-        <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 sm:gap-2 lg:grid-cols-8">
-          {list.map((brand) => (
+      <div className="relative overflow-hidden rounded-xl border border-cream-300 bg-white py-3 shadow-[0_1px_3px_rgba(90,55,50,.05)] [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)] sm:rounded-2xl sm:py-3.5">
+        <div className="flex w-max animate-marquee items-stretch hover:[animation-play-state:paused]">
+          {[...list, ...list].map((brand, index) => (
             <Link
-              key={brand.name}
+              key={`${brand.name}-${index}`}
               href={brand.count > 0 ? `/products?q=${encodeURIComponent(brand.name)}` : '/products'}
-              className="group flex flex-col items-center justify-center gap-1.5 rounded-lg border border-transparent px-1 py-2.5 transition hover:border-brand-200 hover:bg-brand-50/60 sm:rounded-xl sm:py-3"
+              aria-hidden={index >= list.length ? 'true' : undefined}
+              tabIndex={index >= list.length ? -1 : undefined}
+              className="group flex w-[112px] shrink-0 flex-col items-center justify-center gap-1.5 border-l border-cream-200 px-2 last:border-l-0 sm:w-[136px] lg:w-[150px]"
             >
-              <span className="flex h-6 w-full items-center justify-center sm:h-7">
+              <span className="flex h-7 w-full items-center justify-center sm:h-8">
                 <img
                   src={brand.image}
                   alt={`لوگو ${brand.name}`}
                   loading="lazy"
-                  className="max-h-6 w-auto max-w-[88%] object-contain opacity-75 grayscale-[.65] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0 sm:max-h-7"
+                  className="max-h-7 w-auto max-w-[92%] object-contain opacity-75 grayscale-[.65] transition duration-300 group-hover:opacity-100 group-hover:grayscale-0 sm:max-h-8"
                 />
               </span>
-              <span className="w-full truncate text-center text-[9.5px] font-bold text-ink/60 transition group-hover:text-brand-800 sm:text-[10.5px]">
+              <span className="w-full truncate text-center text-[9.5px] font-bold text-ink/55 transition group-hover:text-brand-800 sm:text-[10.5px]">
                 {brand.name}
               </span>
             </Link>

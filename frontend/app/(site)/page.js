@@ -45,7 +45,7 @@ export default async function HomePage() {
 
       <HeroSlider banners={banners} />
 
-      <div className="container-page mt-3 sm:mt-4">
+      <div className="container-page mt-3 hidden sm:mt-4 lg:block">
         <ServiceStrip services={settings.services || []} />
       </div>
 
