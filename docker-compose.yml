@@ -1,0 +1,102 @@
+# ============================================================
+#  SENZ SKIN SHOP — production stack for a Linux server
+#  services: postgres + node api + next.js web + nginx
+#  usage:  ./deploy.sh up
+# ============================================================
+name: senzskinshop
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: senz_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-senzskinshop}
+      POSTGRES_USER: ${POSTGRES_USER:-senz}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required — copy .env.example to .env}
+      TZ: Asia/Tehran
+      PGTZ: Asia/Tehran
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-senz} -d ${POSTGRES_DB:-senzskinshop}']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - senz
+
+  api:
+    build:
+      context: ./backend
+    container_name: senz_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      TZ: Asia/Tehran
+      DATABASE_URL: postgresql://${POSTGRES_USER:-senz}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-senzskinshop}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-30d}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@senzskinshop.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Senz@12345}
+      SEED_ON_BOOT: ${SEED_ON_BOOT:-1}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://senzskinshop.com,https://www.senzskinshop.com}
+      PAYMENT_GATEWAY: ${PAYMENT_GATEWAY:-mock}
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - senz
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_INTERNAL_URL: http://api:4000
+    container_name: senz_web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      TZ: Asia/Tehran
+      API_INTERNAL_URL: http://api:4000
+      NEXT_PUBLIC_API_URL: /api
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - senz
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: senz_nginx
+    restart: unless-stopped
+    ports:
+      - '${HTTP_PORT:-80}:80'
+      - '${HTTPS_PORT:-443}:443'
+    volumes:
+      # ":z" lets Docker relabel the files on SELinux systems (Rocky/Alma/CentOS);
+      # it is ignored on Debian/Ubuntu.
+      - ./nginx/conf:/etc/nginx/conf.d:ro,z
+      - ./nginx/certs:/etc/nginx/certs:ro,z
+      - ./nginx/acme:/var/www/acme:ro,z
+    depends_on:
+      - web
+      - api
+    networks:
+      - senz
+
+volumes:
+  db_data:
+    name: senz_db_data
+  uploads:
+    name: senz_uploads
+
+networks:
+  senz:
+    name: senz_network
+    driver: bridge

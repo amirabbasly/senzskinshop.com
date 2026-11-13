@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#f5efe4"/>
+  <g fill="none" stroke="#c9bda6" stroke-width="6" stroke-linecap="round">
+    <rect x="132" y="112" width="136" height="176" rx="26"/>
+    <path d="M176 112h48v-18a24 24 0 0 0-48 0v18"/>
+    <path d="M166 200h68"/>
+  </g>
+  <text x="200" y="340" text-anchor="middle" font-family="Vazirmatn, sans-serif" font-size="20" fill="#a89a80">SENZ SKIN</text>
+</svg>
