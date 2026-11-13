@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { query, withTransaction } from '../db.js';
 import { optionalCustomer, requireAdmin, signToken } from '../auth.js';
 import { createPaymentForOrder } from '../payments.js';
-import { parseMoney, publicSettings, toInt, wrap } from '../helpers.js';
+import { parseMoney, publicSettings, slugVariants, toInt, wrap } from '../helpers.js';
 
 const router = Router();
 
@@ -166,8 +166,8 @@ router.get('/products/:slug', wrap(async (req, res) => {
     `SELECT ${PRODUCT_COLUMNS}, c.name AS category_name, c.slug AS category_slug,
             c.parent_id AS category_parent_id
      FROM products p LEFT JOIN categories c ON c.id = p.category_id
-     WHERE p.slug = $1 AND p.is_active = true`,
-    [req.params.slug]
+     WHERE p.slug = ANY($1::text[]) AND p.is_active = true`,
+    [slugVariants(req.params.slug)]
   );
   if (!rows.length) return res.status(404).json({ error: 'محصول یافت نشد.' });
   const product = shapeProduct(rows[0]);
@@ -199,8 +199,8 @@ router.get('/products/:slug/reviews', wrap(async (req, res) => {
   const { rows } = await query(
     `SELECT r.id, r.name, r.rating, r.comment, r.created_at FROM reviews r
      JOIN products p ON p.id = r.product_id
-     WHERE p.slug = $1 AND r.is_approved = true ORDER BY r.created_at DESC`,
-    [req.params.slug]
+     WHERE p.slug = ANY($1::text[]) AND r.is_approved = true ORDER BY r.created_at DESC`,
+    [slugVariants(req.params.slug)]
   );
   res.json(rows);
 }));
@@ -208,7 +208,7 @@ router.get('/products/:slug/reviews', wrap(async (req, res) => {
 router.post('/products/:slug/reviews', wrap(async (req, res) => {
   const { name, rating, comment } = req.body || {};
   if (!name || !comment) return res.status(400).json({ error: 'نام و متن نظر الزامی است.' });
-  const { rows: prod } = await query('SELECT id FROM products WHERE slug = $1', [req.params.slug]);
+  const { rows: prod } = await query('SELECT id FROM products WHERE slug = ANY($1::text[])', [slugVariants(req.params.slug)]);
   if (!prod.length) return res.status(404).json({ error: 'محصول یافت نشد.' });
   await query(
     `INSERT INTO reviews (product_id, name, rating, comment, is_approved)
@@ -237,8 +237,8 @@ router.get('/posts', wrap(async (req, res) => {
 
 router.get('/posts/:slug', wrap(async (req, res) => {
   const { rows } = await query(
-    'SELECT * FROM posts WHERE slug = $1 AND is_published = true',
-    [req.params.slug]
+    'SELECT * FROM posts WHERE slug = ANY($1::text[]) AND is_published = true',
+    [slugVariants(req.params.slug)]
   );
   if (!rows.length) return res.status(404).json({ error: 'مقاله یافت نشد.' });
   const latest = await query(

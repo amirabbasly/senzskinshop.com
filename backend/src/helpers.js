@@ -23,6 +23,28 @@ export function slugify(input = '') {
   return base || `item-${Date.now().toString(36)}`;
 }
 
+/**
+ * اسلاگ‌های فارسی/یونیکد ممکن است percent-encoded به روت برسند.
+ * همه‌ی حالت‌های ممکن (خام و دیکد‌شده) را برمی‌گرداند تا کوئری با ANY مطابقت کند.
+ */
+export function slugVariants(value = '') {
+  const variants = new Set();
+  let current = String(value || '');
+  variants.add(current);
+  for (let i = 0; i < 2; i += 1) {
+    if (!current.includes('%')) break;
+    try {
+      const next = decodeURIComponent(current);
+      if (next === current) break;
+      current = next;
+      variants.add(current);
+    } catch {
+      break;
+    }
+  }
+  return [...variants];
+}
+
 export function uniqueSlug(base) {
   return `${slugify(base)}-${Math.random().toString(36).slice(2, 6)}`;
 }

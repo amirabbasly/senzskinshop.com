@@ -2,9 +2,11 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductListing from '@/components/ProductListing';
 import { getCategories } from '@/lib/api';
+import { decodeSlug } from '@/lib/slug';
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSlug(rawSlug);
   const categories = (await getCategories()) || [];
   const flat = categories.flatMap((c) => [c, ...(c.children || [])]);
   const category = flat.find((c) => c.slug === slug);
@@ -15,7 +17,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CategoryPage({ params, searchParams }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSlug(rawSlug);
   const sp = await searchParams;
   const categories = (await getCategories()) || [];
   const parents = categories.filter((c) => !c.parent_id);

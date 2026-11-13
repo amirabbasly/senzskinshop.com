@@ -1,3 +1,4 @@
+import { encodeSlug } from '@/lib/slug';
 import { getCategories, getPosts, getProducts } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
@@ -22,21 +23,21 @@ export default async function sitemap() {
     category,
     ...(category.children || []),
   ]).map((category) => ({
-    url: `${BASE}/category/${category.slug}`,
+    url: `${BASE}/category/${encodeSlug(category.slug)}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
 
   const productPages = (products?.items || []).map((product) => ({
-    url: `${BASE}/products/${product.slug}`,
+    url: `${BASE}/products/${encodeSlug(product.slug)}`,
     lastModified: product.created_at ? new Date(product.created_at) : new Date(),
     changeFrequency: 'weekly',
     priority: 0.9,
   }));
 
   const postPages = (posts || []).map((post) => ({
-    url: `${BASE}/blog/${post.slug}`,
+    url: `${BASE}/blog/${encodeSlug(post.slug)}`,
     lastModified: post.created_at ? new Date(post.created_at) : new Date(),
     changeFrequency: 'monthly',
     priority: 0.6,

@@ -1,3 +1,5 @@
+import { decodeSlug } from './slug';
+
 const INTERNAL_API = process.env.API_INTERNAL_URL || 'http://127.0.0.1:4000';
 export const CLIENT_API = process.env.NEXT_PUBLIC_API_URL || '/api';
 
@@ -25,8 +27,8 @@ export const getCategories = () => request('/categories');
 export const getBrands = () => request('/brands');
 export const getHome = () => request('/home');
 export const getProducts = (query = '') => request(`/products${query}`);
-export const getProduct = (slug) => request(`/products/${encodeURIComponent(slug)}`);
+export const getProduct = (slug) => request(`/products/${encodeURIComponent(decodeSlug(slug))}`);
 export const getBanners = (placement = 'hero') => request(`/banners?placement=${placement}`);
 export const getPosts = () => request('/posts');
-export const getPost = (slug) => request(`/posts/${encodeURIComponent(slug)}`);
+export const getPost = (slug) => request(`/posts/${encodeURIComponent(decodeSlug(slug))}`);
 export const getOrder = (code) => request(`/orders/track/${encodeURIComponent(code)}`);
